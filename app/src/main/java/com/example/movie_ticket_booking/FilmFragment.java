@@ -1,5 +1,6 @@
 package com.example.movie_ticket_booking;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.movie_ticket_booking.Controllers.AuthUserController;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +64,18 @@ public class FilmFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_film_fragment, container, false);
+        View view = inflater.inflate(R.layout.activity_film_fragment, container, false);
+        Button btn = view.findViewById(R.id.buttonChange);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AuthUserController.toggleRole();
+                System.out.println(AuthUserController.getUserlogin().getUserRole());
+                Intent intent = new Intent(view.getContext(), MainActivity.class);
+                intent.putExtra("rerender", true);
+                startActivity(intent);
+            }
+        });
+        return view;
     }
 }

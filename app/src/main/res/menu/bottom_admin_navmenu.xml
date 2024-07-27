@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="adminnnn"
+        android:id="@+id/film"
+        android:icon="@drawable/ic_movie"/>
+    <item android:title="Cụm Rạp"
+        android:id="@+id/cinemas"
+        android:icon="@drawable/ic_location"/>
+    <item android:title="Thông Báo"
+        android:id="@+id/notification"
+        android:icon="@drawable/ic_event"/>
+    <item android:title="Khác"
+        android:id="@+id/other"
+        android:icon="@drawable/ic_other"/>
+</menu>
