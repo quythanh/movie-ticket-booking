@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
 
-    id 'com.android.application'
+//    id 'com.android.application'
     // Add the dependency for the Google services Gradle plugin
     id 'com.google.gms.google-services'
 }
@@ -29,6 +29,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures{
+        dataBinding = true
+        viewBinding = true
     }
 }
 
