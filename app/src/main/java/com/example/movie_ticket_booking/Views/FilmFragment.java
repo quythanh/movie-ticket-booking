@@ -1,5 +1,6 @@
-package com.example.movie_ticket_booking;
+package com.example.movie_ticket_booking.Views;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,13 +8,18 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.example.movie_ticket_booking.Controllers.AuthUserController;
+import com.example.movie_ticket_booking.MainActivity;
+import com.example.movie_ticket_booking.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link OtherFragment#newInstance} factory method to
+ * Use the {@link FilmFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OtherFragment extends Fragment {
+public class FilmFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +30,7 @@ public class OtherFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public OtherFragment() {
+    public FilmFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +40,11 @@ public class OtherFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment OtherFragment.
+     * @return A new instance of fragment FilmFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OtherFragment newInstance(String param1, String param2) {
-        OtherFragment fragment = new OtherFragment();
+    public static FilmFragment newInstance(String param1, String param2) {
+        FilmFragment fragment = new FilmFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +65,18 @@ public class OtherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_other_fragment, container, false);
+        View view = inflater.inflate(R.layout.activity_film_fragment, container, false);
+        Button btn = view.findViewById(R.id.buttonChange);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AuthUserController.toggleRole();
+                System.out.println(AuthUserController.getUserlogin().getRole());
+                Intent intent = new Intent(view.getContext(), MainActivity.class);
+                intent.putExtra("rerender", true);
+                startActivity(intent);
+            }
+        });
+        return view;
     }
 }

@@ -1,10 +1,13 @@
 package com.example.movie_ticket_booking.Controllers;
 
-import com.example.movie_ticket_booking.ModelClasses.User;
+import com.example.movie_ticket_booking.Models.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+
+@Getter
 public class UserController {
     private static List<User> users;
 
@@ -14,12 +17,7 @@ public class UserController {
 
     private UserController(){}
 
-    public static List<User> getUserList(){
-        return users;
-    }
-
     public static void addUser(User A){
         users.add(A);
     }
-
 }

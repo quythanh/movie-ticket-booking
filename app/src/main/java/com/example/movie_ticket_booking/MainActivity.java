@@ -1,28 +1,20 @@
 package com.example.movie_ticket_booking;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
-import com.example.movie_ticket_booking.ModelClasses.User;
-import com.example.movie_ticket_booking.ModelClasses.UserRole;
+import com.example.movie_ticket_booking.Models.UserRole;
+import com.example.movie_ticket_booking.Views.CinemasFragment;
+import com.example.movie_ticket_booking.Views.FilmFragment;
+import com.example.movie_ticket_booking.Views.NotificationFragment;
+import com.example.movie_ticket_booking.Views.OtherFragment;
 import com.example.movie_ticket_booking.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         navbar = findViewById(R.id.bottomNavigationView);
 
 
-        if(AuthUserController.getUserlogin().getUserRole() == UserRole.ADMIN)
+        if(AuthUserController.getUserlogin().getRole() == UserRole.ADMIN)
             navbar.inflateMenu(R.menu.bottom_admin_navmenu);
         else
             navbar.inflateMenu(R.menu.bottom_navmenu);
