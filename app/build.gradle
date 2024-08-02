@@ -34,6 +34,7 @@ android {
         dataBinding = true
         viewBinding = true
     }
+    buildToolsVersion '34.0.0'
 }
 
 dependencies {
@@ -42,14 +43,21 @@ dependencies {
     implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
+    implementation libs.gridlayout
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:33.1.2')
-    compileOnly "org.projectlombok:lombok:1.18.34"
-    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    compileOnly "org.projectlombok:lombok:1.18.22"
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    //Indicator
+    implementation 'me.relex:circleindicator:2.1.6'
+    //glide: upload picture
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     // https://firebase.google.com/docs/android/setup#available-libraries
