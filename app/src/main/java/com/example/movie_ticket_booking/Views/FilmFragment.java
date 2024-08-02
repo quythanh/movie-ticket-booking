@@ -18,6 +18,8 @@ import com.example.movie_ticket_booking.Controllers.MovieController;
 import com.example.movie_ticket_booking.Models.Movie;
 import com.example.movie_ticket_booking.R;
 
+import java.util.List;
+
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -41,6 +43,7 @@ public class FilmFragment extends Fragment {
     private CircleIndicator circleIndicator;
     private ViewPagerAdapter viewPagerAdapter;
 
+    private final MovieController _controller = MovieController.getInstance();
 
     public FilmFragment() {
         // Required empty public constructor
@@ -80,39 +83,40 @@ public class FilmFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_film, container, false);
 
         viewPager = view.findViewById(R.id.viewPager);
-        viewPagerAdapter = new ViewPagerAdapter(view.getContext(), MovieController.getCurrentShowingFilm());
-        viewPager.setAdapter(viewPagerAdapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Movie m = MovieController.getCurrentShowingFilm().get(position);
-                TextView text = view.findViewById(R.id.adText);
-                text.setText(m.getTitle());
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
         GridView grid = view.findViewById(R.id.gridMovie);
-        MovieAdapter adapt = new MovieAdapter(view.getContext(), MovieController.getCurrentShowingFilm());
-        grid.setAdapter(adapt);
-        ViewGroup.LayoutParams params = grid.getLayoutParams();
-        params.height = MovieController.getCurrentShowingFilm().size() * 550;
-        grid.setLayoutParams(params);
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        this._controller.getAll().observe(getViewLifecycleOwner(), movies -> {
+            viewPagerAdapter = new ViewPagerAdapter(view.getContext(), movies);
+            viewPager.setAdapter(viewPagerAdapter);
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    Movie m = movies.get(position);
+                    TextView text = view.findViewById(R.id.adText);
+                    text.setText(m.getTitle());
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+
+            MovieAdapter adapt = new MovieAdapter(view.getContext(), movies);
+            grid.setAdapter(adapt);
+            ViewGroup.LayoutParams params = grid.getLayoutParams();
+            params.height = movies.size() * 550;
+            grid.setLayoutParams(params);
+            grid.setOnItemClickListener((parent, _view, position, id) -> {
                 System.out.println(adapt.getMovies().get(position));
-            }
+            });
         });
+
         return view;
     }
 }

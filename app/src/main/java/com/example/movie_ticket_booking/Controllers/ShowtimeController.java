@@ -2,17 +2,16 @@ package com.example.movie_ticket_booking.Controllers;
 
 import com.example.movie_ticket_booking.Models.Showtime;
 
-import java.util.ArrayList;
-import java.util.List;
+public class ShowtimeController extends GenericController<Showtime> {
+    private static ShowtimeController _instance = null;
 
-import lombok.Getter;
-
-@Getter
-public class ShowtimeController {
-    private static List<Showtime> showtimes;
-    static {
-        showtimes = new ArrayList<>();
+    private ShowtimeController() {
+        super("showtimes", Showtime.class);
     }
 
-    private  ShowtimeController() {}
+    public static synchronized ShowtimeController getInstance() {
+        if (_instance == null)
+            _instance = new ShowtimeController();
+        return _instance;
+    }
 }

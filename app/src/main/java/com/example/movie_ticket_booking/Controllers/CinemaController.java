@@ -2,18 +2,16 @@ package com.example.movie_ticket_booking.Controllers;
 
 import com.example.movie_ticket_booking.Models.Cinema;
 
-import java.util.ArrayList;
-import java.util.List;
+public class CinemaController extends GenericController<Cinema> {
+    private static CinemaController _instance = null;
 
-import lombok.Getter;
-
-@Getter
-public class CinemaController {
-    @Getter
-    private static List<Cinema> cinemas;
-
-    static {
-        cinemas = new ArrayList<>();
+    private CinemaController() {
+        super("cinemas", Cinema.class);
     }
-    private CinemaController(){};
+
+    public static synchronized CinemaController getInstance() {
+        if (_instance == null)
+            _instance = new CinemaController();
+        return _instance;
+    }
 }
