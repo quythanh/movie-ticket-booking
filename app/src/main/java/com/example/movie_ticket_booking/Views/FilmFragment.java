@@ -1,18 +1,24 @@
 package com.example.movie_ticket_booking.Views;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.TextView;
 
-import com.example.movie_ticket_booking.Controllers.AuthUserController;
-import com.example.movie_ticket_booking.MainActivity;
+import com.example.movie_ticket_booking.Components.MovieAdapter;
+import com.example.movie_ticket_booking.Components.ViewPagerAdapter;
+import com.example.movie_ticket_booking.Controllers.MovieController;
+import com.example.movie_ticket_booking.Models.Movie;
 import com.example.movie_ticket_booking.R;
+
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +35,12 @@ public class FilmFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    //custom fields
+    private ViewPager viewPager;
+    private CircleIndicator circleIndicator;
+    private ViewPagerAdapter viewPagerAdapter;
+
 
     public FilmFragment() {
         // Required empty public constructor
@@ -65,16 +77,40 @@ public class FilmFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.activity_film_fragment, container, false);
-        Button btn = view.findViewById(R.id.buttonChange);
-        btn.setOnClickListener(new View.OnClickListener() {
+        View view = inflater.inflate(R.layout.fragment_film, container, false);
+
+        viewPager = view.findViewById(R.id.viewPager);
+        viewPagerAdapter = new ViewPagerAdapter(view.getContext(), MovieController.getCurrentShowingFilm());
+        viewPager.setAdapter(viewPagerAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onClick(View view) {
-                AuthUserController.toggleRole();
-                System.out.println(AuthUserController.getUserlogin().getRole());
-                Intent intent = new Intent(view.getContext(), MainActivity.class);
-                intent.putExtra("rerender", true);
-                startActivity(intent);
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Movie m = MovieController.getCurrentShowingFilm().get(position);
+                TextView text = view.findViewById(R.id.adText);
+                text.setText(m.getTitle());
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        GridView grid = view.findViewById(R.id.gridMovie);
+        MovieAdapter adapt = new MovieAdapter(view.getContext(), MovieController.getCurrentShowingFilm());
+        grid.setAdapter(adapt);
+        ViewGroup.LayoutParams params = grid.getLayoutParams();
+        params.height = MovieController.getCurrentShowingFilm().size() * 550;
+        grid.setLayoutParams(params);
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println(adapt.getMovies().get(position));
             }
         });
         return view;

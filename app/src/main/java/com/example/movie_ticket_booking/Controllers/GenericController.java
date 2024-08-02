@@ -2,7 +2,6 @@ package com.example.movie_ticket_booking.Controllers;
 
 import android.util.Log;
 
-import com.example.movie_ticket_booking.Interfaces.Identifiable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -12,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class GenericController<T extends Identifiable> {
+public abstract class GenericController<T> {
     protected final FirebaseFirestore db;
     protected final String collectionPath;
     private final Class<T> type;

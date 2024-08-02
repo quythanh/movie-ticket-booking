@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,8 @@ public class Movie extends BaseModel{
     private Date premiere;
     private String intro;
     private MovieType type;
-    //picture
+    private String landscapeImage;
+    private String poster;
     //trailer
 
     //Foreign key
@@ -36,5 +38,28 @@ public class Movie extends BaseModel{
     @Override
     public String toString() {
         return this.title;
+    }
+
+    public Movie() {};
+    public Movie(Map<String,Object> params){
+        for(Map.Entry<String, Object> entry : params.entrySet()){
+            switch (entry.getKey()){
+                case "id":
+                    this.id = (String) entry.getValue();
+                    break;
+                case "title":
+                    this.title = (String) entry.getValue();
+                    break;
+                case "image":
+                    this.landscapeImage = (String) entry.getValue();
+                    break;
+            }
+        }
+    }
+    public Movie(String id, String title, String LandscapeImage, String poster){
+        this.id = id;
+        this.title = title;
+        this.landscapeImage = LandscapeImage;
+        this.poster = poster;
     }
 }
