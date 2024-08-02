@@ -2,11 +2,15 @@ package com.example.movie_ticket_booking.Controllers;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,23 +33,31 @@ public abstract class GenericController<T> {
                 .addOnFailureListener(e -> Log.e(collectionPath, "Error adding document", e));
     }
 
-    public T get(String id) {
-        final List<T> o = new ArrayList<>();
+    public LiveData<T> get(String id) {
+        MutableLiveData<T> liveData = new MutableLiveData<>();
 
         DocumentReference docRef = this.db.collection(this.collectionPath).document(id);
-        docRef.get().addOnSuccessListener(document -> o.add(document.toObject(this.type)));
+        docRef.get().addOnSuccessListener(document -> liveData.setValue(document.toObject(this.type)));
 
-        return o.get(0);
+        return liveData;
     }
 
-    public List<T> getAll() {
-        final List<T> l = new ArrayList<>();
+    public LiveData<List<T>> getAll() {
+        MutableLiveData<List<T>> liveData = new MutableLiveData<>();
 
         this.db.collection(this.collectionPath)
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> queryDocumentSnapshots.forEach(doc -> l.add(doc.toObject(this.type))));
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<T> l = new ArrayList<>();
+                    queryDocumentSnapshots.forEach(doc -> l.add(doc.toObject(this.type)));
+                    liveData.setValue(l);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(collectionPath, "Error fetching document", e);
+                    liveData.setValue(Collections.emptyList());
+                });
 
-        return l;
+        return liveData;
     }
 
     private static Map<String, Object> _createUpdateData(Object o) throws IllegalAccessException {
