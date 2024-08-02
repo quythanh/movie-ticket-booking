@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.cloudinary.android.MediaManager;
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
 import com.example.movie_ticket_booking.Models.UserRole;
 import com.example.movie_ticket_booking.Views.CinemasFragment;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MediaManager.init(this);
 
         binder = ActivityMainBinding.inflate(getLayoutInflater());
         film = new FilmFragment();
@@ -48,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         navbar = findViewById(R.id.bottomNavigationView);
 
-
-        if(AuthUserController.getUserlogin().getRole() == UserRole.ADMIN)
+        if (AuthUserController.getUserlogin().getRole() == UserRole.ADMIN)
             navbar.inflateMenu(R.menu.bottom_admin_navmenu);
         else
             navbar.inflateMenu(R.menu.bottom_navmenu);
@@ -71,8 +72,5 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
-
     }
-
-
 }
