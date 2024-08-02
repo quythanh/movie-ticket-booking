@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Movieticketbooking"
         tools:targetApi="31">
+        <meta-data
+            android:name="CLOUDINARY_URL"
+            android:value="cloudinary://384668648134281:Wogft3SeBG_FQszasVWOts7QY7k@dsx05vfzp"/>
         <activity
             android:name=".Other_Fragment"
             android:exported="false" />
