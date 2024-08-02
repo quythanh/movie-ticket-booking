@@ -16,16 +16,16 @@
             android:name="CLOUDINARY_URL"
             android:value="cloudinary://384668648134281:Wogft3SeBG_FQszasVWOts7QY7k@dsx05vfzp"/>
         <activity
-            android:name=".Other_Fragment"
+            android:name=".Views.OtherFragment"
             android:exported="false" />
         <activity
-            android:name=".Notification_Fragment"
+            android:name=".Views.NotificationFragment"
             android:exported="false" />
         <activity
-            android:name=".Cinema_Fragment"
+            android:name=".Views.CinemasFragment"
             android:exported="false" />
         <activity
-            android:name=".Film_Fragment"
+            android:name=".Views.FilmFragment"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

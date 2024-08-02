@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -91,13 +90,13 @@
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginBottom="20dp"
                     android:layout_weight="1"
-                    android:background="@color/material_dynamic_neutral10"
+                    android:background="#000000"
                     android:orientation="vertical">
 
                     <HorizontalScrollView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/material_dynamic_neutral20"
+                        android:background="#2e3133"
                         android:fillViewport="true"
                         android:scrollbarAlwaysDrawHorizontalTrack="false">
 
@@ -115,7 +114,7 @@
                                 android:layout_weight="1"
                                 android:text="ĐANG CHIẾU"
                                 android:textAlignment="center"
-                                android:textColor="@color/material_dynamic_neutral60"
+                                android:textColor="#8f9193"
                                 android:textSize="20sp" />
 
                             <TextView
@@ -127,7 +126,7 @@
                                 android:layout_weight="1"
                                 android:text="SẮP CHIẾU"
                                 android:textAlignment="center"
-                                android:textColor="@color/material_dynamic_neutral60"
+                                android:textColor="#8f9193"
                                 android:textSize="20sp" />
 
                             <TextView
@@ -139,7 +138,7 @@
                                 android:layout_weight="1"
                                 android:text="SUẤT CHIẾU SỚM"
                                 android:textAlignment="center"
-                                android:textColor="@color/material_dynamic_neutral60"
+                                android:textColor="#8f9193"
                                 android:textSize="20sp" />
                         </LinearLayout>
                     </HorizontalScrollView>
