@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         notification = new NotificationFragment();
         other = new OtherFragment();
 
-
         setContentView(binder.getRoot());
         ChangeFragment(film);
 
