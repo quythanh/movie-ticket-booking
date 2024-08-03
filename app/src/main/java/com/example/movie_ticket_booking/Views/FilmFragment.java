@@ -1,5 +1,6 @@
 package com.example.movie_ticket_booking.Views;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,7 +9,6 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -16,11 +16,12 @@ import com.example.movie_ticket_booking.Components.MovieAdapter;
 import com.example.movie_ticket_booking.Components.ViewPagerAdapter;
 import com.example.movie_ticket_booking.Controllers.MovieController;
 import com.example.movie_ticket_booking.Models.Movie;
+import com.example.movie_ticket_booking.Models.MovieType;
 import com.example.movie_ticket_booking.R;
 
-import java.util.List;
-
-import me.relex.circleindicator.CircleIndicator;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,9 +41,12 @@ public class FilmFragment extends Fragment {
 
     //custom fields
     private ViewPager viewPager;
-    private CircleIndicator circleIndicator;
     private ViewPagerAdapter viewPagerAdapter;
-
+    private GridView grid;
+    private MovieAdapter adapt;
+    private TextView text;
+    private Map<MovieType, TextView> filter;
+    private MovieType currentType = MovieType.INACCESSIBLE;
     private final MovieController _controller = MovieController.getInstance();
 
     public FilmFragment() {
@@ -76,6 +80,25 @@ public class FilmFragment extends Fragment {
         }
     }
 
+    private void updateViewByType(MovieType type, boolean forceUpdate) {
+        if (type == currentType && !forceUpdate) return;
+        currentType = type;
+
+        this._controller.getByType(type).observe(getViewLifecycleOwner(), movies -> {
+            adapt.setMovies(movies);
+            grid.setAdapter(adapt);
+            ViewGroup.LayoutParams params = grid.getLayoutParams();
+            params.height = (movies.size() / 2 + movies.size() & 1) * 1200;
+            grid.setLayoutParams(params);
+            grid.setOnItemClickListener((parent, _view, position, id) -> {
+                System.out.println(adapt.getMovies().get(position));
+            });
+        });
+
+        filter.forEach((key, value) -> value.setTextColor(Color.parseColor("#8f9193")));
+        filter.get(type).setTextColor(Color.parseColor("#b00020"));
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,37 +106,40 @@ public class FilmFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_film, container, false);
 
         viewPager = view.findViewById(R.id.viewPager);
-        GridView grid = view.findViewById(R.id.gridMovie);
+        grid = view.findViewById(R.id.gridMovie);
+        text = view.findViewById(R.id.adText);
 
-        this._controller.getAll().observe(getViewLifecycleOwner(), movies -> {
-            viewPagerAdapter = new ViewPagerAdapter(view.getContext(), movies);
+        viewPagerAdapter = new ViewPagerAdapter(view.getContext(), new ArrayList<>());
+        adapt = new MovieAdapter(view.getContext(), new ArrayList<>());
+        filter = new HashMap<>();
+
+        filter.put(MovieType.PRESENTING, view.findViewById(R.id.txt_presenting));
+        filter.put(MovieType.COMING_SOON, view.findViewById(R.id.txt_coming_soon));
+        filter.put(MovieType.EARLY_ACCESS, view.findViewById(R.id.txt_early_access));
+
+        filter.forEach((key, value) -> value.setOnClickListener(_view -> updateViewByType(key, false)));
+
+        //
+        updateViewByType(MovieType.PRESENTING, true);
+
+        // Landscape Images
+        this._controller.getByType(MovieType.PRESENTING).observe(getViewLifecycleOwner(), movies -> {
+            viewPagerAdapter.setPhotos(movies);
             viewPager.setAdapter(viewPagerAdapter);
             viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                     Movie m = movies.get(position);
-                    TextView text = view.findViewById(R.id.adText);
                     text.setText(m.getTitle());
                 }
 
                 @Override
                 public void onPageSelected(int position) {
-
                 }
 
                 @Override
                 public void onPageScrollStateChanged(int state) {
-
                 }
-            });
-
-            MovieAdapter adapt = new MovieAdapter(view.getContext(), movies);
-            grid.setAdapter(adapt);
-            ViewGroup.LayoutParams params = grid.getLayoutParams();
-            params.height = movies.size() * 550;
-            grid.setLayoutParams(params);
-            grid.setOnItemClickListener((parent, _view, position, id) -> {
-                System.out.println(adapt.getMovies().get(position));
             });
         });
 
