@@ -17,18 +17,21 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="100dp"
+            android:layout_marginEnd="100dp"
             android:layout_weight="1"
             android:backgroundTint="@color/design_default_color_error"
-            android:drawableLeft="@drawable/ic_signin"
-            android:text="Đăng nhập" />
+            android:drawableStart="@drawable/ic_sign_in"
+            android:text="Đăng nhập"
+            tools:ignore="HardcodedText" />
 
         <ImageView
             android:id="@+id/logo"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/logo" />
+            android:src="@drawable/logo"
+            android:contentDescription="Logo Image"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <ScrollView
@@ -38,7 +41,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -49,7 +52,9 @@
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager"
                     android:layout_width="match_parent"
-                    android:layout_height="220dp" />
+                    android:layout_height="220dp"
+                    android:contentDescription="view pager"
+                    tools:ignore="HardcodedText" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -61,103 +66,100 @@
 
                     <TextView
                         android:id="@+id/adText"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="9"
                         android:text="TextView"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textFontWeight="@integer/material_motion_duration_long_2" />
+                        android:textFontWeight="@integer/material_motion_duration_long_2"
+                        tools:ignore="HardcodedText" />
 
                     <Button
                         android:id="@+id/button2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/design_default_color_error"
-                        android:text="Chi tiết" />
+                        android:text="Chi tiết"
+                        tools:ignore="HardcodedText" />
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:background="#000000"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_weight="1"
-                    android:background="#000000"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:background="#2e3133"
+                    android:fillViewport="true"
+                    android:scrollbarAlwaysDrawHorizontalTrack="false">
 
-                    <HorizontalScrollView
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#2e3133"
-                        android:fillViewport="true"
-                        android:scrollbarAlwaysDrawHorizontalTrack="false">
+                        android:orientation="horizontal">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/txt_presenting"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_marginHorizontal="30dp"
+                            android:layout_marginVertical="10dp"
+                            android:layout_weight="1"
+                            android:text="ĐANG CHIẾU"
+                            android:textAlignment="center"
+                            android:textColor="#8f9193"
+                            android:textSize="20sp"
+                            tools:ignore="HardcodedText" />
 
-                            <TextView
-                                android:id="@+id/textView5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="30dp"
-                                android:layout_marginVertical="10dp"
-                                android:layout_weight="1"
-                                android:text="ĐANG CHIẾU"
-                                android:textAlignment="center"
-                                android:textColor="#8f9193"
-                                android:textSize="20sp" />
+                        <TextView
+                            android:id="@+id/txt_coming_soon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="30dp"
+                            android:layout_marginVertical="10dp"
+                            android:layout_weight="1"
+                            android:text="SẮP CHIẾU"
+                            android:textAlignment="center"
+                            android:textColor="#8f9193"
+                            android:textSize="20sp"
+                            tools:ignore="HardcodedText" />
 
-                            <TextView
-                                android:id="@+id/textView6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="30dp"
-                                android:layout_marginVertical="10dp"
-                                android:layout_weight="1"
-                                android:text="SẮP CHIẾU"
-                                android:textAlignment="center"
-                                android:textColor="#8f9193"
-                                android:textSize="20sp" />
+                        <TextView
+                            android:id="@+id/txt_early_access"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="30dp"
+                            android:layout_marginVertical="10dp"
+                            android:layout_weight="1"
+                            android:text="SUẤT CHIẾU SỚM"
+                            android:textAlignment="center"
+                            android:textColor="#8f9193"
+                            android:textSize="20sp"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+                </HorizontalScrollView>
 
-                            <TextView
-                                android:id="@+id/textView7"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="30dp"
-                                android:layout_marginVertical="10dp"
-                                android:layout_weight="1"
-                                android:text="SUẤT CHIẾU SỚM"
-                                android:textAlignment="center"
-                                android:textColor="#8f9193"
-                                android:textSize="20sp" />
-                        </LinearLayout>
-                    </HorizontalScrollView>
+                <GridView
+                    android:id="@+id/gridMovie"
+                    android:layout_width="match_parent"
+                    android:layout_height="452dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="10dp"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp"
+                    android:padding="10dp" />
 
-                    <GridView
-                        android:id="@+id/gridMovie"
-                        android:layout_width="match_parent"
-                        android:layout_height="452dp"
-                        android:gravity="center"
-                        android:horizontalSpacing="10dp"
-                        android:numColumns="auto_fit"
-                        android:stretchMode="columnWidth"
-                        android:verticalSpacing="20dp"
-                        android:padding="10dp"
-                        />
-
-                </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
