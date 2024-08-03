@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Showtime {
+public class Showtime extends BaseModel {
     private Movie movie;
     private Room room;
     private Date date;

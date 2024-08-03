@@ -39,8 +39,10 @@ public class MovieAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        String id = movies.get(position).getId();
-        return Integer.parseInt(id.substring(1, id.length()-1));
+        return position;
+
+//        String id = movies.get(position).getId();
+//        return Integer.parseInt(id.substring(1, id.length()-1));
     }
 
     @Override

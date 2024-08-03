@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.movie_ticket_booking.Identifiable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -12,10 +13,11 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class GenericController<T> {
+public abstract class GenericController<T extends Identifiable> {
     protected final FirebaseFirestore db;
     protected final String collectionPath;
     private final Class<T> type;
@@ -49,7 +51,11 @@ public abstract class GenericController<T> {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<T> l = new ArrayList<>();
-                    queryDocumentSnapshots.forEach(doc -> l.add(doc.toObject(this.type)));
+                    queryDocumentSnapshots.forEach(doc -> {
+                        T m = doc.toObject(this.type);
+                        m.setId(doc.getId());
+                        l.add(m);
+                    });
                     liveData.setValue(l);
                 })
                 .addOnFailureListener(e -> {

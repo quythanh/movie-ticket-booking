@@ -9,7 +9,7 @@ public class MovieController extends GenericController<Movie> {
         super("movies", Movie.class);
     }
 
-    public static synchronized MovieController getInstance() {
+    public static MovieController getInstance() {
         if (_instance == null)
             _instance = new MovieController();
         return _instance;
