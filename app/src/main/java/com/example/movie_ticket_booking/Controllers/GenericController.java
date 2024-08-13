@@ -35,13 +35,14 @@ public abstract class GenericController<T extends Identifiable> {
                 .addOnFailureListener(e -> Log.e(collectionPath, "Error adding document", e));
     }
 
-    public LiveData<T> get(String id) {
+    public LiveData<T> getLiveData(String id) {
         MutableLiveData<T> liveData = new MutableLiveData<>();
-
-        DocumentReference docRef = this.db.collection(this.collectionPath).document(id);
-        docRef.get().addOnSuccessListener(document -> liveData.setValue(document.toObject(this.type)));
-
+        TryGet(id).get().addOnSuccessListener(document -> liveData.setValue(document.toObject(this.type)));
         return liveData;
+    }
+
+    public DocumentReference TryGet(String id){
+        return this.db.collection(this.collectionPath).document(id);
     }
 
     public LiveData<List<T>> getAll() {

@@ -6,11 +6,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class Movie extends BaseModel{
     private String title;
     private List<String> directors;
@@ -21,7 +23,7 @@ public class Movie extends BaseModel{
     private MovieType type;
     private String landscapeImage;
     private String poster;
-    //trailer
+    private String trailer;
 
     //Foreign key
     private List<Cinema> cinemas;
@@ -41,25 +43,26 @@ public class Movie extends BaseModel{
     }
 
     public Movie() {};
-    public Movie(Map<String,Object> params){
-        for(Map.Entry<String, Object> entry : params.entrySet()){
-            switch (entry.getKey()){
-                case "id":
-                    this.id = (String) entry.getValue();
-                    break;
-                case "title":
-                    this.title = (String) entry.getValue();
-                    break;
-                case "image":
-                    this.landscapeImage = (String) entry.getValue();
-                    break;
+    public String getDirectorsToString(){
+        final String[] res = {""};
+        directors.forEach(x -> {
+            if(directors.indexOf(x) + 1 <= directors.size()){
+                res[0] += x + ", ";
             }
-        }
+            else
+                res[0] += x;
+        });
+        return res[0];
     }
-    public Movie(String id, String title, String LandscapeImage, String poster){
-        this.id = id;
-        this.title = title;
-        this.landscapeImage = LandscapeImage;
-        this.poster = poster;
+    public String getActorsToString(){
+        final String[] res = {""};
+        actors.forEach(x -> {
+            if(actors.indexOf(x) + 1 <= actors.size()){
+                res[0] += x + ", ";
+            }
+            else
+                res[0] += x;
+        });
+        return res[0];
     }
 }

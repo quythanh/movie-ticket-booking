@@ -1,22 +1,29 @@
 package com.example.movie_ticket_booking.Views;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
 import com.example.movie_ticket_booking.Components.MovieAdapter;
 import com.example.movie_ticket_booking.Components.ViewPagerAdapter;
+import com.example.movie_ticket_booking.Controllers.AuthUserController;
 import com.example.movie_ticket_booking.Controllers.MovieController;
+import com.example.movie_ticket_booking.FragmentEnum;
+import com.example.movie_ticket_booking.MainActivity;
 import com.example.movie_ticket_booking.Models.Movie;
 import com.example.movie_ticket_booking.Models.MovieType;
+import com.example.movie_ticket_booking.Models.User;
 import com.example.movie_ticket_booking.R;
 
 import java.util.ArrayList;
@@ -44,11 +51,13 @@ public class FilmFragment extends Fragment {
     private ViewPagerAdapter viewPagerAdapter;
     private GridView grid;
     private MovieAdapter adapt;
-    private TextView text;
+    private TextView text, hello, name;
     private Map<MovieType, TextView> filter;
     private MovieType currentType = MovieType.INACCESSIBLE;
+    private Button loginBtn;
     private final MovieController _controller = MovieController.getInstance();
-
+    private final AuthUserController authUserController = AuthUserController.getInstance();
+    private MainActivity main;
     public FilmFragment() {
         // Required empty public constructor
     }
@@ -91,7 +100,9 @@ public class FilmFragment extends Fragment {
             params.height = (movies.size() / 2 + movies.size() & 1) * 1200;
             grid.setLayoutParams(params);
             grid.setOnItemClickListener((parent, _view, position, id) -> {
-                System.out.println(adapt.getMovies().get(position));
+                Log.d("film",adapt.getMovies().get(position).getId());
+                MovieInfoFragment.getSelectedMovie().setValue(adapt.getMovies().get(position));
+                MainActivity.getInstance().getFragmentChanger().setValue(FragmentEnum.MOVIE_INFO);
             });
         });
 
@@ -105,12 +116,17 @@ public class FilmFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_film, container, false);
 
+
         viewPager = view.findViewById(R.id.viewPager);
         grid = view.findViewById(R.id.gridMovie);
         text = view.findViewById(R.id.adText);
-
+        loginBtn = view.findViewById(R.id.loginButton);
+        hello = view.findViewById(R.id.helloTxt);
+        name = view.findViewById(R.id.nameTxt);
         viewPagerAdapter = new ViewPagerAdapter(view.getContext(), new ArrayList<>());
         adapt = new MovieAdapter(view.getContext(), new ArrayList<>());
+        main = MainActivity.getInstance();
+
         filter = new HashMap<>();
 
         filter.put(MovieType.PRESENTING, view.findViewById(R.id.txt_presenting));
@@ -118,7 +134,28 @@ public class FilmFragment extends Fragment {
         filter.put(MovieType.EARLY_ACCESS, view.findViewById(R.id.txt_early_access));
 
         filter.forEach((key, value) -> value.setOnClickListener(_view -> updateViewByType(key, false)));
+        //
+        Button btn = view.findViewById(R.id.buttonDetail);
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main.getFragmentChanger().setValue(FragmentEnum.LOGIN);
+            }
+        });
 
+        authUserController.getUserlogin().observe(getViewLifecycleOwner(), user -> {
+            if(user.getId() == null){
+                loginBtn.setVisibility(View.VISIBLE);
+                hello.setVisibility(View.GONE);
+                name.setVisibility(View.GONE);
+            }
+            else {
+                loginBtn.setVisibility(View.GONE);
+                hello.setVisibility(View.VISIBLE);
+                name.setVisibility(View.VISIBLE);
+                name.setText(String.format("%s %s",user.getLastName(),user.getFirstName()));
+            }
+        });
         //
         updateViewByType(MovieType.PRESENTING, true);
 

@@ -3,7 +3,8 @@
 
     <item android:title="Phim nổi bật"
         android:id="@+id/film"
-        android:icon="@drawable/ic_movie"/>
+        android:icon="@drawable/ic_movie"
+        />
     <item android:title="Cụm Rạp"
         android:id="@+id/cinemas"
         android:icon="@drawable/ic_location"/>

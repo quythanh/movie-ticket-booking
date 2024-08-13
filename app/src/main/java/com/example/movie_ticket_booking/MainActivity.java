@@ -1,38 +1,80 @@
 package com.example.movie_ticket_booking;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewTreeLifecycleOwner;
 
 import com.cloudinary.android.MediaManager;
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
+import com.example.movie_ticket_booking.Models.User;
 import com.example.movie_ticket_booking.Models.UserRole;
 import com.example.movie_ticket_booking.Views.CinemasFragment;
 import com.example.movie_ticket_booking.Views.FilmFragment;
+import com.example.movie_ticket_booking.Views.LoginFragment;
+import com.example.movie_ticket_booking.Views.MovieInfoFragment;
 import com.example.movie_ticket_booking.Views.NotificationFragment;
 import com.example.movie_ticket_booking.Views.OtherFragment;
+import com.example.movie_ticket_booking.Views.RegisterFragment;
 import com.example.movie_ticket_booking.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
+import lombok.Getter;
+import lombok.Setter;
+
+public class MainActivity extends AppCompatActivity {
+    private static MainActivity Instance;
     ActivityMainBinding binder;
     FilmFragment film;
     CinemasFragment cinemas;
     NotificationFragment notification;
     OtherFragment other;
+    LoginFragment login;
+    RegisterFragment register;
+    MovieInfoFragment movieInfo;
     BottomNavigationView navbar;
+    AuthUserController authController;
 
-    private void ChangeFragment(Fragment fragment){
+    @Getter
+    MutableLiveData<FragmentEnum> FragmentChanger;
+    public MainActivity(){
+        film = new FilmFragment();
+        cinemas = new CinemasFragment();
+        notification = new NotificationFragment();
+        other = new OtherFragment();
+        login = new LoginFragment();
+        FragmentChanger = new MutableLiveData<>();
+        register = new RegisterFragment();
+        movieInfo = new MovieInfoFragment();
+    }
+
+    public void ChangeFragment(Fragment fragment){
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fg = fm.beginTransaction();
         fg.replace(R.id.frame, fragment);
         fg.commit();
     }
 
+    public static MainActivity getInstance(){
+        if(Instance == null){
+            Instance = new MainActivity();
+        }
+        return Instance;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,30 +85,58 @@ public class MainActivity extends AppCompatActivity {
         cinemas = new CinemasFragment();
         notification = new NotificationFragment();
         other = new OtherFragment();
+        login = new LoginFragment();
+        Instance = this;
+        authController = AuthUserController.getInstance();
 
         setContentView(binder.getRoot());
         ChangeFragment(film);
 
         navbar = findViewById(R.id.bottomNavigationView);
 
-        if (AuthUserController.getUserlogin().getRole() == UserRole.ADMIN)
+        if (Objects.requireNonNull(authController.getUserlogin().getValue()).getRole() == UserRole.ADMIN)
             navbar.inflateMenu(R.menu.bottom_admin_navmenu);
         else
             navbar.inflateMenu(R.menu.bottom_navmenu);
 
+        FragmentChanger.observe(this, name -> {
+            switch (name){
+                case FILM:
+                    ChangeFragment(film);
+                    break;
+                case CINEMAS:
+                    ChangeFragment(cinemas);
+                    break;
+                case NOTIFICATION:
+                    ChangeFragment(notification);
+                    break;
+                case OTHER:
+                    ChangeFragment(other);
+                    break;
+                case LOGIN:
+                    ChangeFragment(login);
+                    break;
+                case REGISTER:
+                    ChangeFragment(register);
+                    break;
+                case MOVIE_INFO:
+                    ChangeFragment(movieInfo);
+                    break;
+            }
+        });
         binder.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.film:
-                    ChangeFragment(film);
+                    FragmentChanger.setValue(FragmentEnum.FILM);
                     break;
                 case R.id.cinemas:
-                    ChangeFragment(cinemas);
+                    FragmentChanger.setValue(FragmentEnum.CINEMAS);
                     break;
                 case R.id.notification:
-                    ChangeFragment(notification);
+                    FragmentChanger.setValue(FragmentEnum.NOTIFICATION);
                     break;
                 case R.id.other:
-                    ChangeFragment(other);
+                    FragmentChanger.setValue(FragmentEnum.OTHER);
                     break;
             }
             return true;
