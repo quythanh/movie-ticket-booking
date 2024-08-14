@@ -10,6 +10,8 @@ android {
     namespace 'com.example.movie_ticket_booking'
     compileSdk 34
 
+
+
     defaultConfig {
         applicationId "com.example.movie_ticket_booking"
         minSdk 24
@@ -30,11 +32,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildFeatures{
+    buildFeatures {
         dataBinding = true
         viewBinding = true
     }
     buildToolsVersion '34.0.0'
+    sourceSets {
+        main {
+            res.srcDirs = [
+                'src/main/res',
+                'src/main/res/layout/admin'
+            ]
+        }
+    }
 }
 
 dependencies {
