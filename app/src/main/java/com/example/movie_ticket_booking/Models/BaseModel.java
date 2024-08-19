@@ -11,8 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class BaseModel implements Identifiable {
-    @Exclude
-    protected String id;
+    @Exclude protected String id;
     protected Date createdDate;
-    protected boolean isActive;
+    protected boolean active;
 }
