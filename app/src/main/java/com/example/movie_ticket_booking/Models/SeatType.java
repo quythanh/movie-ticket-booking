@@ -6,7 +6,7 @@ public enum SeatType {
     COUPLE(70);
 
     public final int price;
-    private SeatType(int price){
+    private SeatType(int price) {
         this.price = price;
     }
 }

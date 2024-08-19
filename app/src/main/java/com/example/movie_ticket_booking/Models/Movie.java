@@ -28,9 +28,10 @@ public class Movie extends BaseModel{
     private List<Rating> ratings;
     private List<Tag> tags;
 
+    @Override
     public void setActive(boolean active) {
-        this.isActive = active;
-        if(!active)
+        super.setActive(active);
+        if (!active)
             this.type = MovieType.INACCESSIBLE;
     }
 
@@ -41,7 +42,7 @@ public class Movie extends BaseModel{
     }
 
     public Movie() {};
-    public Movie(Map<String,Object> params){
+    public Movie(Map<String,Object> params) {
         for(Map.Entry<String, Object> entry : params.entrySet()){
             switch (entry.getKey()){
                 case "id":
@@ -56,7 +57,7 @@ public class Movie extends BaseModel{
             }
         }
     }
-    public Movie(String id, String title, String LandscapeImage, String poster){
+    public Movie(String id, String title, String LandscapeImage, String poster) {
         this.id = id;
         this.title = title;
         this.landscapeImage = LandscapeImage;

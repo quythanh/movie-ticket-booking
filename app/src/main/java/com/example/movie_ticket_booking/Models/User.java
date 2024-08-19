@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class User extends BaseModel{
+public class User extends BaseModel {
     private String lastName;
     private String firstName;
     private Date birthdate;

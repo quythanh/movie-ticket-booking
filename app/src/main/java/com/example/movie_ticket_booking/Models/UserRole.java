@@ -6,7 +6,7 @@ public enum UserRole {
 
     public final String prefix;
 
-    private UserRole(String pf){
-        this.prefix = pf;
+    private UserRole(String prefix) {
+        this.prefix = prefix;
     }
 }
