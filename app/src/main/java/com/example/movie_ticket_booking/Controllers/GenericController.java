@@ -110,6 +110,9 @@ public abstract class GenericController<T extends Identifiable> {
                             query[0] = query[0].whereLessThanOrEqualTo(k, v);
                     });
                     break;
+
+                case STRING_CONTAINS:
+                    break;
             }
         });
 
@@ -119,7 +122,37 @@ public abstract class GenericController<T extends Identifiable> {
                     queryDocumentSnapshots.forEach(doc -> {
                         T m = doc.toObject(this.type);
                         m.setId(doc.getId());
-                        l.add(m);
+
+                        final int[] c = {0};
+
+                        Map<String, Object> list_criteria = filters.get(FilterType.STRING_CONTAINS);
+                        if (list_criteria == null)
+                            l.add(m);
+                        else {
+                            list_criteria.forEach((f, v) -> {
+                                if (v == null) {
+                                    c[0]++;
+                                    return;
+                                }
+
+                                try {
+                                    Field objField = m.getClass().getDeclaredField(f);
+                                    objField.setAccessible(true);
+
+                                    String objString = (String) objField.get(m);
+                                    assert objString != null;
+
+                                    String searchStr = v.toString().toLowerCase();
+                                    if (objString.contains(searchStr))
+                                        l.add(m);
+                                } catch (Exception e) {
+                                    Log.e("Generic", e.toString());
+                                }
+                            });
+                        }
+
+                        if (c[0] == list_criteria.keySet().size())
+                            l.add(m);
                     });
                     liveData.setValue(l);
                 })
