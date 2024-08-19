@@ -15,6 +15,7 @@ public class User extends BaseModel {
     private boolean gender;
     private String avatarPath;
     private String email;
+    private String phone;
 
     //authentication
     private String username;
@@ -32,5 +33,9 @@ public class User extends BaseModel {
     @Override
     public String toString() {
         return String.format("%s %s %s", this.role.prefix, this.lastName, this.firstName);
+    }
+
+    public String getFullName() {
+        return String.format("%s %s", this.lastName, this.firstName);
     }
 }
