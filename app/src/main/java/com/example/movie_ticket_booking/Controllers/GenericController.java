@@ -6,21 +6,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.movie_ticket_booking.Identifiable;
+import com.example.movie_ticket_booking.Models.FilterType;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
 public abstract class GenericController<T extends Identifiable> {
     protected final FirebaseFirestore db;
     protected final String collectionPath;
-    private final Class<T> type;
+    protected final Class<T> type;
 
     public GenericController(String collection, Class<T> type) {
         this.db = FirebaseFirestore.getInstance();
@@ -66,18 +67,97 @@ public abstract class GenericController<T extends Identifiable> {
         return liveData;
     }
 
+    public LiveData<List<T>> filter(Map<FilterType, Map<String, Object>> filters) {
+        MutableLiveData<List<T>> liveData = new MutableLiveData<>();
+        final Query[] query = { this.db.collection(this.collectionPath) };
+
+        filters.forEach((_type, list_criteria) -> {
+            if (list_criteria == null)
+                return;
+
+            switch (_type) {
+                case EQUAL:
+                    list_criteria.forEach((k, v) -> {
+                        if (v != null)
+                            query[0] = query[0].whereEqualTo(k, v);
+                    });
+                    break;
+
+                case GREATER:
+                    list_criteria.forEach((k, v) -> {
+                        if (v != null)
+                            query[0] = query[0].whereGreaterThan(k, v);
+                    });
+                    break;
+
+                case GREATER_OR_EQUAL:
+                    list_criteria.forEach((k, v) -> {
+                        if (v != null)
+                            query[0] = query[0].whereGreaterThanOrEqualTo(k, v);
+                    });
+                    break;
+
+                case LESS:
+                    list_criteria.forEach((k, v) -> {
+                        if (v != null)
+                            query[0] = query[0].whereLessThan(k, v);
+                    });
+                    break;
+
+                case LESS_OR_EQUAL:
+                    list_criteria.forEach((k, v) -> {
+                        if (v != null)
+                            query[0] = query[0].whereLessThanOrEqualTo(k, v);
+                    });
+                    break;
+            }
+        });
+
+        query[0].get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<T> l = new ArrayList<>();
+                    queryDocumentSnapshots.forEach(doc -> {
+                        T m = doc.toObject(this.type);
+                        m.setId(doc.getId());
+                        l.add(m);
+                    });
+                    liveData.setValue(l);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(collectionPath, "Error fetching document", e);
+                    liveData.setValue(Collections.emptyList());
+                });
+
+        return liveData;
+    }
+
     private static Map<String, Object> _createUpdateData(Object o) throws IllegalAccessException {
         Map<String, Object> data = new HashMap<>();
 
         Class<?> cls = o.getClass();
         Field[] fields = cls.getDeclaredFields();
-
         for (Field field : fields) {
             field.setAccessible(true);
             String propertyName = field.getName();
             Object value = field.get(o);
             if (value != null && !propertyName.equals("id")) {
                 data.put(propertyName, value);
+            }
+        }
+
+        // PAY ATTENTION!!!!!!
+        // DO NOT TRY TO MERGE THIS TO THE ABOVE CODE
+        // CAUSE IT WILL FAIL WITHOUT NO FCKING REASON
+        Class<?> superCls = cls.getSuperclass();
+        if (superCls != null) {
+            Field[] baseFields = superCls.getDeclaredFields();
+            for (Field field : baseFields) {
+                field.setAccessible(true);
+                String propertyName = field.getName();
+                Object value = field.get(o);
+                if (value != null && !propertyName.equals("id")) {
+                    data.put(propertyName, value);
+                }
             }
         }
 
