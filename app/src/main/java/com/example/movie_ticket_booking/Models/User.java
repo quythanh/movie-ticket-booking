@@ -18,19 +18,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class User extends BaseModel{
+public class User extends BaseModel {
     private String lastName;
     private String firstName;
     private Date birthdate;
     private boolean gender;
     private String avatarPath;
+    private String email;
     private String phone;
 
     //authentication
     private String username;
 
-//    private String password;
-    private String email;
     private UserRole role;
 
     //Foreign key
@@ -66,7 +65,7 @@ public class User extends BaseModel{
                     this.birthdate = Common.dateFormatter.parse(i.getValue());
                     break;
                 case "gender":
-                    this.gender = i.getValue().equalsIgnoreCase("nam");
+                    this.gender = i.getValue().equalsIgnoreCase("Nam");
                     break;
             }
         }
@@ -74,5 +73,9 @@ public class User extends BaseModel{
     @Override
     public String toString() {
         return String.format("%s %s %s", this.role.prefix, this.lastName, this.firstName);
+    }
+
+    public String getFullName() {
+        return String.format("%s %s", this.lastName, this.firstName);
     }
 }

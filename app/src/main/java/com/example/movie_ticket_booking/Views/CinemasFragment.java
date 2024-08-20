@@ -29,82 +29,56 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CinemasFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CinemasFragment extends Fragment {
+    private static CinemasFragment _instance = null;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private MutableLiveData<Map<String, List<Cinema>>> data;
     private CinemaController controller;
     private LiveData<List<Cinema>> cinemas;
     private RecyclerView closest, filter;
-    public CinemasFragment() {
-        // Required empty public constructor
+
+    private CinemasFragment() {
+        super(R.layout.activity_cinema_fragment);
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CinemasFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CinemasFragment newInstance(String param1, String param2) {
-        CinemasFragment fragment = new CinemasFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static CinemasFragment getInstance() {
+        if (_instance == null)
+            _instance = new CinemasFragment();
+        return _instance;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        bindingViews(view);
+        setupViews(view);
+        return view;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    private void bindingViews(View view) {
+        closest = view.findViewById(R.id.closest);
+        filter = view.findViewById(R.id.cinemasController);
+    }
+
+    private void setupViews(View view) {
+        closest.setHasFixedSize(true);
+        closest.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        filter.setHasFixedSize(true);
+        filter.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL, false));
+
         final boolean[] initial = {false};
         final int[] counter = {0};
         controller = CinemaController.getInstance();
         data = new MutableLiveData<>();
         cinemas = controller.getAll();
 
-        View view = inflater.inflate(R.layout.activity_cinema_fragment, container, false);
-
-        closest = view.findViewById(R.id.closest);
-        closest.setHasFixedSize(true);
-        closest.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
-
-        filter = view.findViewById(R.id.cinemasController);
-        filter.setHasFixedSize(true);
-        filter.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL, false));
-
         CinemaAdapter closestCinemaAdapter = new CinemaAdapter(new ArrayList<>());
         CinemaControllerAdapter cinemaControllerAdapter = new CinemaControllerAdapter(new HashMap<String, List<Cinema>>());
 
         //OBSERVER
         cinemas.observe(getViewLifecycleOwner(), cinemas1 -> {
-            if(cinemas1 == null) return;
+            if (cinemas1 == null) return;
             AuthUserController.getInstance().getLatitudeLocation().observe(getViewLifecycleOwner(),latitude -> {
                 Toast.makeText(view.getContext(), "Lat: " + latitude, Toast.LENGTH_SHORT).show();
                 counter[0] += 1;
@@ -123,6 +97,7 @@ public class CinemasFragment extends Fragment {
                 }
             });
         });
+        
         data.observe(getViewLifecycleOwner(), map -> {
             if(map == null)
                 return;
@@ -135,7 +110,5 @@ public class CinemasFragment extends Fragment {
             cinemaControllerAdapter.setCinemas(map);
             filter.setAdapter(cinemaControllerAdapter);
         });
-
-        return view;
     }
 }

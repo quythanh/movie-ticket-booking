@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 
 import android.util.Log;
@@ -29,21 +30,8 @@ import com.example.movie_ticket_booking.Views.BookingViews.ShowtimeCinemaBooking
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MovieInfoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MovieInfoFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static MovieInfoFragment _instance = null;
 
     @Getter
     private static MutableLiveData<Movie> selectedMovie = new MutableLiveData<>();
@@ -51,66 +39,47 @@ public class MovieInfoFragment extends Fragment {
     private ImageView landscape, poster;
     private TextView title, rating, directors, actors, premiere, minute, intro;
     private WebView trailer;
-    Button bookingBtn, reviewBtn;
-    public MovieInfoFragment() {
-        // Required empty public constructor
+    private Button backButton, bookingBtn, reviewBtn;
+
+    private MovieInfoFragment() {
+        super(R.layout.fragment_movie_info);
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MovieInfoFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MovieInfoFragment newInstance(String param1, String param2) {
-        MovieInfoFragment fragment = new MovieInfoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static MovieInfoFragment getInstance() {
+        if (_instance == null)
+            _instance = new MovieInfoFragment();
+        return _instance;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        bindingViews(view);
+        setupViews(view);
+        return view;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_movie_info, container, false);
-        Button backButton = view.findViewById(R.id.backbtn);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.getInstance().getFragmentChanger().setValue(FragmentEnum.FILM);
-            }
-        });
+    private void bindingViews(View view) {
+        backButton = view.findViewById(R.id.backbtn);
+        landscape = view.findViewById(R.id.InfoLandscape);
+        poster = view.findViewById(R.id.InfoPoster);
+        title = view.findViewById(R.id.movieInfoTitle);
+        directors = view.findViewById(R.id.nameDirector);
+        actors = view.findViewById(R.id.nameActor);
+        minute = view.findViewById(R.id.nameTime);
+        premiere = view.findViewById(R.id.namePremiere);
+        intro = view.findViewById(R.id.intro);
+        trailer = view.findViewById(R.id.trailer);
+        bookingBtn = view.findViewById(R.id.bookingBtn);
+    }
 
-        if(selectedMovie == null)
-            MainActivity.getInstance().getFragmentChanger().setValue(FragmentEnum.FILM);
-        else {
+    private void setupViews(View view) {
+        backButton.setOnClickListener(_v -> Common.changeFragment(getParentFragmentManager(), FilmFragment.getInstance()));
+
+        if (selectedMovie == null)
+            Common.changeFragment(getParentFragmentManager(), FilmFragment.getInstance());
+        else
             MovieInfoFragment.selectedMovie.observe(getViewLifecycleOwner(), movie -> {
-                landscape = view.findViewById(R.id.InfoLandscape);
-                poster = view.findViewById(R.id.InfoPoster);
-                title = view.findViewById(R.id.movieInfoTitle);
-                directors = view.findViewById(R.id.nameDirector);
-                actors = view.findViewById(R.id.nameActor);
-                minute = view.findViewById(R.id.nameTime);
-                premiere = view.findViewById(R.id.namePremiere);
-                intro = view.findViewById(R.id.intro);
-                trailer = view.findViewById(R.id.trailer);
-                bookingBtn = view.findViewById(R.id.bookingBtn);
-
                 Glide.with(view).load(movie.getLandscapeImage()).into(landscape);
                 Glide.with(view).load(movie.getPoster()).into(poster);
                 title.setText(movie.getTitle());
@@ -127,18 +96,12 @@ public class MovieInfoFragment extends Fragment {
                 trailer.getSettings().setUseWideViewPort(true);
                 trailer.setWebChromeClient(new WebChromeClient());
 
-                bookingBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d("qq", "hellooooooo");
-                        Intent intent = new Intent(view.getContext(), ShowtimeCinemaBooking.class);
-                        intent.putExtra("movie_id", movie.getId());
-                        intent.putExtra("history", FragmentEnum.MOVIE_INFO);
-                        startActivity(intent);
-                    }
+                bookingBtn.setOnClickListener(_v -> {
+                    Intent intent = new Intent(view.getContext(), ShowtimeCinemaBooking.class);
+                    intent.putExtra("movie_id", movie.getId());
+                    intent.putExtra("history", FragmentEnum.MOVIE_INFO);
+                    startActivity(intent);
                 });
             });
-        }
-        return view;
     }
 }

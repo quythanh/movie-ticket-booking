@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.example.movie_ticket_booking.Common;
 import com.example.movie_ticket_booking.Components.MovieAdapter;
 import com.example.movie_ticket_booking.Components.ViewPagerAdapter;
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
@@ -39,21 +40,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FilmFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FilmFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static FilmFragment _instance = null;
 
     //custom fields
     private ViewPager viewPager;
@@ -63,39 +51,18 @@ public class FilmFragment extends Fragment {
     private TextView text, hello, name;
     private Map<MovieType, TextView> filter;
     private MovieType currentType = MovieType.INACCESSIBLE;
-    private Button loginBtn;
+    private Button loginBtn, btn;
     private final MovieController _controller = MovieController.getInstance();
     private final AuthUserController authUserController = AuthUserController.getInstance();
-    private MainActivity main;
-    public FilmFragment() {
+
+    private FilmFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FilmFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FilmFragment newInstance(String param1, String param2) {
-        FilmFragment fragment = new FilmFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public static FilmFragment getInstance() {
+        if (_instance == null)
+            _instance = new FilmFragment();
+        return _instance;
     }
 
     private void updateViewByType(MovieType type, boolean forceUpdate) {
@@ -111,7 +78,7 @@ public class FilmFragment extends Fragment {
             grid.setOnItemClickListener((parent, _view, position, id) -> {
                 Log.d("film",adapt.getMovies().get(position).getId());
                 MovieInfoFragment.getSelectedMovie().setValue(adapt.getMovies().get(position));
-                MainActivity.getInstance().getFragmentChanger().setValue(FragmentEnum.MOVIE_INFO);
+                Common.changeFragment(getParentFragmentManager(), MovieInfoFragment.getInstance());
             });
         });
 
@@ -120,40 +87,39 @@ public class FilmFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_film, container, false);
+        bindingViews(view);
+        setupViews(view);
+        return view;
+    }
 
-
+    private void bindingViews(View view) {
         viewPager = view.findViewById(R.id.viewPager);
         grid = view.findViewById(R.id.gridMovie);
         text = view.findViewById(R.id.adText);
         loginBtn = view.findViewById(R.id.loginButton);
         hello = view.findViewById(R.id.helloTxt);
         name = view.findViewById(R.id.nameTxt);
+        btn = view.findViewById(R.id.buttonDetail);
+    }
+
+    private void setupViews(View view) {
         viewPagerAdapter = new ViewPagerAdapter(view.getContext(), new ArrayList<>());
         adapt = new MovieAdapter(view.getContext(), new ArrayList<>());
-        main = MainActivity.getInstance();
 
-        filter = new HashMap<>();
-
-        filter.put(MovieType.PRESENTING, view.findViewById(R.id.txt_presenting));
-        filter.put(MovieType.COMING_SOON, view.findViewById(R.id.txt_coming_soon));
-        filter.put(MovieType.EARLY_ACCESS, view.findViewById(R.id.txt_early_access));
-
+        filter = Map.of(
+                MovieType.PRESENTING, view.findViewById(R.id.txt_presenting),
+                MovieType.COMING_SOON, view.findViewById(R.id.txt_coming_soon),
+                MovieType.EARLY_ACCESS, view.findViewById(R.id.txt_early_access)
+        );
         filter.forEach((key, value) -> value.setOnClickListener(_view -> updateViewByType(key, false)));
+
         //
-        Button btn = view.findViewById(R.id.buttonDetail);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                main.getFragmentChanger().setValue(FragmentEnum.LOGIN);
-            }
-        });
+        loginBtn.setOnClickListener(_v -> Common.changeFragment(getParentFragmentManager(), LoginFragment.getInstance()));
 
         authUserController.getUserlogin().observe(getViewLifecycleOwner(), user -> {
-            if(user.getId() == null){
+            if (user.getId() == null) {
                 loginBtn.setVisibility(View.VISIBLE);
                 hello.setVisibility(View.GONE);
                 name.setVisibility(View.GONE);
@@ -208,7 +174,5 @@ public class FilmFragment extends Fragment {
                 }
             });
         });
-
-        return view;
     }
 }

@@ -2,6 +2,10 @@ package com.example.movie_ticket_booking.Controllers;
 
 import android.util.Log;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.example.movie_ticket_booking.Common;
 import com.example.movie_ticket_booking.FragmentEnum;
 import com.example.movie_ticket_booking.MainActivity;
 import com.example.movie_ticket_booking.Models.User;
@@ -25,20 +29,12 @@ public class UserController extends GenericController<User> {
         return _instance;
     }
 
-    @Override
-    public void add(User o) {
-        this.db.collection(this.collectionPath).document(o.getId())
-                .set(o)
-                .addOnSuccessListener(documentReference -> Log.d(collectionPath, "Add successfully ID: " + documentReference))
-                .addOnFailureListener(e -> Log.e(collectionPath, "Error adding document", e));
-    }
-
-    public void add(User o, FragmentEnum redirect){
+    public void add(User o, FragmentManager fragmentManager, Fragment redirect) {
         this.db.collection(this.collectionPath).document(o.getId())
                 .set(o)
                 .addOnSuccessListener(documentReference -> {
                     Log.d(collectionPath, "Add successfully ID: " + documentReference);
-                    MainActivity.getInstance().getFragmentChanger().setValue(redirect);
+                    Common.changeFragment(fragmentManager, redirect);
                 })
                 .addOnFailureListener(e -> Log.e(collectionPath, "Error adding document", e));
     }

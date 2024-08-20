@@ -30,9 +30,10 @@ public class Movie extends BaseModel{
     private List<Rating> ratings;
     private List<Tag> tags;
 
+    @Override
     public void setActive(boolean active) {
-        this.isActive = active;
-        if(!active)
+        super.setActive(active);
+        if (!active)
             this.type = MovieType.INACCESSIBLE;
     }
 

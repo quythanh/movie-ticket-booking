@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/round_border">
+
+        <ImageView
+            android:id="@+id/img_avatar"
+            android:contentDescription="Logo Image"
+            android:layout_height="40dp"
+            android:layout_width="40dp"
+            android:layout_gravity="start"
+            android:layout_marginHorizontal="5dp"
+            android:src="@drawable/logo"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="5dp"
+            android:text="User 1"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginHorizontal="5dp"
+            android:contentDescription="Button edit"
+            android:src="@drawable/ic_delete"
+            app:tint="#ff0000"
+            tools:ignore="HardcodedText" />
+
+</LinearLayout>
