@@ -6,35 +6,6 @@
     tools:context=".Views.FilmFragment"
     android:background="@color/black">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|center_vertical"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:translationZ="1dp">
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="100dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/design_default_color_error"
-            android:drawableStart="@drawable/ic_sign_in"
-            android:text="Đăng nhập"
-            tools:ignore="HardcodedText" />
-
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:contentDescription="Logo Image"
-            android:src="@drawable/logo"
-            tools:ignore="HardcodedText" />
-    </LinearLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -77,7 +48,7 @@
                         tools:ignore="HardcodedText" />
 
                     <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/buttonDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/design_default_color_error"
@@ -163,5 +134,54 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/helloTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="Xin chào"
+            android:textColor="@color/design_default_color_error"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/nameTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="100dp"
+            android:text="TextView"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="100dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/design_default_color_error"
+            android:drawableStart="@drawable/ic_sign_in"
+            android:text="Đăng nhập"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+
+            android:contentDescription="Logo Image"
+            android:src="@drawable/logo"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
 
 </FrameLayout>

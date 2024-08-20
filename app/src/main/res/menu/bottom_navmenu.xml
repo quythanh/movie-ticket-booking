@@ -18,4 +18,5 @@
         android:id="@+id/other"
         android:icon="@drawable/ic_other"
         tools:ignore="HardcodedText" />
+
 </menu>
