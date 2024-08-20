@@ -20,13 +20,11 @@ public abstract class BaseModel implements Identifiable {
     protected Date createdDate;
     protected boolean isActive;
 
-    public static SimpleDateFormat dateFormatter;
+
 
     public BaseModel(){
         createdDate = new Date();
         isActive = true;
     }
-    static {
-        dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
-    }
+
 }

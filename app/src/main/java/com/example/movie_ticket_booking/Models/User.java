@@ -1,5 +1,7 @@
 package com.example.movie_ticket_booking.Models;
 
+import com.example.movie_ticket_booking.Common;
+
 import java.net.PasswordAuthentication;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -61,10 +63,10 @@ public class User extends BaseModel{
                     this.phone = i.getValue();
                     break;
                 case "birthdate":
-                    this.birthdate = BaseModel.dateFormatter.parse(i.getValue());
+                    this.birthdate = Common.dateFormatter.parse(i.getValue());
                     break;
                 case "gender":
-                    this.gender = i.getValue().toLowerCase() == "nam";
+                    this.gender = i.getValue().equalsIgnoreCase("nam");
                     break;
             }
         }

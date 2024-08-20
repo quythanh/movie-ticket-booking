@@ -46,7 +46,7 @@ public class Movie extends BaseModel{
     public String getDirectorsToString(){
         final String[] res = {""};
         directors.forEach(x -> {
-            if(directors.indexOf(x) + 1 <= directors.size()){
+            if(directors.indexOf(x) + 1 < directors.size()){
                 res[0] += x + ", ";
             }
             else
@@ -57,7 +57,7 @@ public class Movie extends BaseModel{
     public String getActorsToString(){
         final String[] res = {""};
         actors.forEach(x -> {
-            if(actors.indexOf(x) + 1 <= actors.size()){
+            if(actors.indexOf(x) + 1 < actors.size()){
                 res[0] += x + ", ";
             }
             else

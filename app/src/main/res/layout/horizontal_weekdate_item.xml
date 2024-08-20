@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/weekdate_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="19"
+        android:textColor="#C62828"
+        android:textSize="60sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/weekdate_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
+        android:text="Tháng 8"
+        android:textSize="20dp"
+        android:textColor="#C62828"/>
+</LinearLayout>

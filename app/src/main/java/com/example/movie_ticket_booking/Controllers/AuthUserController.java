@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.movie_ticket_booking.FragmentEnum;
 import com.example.movie_ticket_booking.MainActivity;
+import com.example.movie_ticket_booking.Models.Address;
 import com.example.movie_ticket_booking.Models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,17 +19,24 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuthUserController {
+    //USER AUTHENTICATION
     public static AuthUserController Instance = null;
     private MutableLiveData<User> userlogin;
     private FirebaseAuth mAuth;
     private UserController userController;
     private MainActivity main;
 
+    //GPS
+    private MutableLiveData<Double> latitudeLocation;
+    private MutableLiveData<Double> longtitudeLocation;
+
     private  AuthUserController() {
         userlogin = new MutableLiveData<>(new User());
         Log.d("user_authen", "AuthUserController: " + userlogin.getValue().toString());
         mAuth = FirebaseAuth.getInstance();
         userController = UserController.getInstance();
+        latitudeLocation = new MutableLiveData<>(null);
+        longtitudeLocation = new MutableLiveData<>(null);
     }
 
     public static AuthUserController getInstance(){
@@ -81,7 +89,5 @@ public class AuthUserController {
                 Toast.makeText(context, "Không đúng email hoặc mật khẩu", Toast.LENGTH_SHORT).show();
         });
     }
-//    public void toggleRole(){
-//        userlogin.setRole(userlogin.getRole()== UserRole.CLIENT ? UserRole.ADMIN : UserRole.CLIENT);
-//    }
+
 }

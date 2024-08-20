@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
@@ -39,6 +40,7 @@ public class RegisterFragment extends Fragment {
     }
     private String username, lastname, firstname, password, confirmPass, phone, email, birthday;
     private boolean gender;
+    private RadioGroup radGroup;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -96,7 +98,8 @@ public class RegisterFragment extends Fragment {
                 phone = editText!=null ? editText.getText().toString() : "";
                 editText = view.findViewById(R.id.birthday);
                 birthday = editText!=null ? editText.getText().toString() : "";
-                boolean accepted = true;
+                radGroup = view.findViewById(R.id.genderRad);
+                gender = radGroup.getCheckedRadioButtonId() == R.id.male;
 
                 if(!username.isBlank() && !lastname.isBlank() && !firstname.isBlank() && !email.isBlank()
                         && !password.isBlank() && !confirmPass.isBlank() && !phone.isBlank() && password.equals(confirmPass) )
@@ -109,7 +112,7 @@ public class RegisterFragment extends Fragment {
                     info.put("phone", phone);
                     if(birthday != null)
                         info.put("birthdate", birthday);
-                    info.put("gender", gender ? "Nam" : "Nữ");
+                    info.put("gender", gender ? "nam" : "nữ");
 
                     AuthUserController.getInstance().Register(view.getContext(),info, FragmentEnum.FILM);
 

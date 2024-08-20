@@ -1,10 +1,12 @@
 package com.example.movie_ticket_booking.Views;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +18,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.movie_ticket_booking.Common;
 import com.example.movie_ticket_booking.FragmentEnum;
 import com.example.movie_ticket_booking.MainActivity;
 import com.example.movie_ticket_booking.Models.BaseModel;
 import com.example.movie_ticket_booking.Models.Movie;
 import com.example.movie_ticket_booking.R;
+import com.example.movie_ticket_booking.Views.BookingViews.ShowtimeCinemaBooking;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +51,7 @@ public class MovieInfoFragment extends Fragment {
     private ImageView landscape, poster;
     private TextView title, rating, directors, actors, premiere, minute, intro;
     private WebView trailer;
+    Button bookingBtn, reviewBtn;
     public MovieInfoFragment() {
         // Required empty public constructor
     }
@@ -104,6 +109,7 @@ public class MovieInfoFragment extends Fragment {
                 premiere = view.findViewById(R.id.namePremiere);
                 intro = view.findViewById(R.id.intro);
                 trailer = view.findViewById(R.id.trailer);
+                bookingBtn = view.findViewById(R.id.bookingBtn);
 
                 Glide.with(view).load(movie.getLandscapeImage()).into(landscape);
                 Glide.with(view).load(movie.getPoster()).into(poster);
@@ -112,7 +118,7 @@ public class MovieInfoFragment extends Fragment {
                 actors.setText(movie.getActorsToString());
                 minute.setText(movie.getMinute() + " phút");
                 intro.setText(movie.getIntro());
-                premiere.setText(BaseModel.dateFormatter.format(movie.getPremiere()));
+                premiere.setText(Common.dateFormatter.format(movie.getPremiere()));
 
 
                 trailer.loadData(movie.getTrailer(), "text/html", "utf-8");
@@ -120,6 +126,17 @@ public class MovieInfoFragment extends Fragment {
                 trailer.getSettings().setLoadWithOverviewMode(true);
                 trailer.getSettings().setUseWideViewPort(true);
                 trailer.setWebChromeClient(new WebChromeClient());
+
+                bookingBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("qq", "hellooooooo");
+                        Intent intent = new Intent(view.getContext(), ShowtimeCinemaBooking.class);
+                        intent.putExtra("movie_id", movie.getId());
+                        intent.putExtra("history", FragmentEnum.MOVIE_INFO);
+                        startActivity(intent);
+                    }
+                });
             });
         }
         return view;
