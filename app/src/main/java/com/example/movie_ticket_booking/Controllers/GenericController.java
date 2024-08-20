@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+
+@Getter
 public abstract class GenericController<T extends Identifiable> {
     protected final FirebaseFirestore db;
     protected final String collectionPath;
@@ -28,7 +31,6 @@ public abstract class GenericController<T extends Identifiable> {
         this.collectionPath = collection;
         this.type = type;
     }
-
     public void add(T o) {
         this.db.collection(this.collectionPath)
                 .add(o)
@@ -38,7 +40,14 @@ public abstract class GenericController<T extends Identifiable> {
 
     public LiveData<T> getLiveData(String id) {
         MutableLiveData<T> liveData = new MutableLiveData<>();
-        TryGet(id).get().addOnSuccessListener(document -> liveData.setValue(document.toObject(this.type)));
+        TryGet(id)
+                .get()
+                .addOnSuccessListener(document -> {
+                    T d = document.toObject(this.type);
+                    d.setId(document.getId());
+                    liveData.setValue(d);
+                })
+                .addOnFailureListener(e -> Log.d("qq", "error"));
         return liveData;
     }
 

@@ -18,4 +18,9 @@ public abstract class BaseModel implements Identifiable {
     @Exclude protected String id;
     protected Date createdDate;
     protected boolean active;
+
+    public BaseModel() {
+        createdDate = new Date();
+        active = true;
+    }
 }

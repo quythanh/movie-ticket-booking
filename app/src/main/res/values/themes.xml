@@ -13,4 +13,9 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:textColor">#b00020</item>
     </style>
+  <!-- Base application theme. -->
+    <style name="Base.AppMenu" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
 </resources>

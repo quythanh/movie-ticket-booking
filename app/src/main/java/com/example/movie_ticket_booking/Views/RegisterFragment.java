@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
@@ -33,6 +34,7 @@ public class RegisterFragment extends Fragment {
 
     private String username, lastname, firstname, password, confirmPass, phone, email, birthday;
     private boolean gender;
+    private RadioGroup radGroup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +71,9 @@ public class RegisterFragment extends Fragment {
 
             editText = view.findViewById(R.id.birthday);
             birthday = editText.getText().toString();
+
+            radGroup = view.findViewById(R.id.genderRad);
+            gender = radGroup.getCheckedRadioButtonId() == R.id.male;
 
             if (username.isBlank() || lastname.isBlank() || firstname.isBlank() || email.isBlank() || password.isBlank() || confirmPass.isBlank() || phone.isBlank()) {
                 Toast.makeText(view.getContext(), "Thiếu thông tin bắt buộc", Toast.LENGTH_SHORT).show();

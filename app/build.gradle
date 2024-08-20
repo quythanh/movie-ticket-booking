@@ -54,6 +54,8 @@ dependencies {
     implementation libs.activity
     implementation libs.constraintlayout
     implementation libs.gridlayout
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -76,6 +78,10 @@ dependencies {
     // Import the Firebase BoM
     implementation platform(libs.firebase.bom)
     implementation libs.firebase.auth
+
+    // Import GPS
+    implementation libs.play.services.location
+
     // TODO: Add the dependencies for Firebase products you want to use
     implementation libs.firebase.firestore
     // When using the BoM, don't specify versions in Firebase dependencies

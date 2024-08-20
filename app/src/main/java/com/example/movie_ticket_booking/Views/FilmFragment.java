@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
@@ -19,15 +20,23 @@ import com.example.movie_ticket_booking.Common;
 import com.example.movie_ticket_booking.Components.MovieAdapter;
 import com.example.movie_ticket_booking.Components.ViewPagerAdapter;
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
+import com.example.movie_ticket_booking.Controllers.CinemaController;
 import com.example.movie_ticket_booking.Controllers.MovieController;
+import com.example.movie_ticket_booking.Controllers.RoomController;
+import com.example.movie_ticket_booking.Controllers.ShowtimeController;
 import com.example.movie_ticket_booking.FragmentEnum;
 import com.example.movie_ticket_booking.MainActivity;
+import com.example.movie_ticket_booking.Models.BaseModel;
+import com.example.movie_ticket_booking.Models.Cinema;
 import com.example.movie_ticket_booking.Models.Movie;
 import com.example.movie_ticket_booking.Models.MovieType;
+import com.example.movie_ticket_booking.Models.Showtime;
 import com.example.movie_ticket_booking.Models.User;
 import com.example.movie_ticket_booking.R;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -127,6 +136,26 @@ public class FilmFragment extends Fragment {
 
         // Landscape Images
         this._controller.getByType(MovieType.PRESENTING).observe(getViewLifecycleOwner(), movies -> {
+//            RoomController.getInstance().getAll().observe(getViewLifecycleOwner(),rooms -> {
+//                if(movies == null || rooms == null) return;
+//                try {
+//                    Showtime s1 = new Showtime(movies.get(0), rooms.get(1), BaseModel.dateTimeFormatter.parse("19/08/2024 12:20"));
+//                    Log.d("qq", rooms.get(1).getId());
+//                    CinemaController.getInstance().getLiveData(rooms.get(1).getCinema()).observe(getViewLifecycleOwner(), c -> {
+//                        if(c == null) return;
+//                        ShowtimeController.getInstance().add(s1, c);
+//                    });
+//
+//
+//                } catch (IllegalAccessException e) {
+//                    throw new RuntimeException(e);
+//                } catch (java.lang.InstantiationException e) {
+//                    throw new RuntimeException(e);
+//                } catch (ParseException e) {
+//                    throw new RuntimeException(e);
+//                }
+//
+//            });
             viewPagerAdapter.setPhotos(movies);
             viewPager.setAdapter(viewPagerAdapter);
             viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

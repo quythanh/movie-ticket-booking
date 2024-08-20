@@ -4,6 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
@@ -12,6 +18,8 @@ import com.example.movie_ticket_booking.Views.Admin.EditUser;
 import com.example.movie_ticket_booking.Views.Admin.Home;
 import com.example.movie_ticket_booking.Views.Admin.Statistic;
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
+
+import com.example.movie_ticket_booking.Components.LocationService;
 import com.example.movie_ticket_booking.Models.UserRole;
 import com.example.movie_ticket_booking.Views.CinemasFragment;
 import com.example.movie_ticket_booking.Views.FilmFragment;
@@ -22,9 +30,6 @@ import com.example.movie_ticket_booking.Views.OtherFragment;
 import com.example.movie_ticket_booking.Views.RegisterFragment;
 import com.example.movie_ticket_booking.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.Objects;
-
 
 public class MainActivity extends AppCompatActivity {
     private static MainActivity _instance;
@@ -63,11 +68,38 @@ public class MainActivity extends AppCompatActivity {
         return _instance;
     }
 
+    public void startService() {
+        Intent intent = new Intent(MainActivity.this, LocationService.class);
+        startService(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    startService();
+                else
+                    Toast.makeText(this, "Chưa được phân quyền mở GPS",Toast.LENGTH_SHORT ).show();
+                break;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MediaManager.init(this);
         _instance = this;
+
+        // check permission
+        if (Build.VERSION.SDK_INT >= 23)
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            else
+                startService();
+        else
+            startService();
 
         binder = ActivityMainBinding.inflate(getLayoutInflater());
 

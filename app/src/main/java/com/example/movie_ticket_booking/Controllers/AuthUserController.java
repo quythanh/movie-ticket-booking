@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.movie_ticket_booking.Common;
 import com.example.movie_ticket_booking.FragmentEnum;
 import com.example.movie_ticket_booking.MainActivity;
+import com.example.movie_ticket_booking.Models.Address;
 import com.example.movie_ticket_booking.Models.User;
 import com.example.movie_ticket_booking.Models.UserRole;
 import com.example.movie_ticket_booking.Views.Admin.Home;
@@ -25,21 +26,28 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuthUserController {
+    //USER AUTHENTICATION
     public static AuthUserController Instance = null;
     private MutableLiveData<User> userlogin;
     private FirebaseAuth mAuth;
     private UserController userController;
     private MainActivity main;
 
-    private AuthUserController() {
+    //GPS
+    private MutableLiveData<Double> latitudeLocation;
+    private MutableLiveData<Double> longtitudeLocation;
+
+    private  AuthUserController() {
         userlogin = new MutableLiveData<>(new User());
         Log.d("user_authen", "AuthUserController: " + userlogin.getValue().toString());
         mAuth = FirebaseAuth.getInstance();
         userController = UserController.getInstance();
+        latitudeLocation = new MutableLiveData<>(null);
+        longtitudeLocation = new MutableLiveData<>(null);
     }
 
     public static AuthUserController getInstance() {
-        if(Instance==null)
+        if (Instance==null)
             Instance = new AuthUserController();
         return Instance;
     }
