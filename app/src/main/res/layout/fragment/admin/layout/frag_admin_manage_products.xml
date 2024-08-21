@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Views.Admin.ManageMovies">
+    tools:context=".Views.Admin.ManageProducts">
 
     <!--  HEADER SECTION  -->
     <FrameLayout
@@ -23,7 +23,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quản lý Phim"
+            android:text="QUẢN LÝ SẢN PHẨM"
+            android:textSize="16sp"
+            android:textStyle="bold"
             android:layout_gravity="center"
             tools:ignore="HardcodedText" />
 
@@ -33,7 +35,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quản lý Phim"
+        android:text="Quản lý Sản phẩm"
         android:layout_gravity="center"
         tools:ignore="HardcodedText" />
 

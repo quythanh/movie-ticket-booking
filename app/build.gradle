@@ -41,7 +41,10 @@ android {
         main {
             res.srcDirs = [
                 'src/main/res',
-                'src/main/res/layout/admin'
+                'src/main/res/layout/activity',
+                'src/main/res/layout/fragment/admin',
+                'src/main/res/layout/fragment/client',
+                'src/main/res/layout/item'
             ]
         }
     }

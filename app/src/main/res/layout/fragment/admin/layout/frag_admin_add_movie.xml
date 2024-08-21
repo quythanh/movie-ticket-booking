@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Views.Admin.AddMovie">
+
+    <!--  HEADER SECTION  -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="5sp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:contentDescription="Button back"
+            android:src="@drawable/ic_back"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="THÊM PHIM MỚI"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            tools:ignore="HardcodedText" />
+
+    </FrameLayout>
+    <!--  END SECTION  -->
+
+    <!-- BODY SECTION -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp">
+
+            <!-- FIELD LANDSCAPE -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:text="Landscape Image"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/img_landscape"
+                android:layout_width="400dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="Landscape"
+                android:src="@drawable/placeholder"
+                tools:ignore="HardcodedText" />
+
+            <!-- FIELD POSTER -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:text="Poster"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/img_poster"
+                android:layout_width="200dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="Poster"
+                android:src="@drawable/placeholder"
+                tools:ignore="HardcodedText" />
+
+            <!-- FIELD TITLE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tên phim:"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
+
+                <EditText
+                    android:id="@+id/inp_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập tên phim..."
+                    android:inputType="text"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+            <!-- FIELD MINUTES -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thời lượng:"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
+
+                <EditText
+                    android:id="@+id/inp_minute"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:hint="120"
+                    android:inputType="number"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="phút"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+            <!-- FIELD PREMIERE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày công chiếu:"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
+
+                <EditText
+                    android:id="@+id/inp_premiere"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:hint="DD/MM/YYYY"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+            <!-- FIELD MOVIE TYPE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Danh mục:"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
+
+                <Spinner
+                    android:id="@+id/spn_movie_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <!-- FIELD INTRO -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mô tả:"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
+
+                <EditText
+                    android:id="@+id/inp_intro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập mô tả..."
+                    android:inputType="text"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+            <!-- FIELD TRAILER -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trailer:"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
+
+                <EditText
+                    android:id="@+id/inp_trailer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="https://www.youtube.com/embed/###?si=###"
+                    android:inputType="text"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+            <!-- FIELD ACTORS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Diễn viên:"
+                        android:textSize="16sp"
+                        tools:ignore="HardcodedText" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list_actors"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:orientation="horizontal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/inp_actor"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:inputType="text"
+                        android:hint="Nhập tên diễn viên..."
+                        tools:ignore="HardcodedText" />
+
+                    <Button
+                        android:id="@+id/btn_add_actor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Thêm"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- FIELD DIRECTORS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Đạo diễn:"
+                        android:textSize="16sp"
+                        tools:ignore="HardcodedText" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list_directors"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:orientation="horizontal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/inp_director"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:inputType="text"
+                        android:hint="Nhập tên đạo diễn..."
+                        tools:ignore="HardcodedText" />
+
+                    <Button
+                        android:id="@+id/btn_add_director"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Thêm"
+                        tools:ignore="HardcodedText" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_create"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Tạo"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+    </ScrollView>
+    <!--  END SECTION  -->
+
+</LinearLayout>
