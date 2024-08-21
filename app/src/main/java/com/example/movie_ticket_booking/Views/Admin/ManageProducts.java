@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,8 @@ import com.example.movie_ticket_booking.R;
 
 public class ManageProducts extends Fragment {
     private static ManageProducts _instance = null;
+
+    private ImageView btnBack;
 
     private ManageProducts() {
         super(R.layout.frag_admin_manage_products);
@@ -29,8 +32,16 @@ public class ManageProducts extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        Button btnBack = view.findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(_view -> getParentFragmentManager().popBackStack());
+        bindingViews(view);
+        setupViews();
         return view;
+    }
+
+    private void bindingViews(View view) {
+        btnBack = view.findViewById(R.id.btn_back);
+    }
+
+    private void setupViews() {
+        btnBack.setOnClickListener(_view -> getParentFragmentManager().popBackStack());
     }
 }

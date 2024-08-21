@@ -9,23 +9,21 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.movie_ticket_booking.Common;
 import com.example.movie_ticket_booking.R;
 
-public class ManageMovies extends Fragment {
-    private static ManageMovies _instance = null;
+public class EditMovie extends Fragment {
+    private static EditMovie _instance = null;
 
-    private ImageView btnAdd, btnBack;
+    private ImageView btnBack;
 
-    private ManageMovies() {
-        super(R.layout.frag_admin_manage_movies);
+    private EditMovie() {
+        super(R.layout.frag_admin_edit_movie);
     }
 
-    public static ManageMovies getInstance() {
+    public static EditMovie getInstance() {
         if (_instance == null)
-            _instance = new ManageMovies();
+            _instance = new EditMovie();
         return _instance;
     }
 
@@ -39,14 +37,10 @@ public class ManageMovies extends Fragment {
     }
 
     private void bindingViews(View view) {
-        btnAdd = view.findViewById(R.id.btn_add);
         btnBack = view.findViewById(R.id.btn_back);
     }
 
     private void setupViews() {
-        FragmentManager fragmentManager = getParentFragmentManager();
-
-        btnAdd.setOnClickListener(_v -> Common.addFragment(fragmentManager, AddMovie.getInstance()));
-        btnBack.setOnClickListener(_v -> fragmentManager.popBackStack());
+        btnBack.setOnClickListener(_v -> getParentFragmentManager().popBackStack());
     }
 }

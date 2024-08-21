@@ -139,10 +139,10 @@ public class EditUser extends Fragment {
 
         imgAvatar.setOnClickListener(_v -> {
             ImagePicker.with(getActivity())
-                    .cropSquare()	    			//Crop image(Optional), Check Customization for more option
-                    .compress(1024)			//Final image size will be less than 1 MB(Optional)
-                    .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
-                    .start();
+                    .cropSquare()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .start(101);
         });
 
         ManageUsers.getSelectedUser().observe(getViewLifecycleOwner(), selectedUser -> {
@@ -168,37 +168,39 @@ public class EditUser extends Fragment {
                 }
 
                 if (imgUri != null) {
-                    MediaManager.get().upload(imgUri).callback(new UploadCallback() {
-                        @Override
-                        public void onStart(String requestId) {
-                            // your code here
-                        }
+                    MediaManager.get()
+                            .upload(imgUri)
+                            .callback(new UploadCallback() {
+                                @Override
+                                public void onStart(String requestId) {
+                                    // your code here
+                                }
 
-                        @Override
-                        public void onProgress(String requestId, long bytes, long totalBytes) {
-                            // example code starts here
-                            Double progress = (double) bytes/totalBytes;
-                            // post progress to app UI (e.g. progress bar, notification)
-                            // example code ends here
-                        }
+                                @Override
+                                public void onProgress(String requestId, long bytes, long totalBytes) {
+                                    // example code starts here
+                                    Double progress = (double) bytes/totalBytes;
+                                    // post progress to app UI (e.g. progress bar, notification)
+                                    // example code ends here
+                                }
 
-                        @Override
-                        public void onSuccess(String requestId, Map resultData) {
-                            String imgCloudinaryUrl = resultData.get("secure_url").toString();
-                            user.setAvatarPath(imgCloudinaryUrl);
-                        }
+                                @Override
+                                public void onSuccess(String requestId, Map resultData) {
+                                    String imgCloudinaryUrl = resultData.get("secure_url").toString();
+                                    user.setAvatarPath(imgCloudinaryUrl);
+                                }
 
-                        @Override
-                        public void onError(String requestId, ErrorInfo error) {
-                            // your code here
-                        }
+                                @Override
+                                public void onError(String requestId, ErrorInfo error) {
+                                    // your code here
+                                }
 
-                        @Override
-                        public void onReschedule(String requestId, ErrorInfo error) {
-                            // your code here
-                        }
-                    })
-                    .dispatch();
+                                @Override
+                                public void onReschedule(String requestId, ErrorInfo error) {
+                                    // your code here
+                                }
+                            })
+                            .dispatch();
                 }
 
                 try {
