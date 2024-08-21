@@ -44,8 +44,7 @@ public class CinemaAdapter extends RecyclerView.Adapter<CinemaAdapter.CinemaView
         return this.cinemas.size();
     }
 
-    public static class  CinemaViewHolder extends RecyclerView.ViewHolder{
-
+    public static class CinemaViewHolder extends RecyclerView.ViewHolder {
         private TextView name, address;
         public CinemaViewHolder(@NonNull View itemView) {
             super(itemView);
