@@ -153,7 +153,7 @@ public abstract class GenericController<T extends Identifiable> {
                                     assert objString != null;
 
                                     String searchStr = v.toString().toLowerCase();
-                                    if (objString.contains(searchStr))
+                                    if (objString.toLowerCase().contains(searchStr))
                                         l.add(m);
                                 } catch (Exception e) {
                                     Log.e("Generic", e.toString());
