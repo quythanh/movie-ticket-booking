@@ -43,8 +43,6 @@ import java.util.Map;
 
 public class EditUser extends Fragment {
     private static EditUser _instance = null;
-    private User user;
-    private final UserController _controller = UserController.getInstance();
 
     private Button btnSave;
     private EditText txtFirstName, txtLastName, txtEmail, txtUsername, txtPhone, txtBirthday;
@@ -52,7 +50,11 @@ public class EditUser extends Fragment {
     private RadioButton rdGenderFemale, rdGenderMale;
     private Spinner spnRole;
     private MaterialSwitch swActive;
+
+    private ArrayAdapter<UserRole> roleAdapter;
     private Uri imgUri;
+    private User user;
+    private UserController _controller;
 
     private EditUser() {
         super(R.layout.frag_admin_edit_user);
@@ -68,9 +70,15 @@ public class EditUser extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        initData();
         bindingViews(view);
         setupViews(view);
         return view;
+    }
+
+    private void initData() {
+        _controller = UserController.getInstance();
+        roleAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, UserRole.values());
     }
 
     private void bindingViews(@Nullable View view) {
@@ -96,8 +104,6 @@ public class EditUser extends Fragment {
 
     private void loadViews(View view) {
         String avatarUrl = user.getAvatarPath();
-        ArrayAdapter roleAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, UserRole.values());
-
         if (avatarUrl != null)
             Glide.with(view).load(avatarUrl).into(imgAvatar);
 
@@ -133,8 +139,48 @@ public class EditUser extends Fragment {
 
     private void setupViews(View view) {
         btnBack.setOnClickListener(_v -> getParentFragmentManager().popBackStack());
+        btnDelete.setOnClickListener(_v -> this._controller.delete(user.getId()));
+        btnSave.setOnClickListener(_v -> {
+            user.setUsername(txtUsername.getText().toString());
+            user.setFirstName(txtFirstName.getText().toString());
+            user.setLastName(txtLastName.getText().toString());
+            user.setEmail(txtEmail.getText().toString());
+            user.setGender(rdGenderMale.isChecked());
+            user.setRole(UserRole.valueOf(spnRole.getSelectedItem().toString()));
+            user.setActive(swActive.isChecked());
+            user.setPhone(txtPhone.getText().toString());
+            try {
+                user.setBirthdate(Common.dateFormatter.parse(txtBirthday.getText().toString()));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
 
-        ArrayAdapter roleAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, UserRole.values());
+            if (imgUri != null) {
+                MediaManager.get()
+                        .upload(imgUri)
+                        .callback(new Common.CloudinaryUploadCallback() {
+                            @Override
+                            public void onSuccess(String requestId, Map resultData) {
+                                String imgCloudinaryUrl = resultData.get("secure_url").toString();
+                                user.setAvatarPath(imgCloudinaryUrl);
+                                try {
+                                    _controller.update(user.getId(), user);
+                                } catch (IllegalAccessException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        })
+                        .dispatch();
+            }
+
+            try {
+                this._controller.update(user.getId(), user);
+                Toast.makeText(getContext(), "Update successfully", Toast.LENGTH_SHORT).show();
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         spnRole.setAdapter(roleAdapter);
 
         imgAvatar.setOnClickListener(_v -> {
@@ -148,68 +194,7 @@ public class EditUser extends Fragment {
         ManageUsers.getSelectedUser().observe(getViewLifecycleOwner(), selectedUser -> {
             imgUri = null;
             user = selectedUser;
-
             loadViews(view);
-
-            btnDelete.setOnClickListener(_v -> this._controller.delete(user.getId()));
-            btnSave.setOnClickListener(_v -> {
-                user.setUsername(txtUsername.getText().toString());
-                user.setFirstName(txtFirstName.getText().toString());
-                user.setLastName(txtLastName.getText().toString());
-                user.setEmail(txtEmail.getText().toString());
-                user.setGender(rdGenderMale.isChecked());
-                user.setRole(UserRole.valueOf(spnRole.getSelectedItem().toString()));
-                user.setActive(swActive.isChecked());
-                user.setPhone(txtPhone.getText().toString());
-                try {
-                    user.setBirthdate(Common.dateFormatter.parse(txtBirthday.getText().toString()));
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-
-                if (imgUri != null) {
-                    MediaManager.get()
-                            .upload(imgUri)
-                            .callback(new UploadCallback() {
-                                @Override
-                                public void onStart(String requestId) {
-                                    // your code here
-                                }
-
-                                @Override
-                                public void onProgress(String requestId, long bytes, long totalBytes) {
-                                    // example code starts here
-                                    Double progress = (double) bytes/totalBytes;
-                                    // post progress to app UI (e.g. progress bar, notification)
-                                    // example code ends here
-                                }
-
-                                @Override
-                                public void onSuccess(String requestId, Map resultData) {
-                                    String imgCloudinaryUrl = resultData.get("secure_url").toString();
-                                    user.setAvatarPath(imgCloudinaryUrl);
-                                }
-
-                                @Override
-                                public void onError(String requestId, ErrorInfo error) {
-                                    // your code here
-                                }
-
-                                @Override
-                                public void onReschedule(String requestId, ErrorInfo error) {
-                                    // your code here
-                                }
-                            })
-                            .dispatch();
-                }
-
-                try {
-                    this._controller.update(user.getId(), user);
-                    Toast.makeText(getContext(), "Update successfully", Toast.LENGTH_SHORT).show();
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            });
         });
     }
 

@@ -16,14 +16,12 @@ import com.example.movie_ticket_booking.R;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class UserAdapter extends BaseAdapter {
     private Activity _activity;
     private List<User> _list;
-
-    public UserAdapter(Activity activity, List<User> l) {
-        this._activity = activity;
-        this._list = l;
-    }
 
     @Override
     public int getCount() {

@@ -37,8 +37,9 @@ import java.util.List;
 import lombok.Getter;
 
 public class ManageUsers extends Fragment {
+    // === REGION: FIELDS ===
     private static ManageUsers _instance = null;
-    private final UserController _controller = UserController.getInstance();
+    @Getter private static MutableLiveData<User> selectedUser = new MutableLiveData<>();
 
     private EditText inpName;
     private ImageView btnBack;
@@ -46,9 +47,10 @@ public class ManageUsers extends Fragment {
     private RadioButton rdStatusActive;
     private Spinner spnRole;
 
-    @Getter
-    private static MutableLiveData<User> selectedUser = new MutableLiveData<>();
-    private GenericFilter<User> filters = new GenericFilter<>(User.class);
+    private GenericFilter<User> filters;
+    private UserController _controller;
+    // === END REGION ===
+
 
     private ManageUsers() {
         super(R.layout.frag_admin_manage_users);
@@ -64,9 +66,15 @@ public class ManageUsers extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        initData();
         bindingViews(view);
         setupViews();
         return view;
+    }
+
+    private void initData() {
+        _controller = UserController.getInstance();
+        filters = new GenericFilter<>(User.class);
     }
 
     private void bindingViews(@Nullable View view) {

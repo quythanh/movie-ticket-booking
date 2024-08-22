@@ -14,19 +14,17 @@ import com.example.movie_ticket_booking.R;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class MovieAdapter extends BaseAdapter {
     private Context context;
     private List<Movie> movies;
 
-    public MovieAdapter(Context c, List<Movie> m ){
-        this.context = c;
-        this.movies = m;
-    }
     @Override
     public int getCount() {
         return movies.size();
