@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.cloudinary.android.MediaManager;
+import com.example.movie_ticket_booking.Views.Admin.AddMovie;
+import com.example.movie_ticket_booking.Views.Admin.EditMovie;
 import com.example.movie_ticket_booking.Views.Admin.EditUser;
 import com.example.movie_ticket_booking.Views.Admin.Home;
 import com.example.movie_ticket_booking.Views.Admin.Statistic;
@@ -146,6 +148,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        EditUser.getInstance().handlePickImageResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 101:
+                EditUser.getInstance().handlePickImageResult(requestCode, resultCode, data);
+                break;
+            case 102:
+            case 103:
+                AddMovie.getInstance().handlePickImageResult(requestCode, resultCode, data);
+                break;
+            case 104:
+            case 105:
+                EditMovie.getInstance().handlePickImageResult(requestCode, resultCode, data);
+                break;
+        }
     }
 }
