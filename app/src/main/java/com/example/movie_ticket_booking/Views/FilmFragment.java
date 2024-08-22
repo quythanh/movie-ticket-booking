@@ -73,7 +73,7 @@ public class FilmFragment extends Fragment {
             adapt.setMovies(movies);
             grid.setAdapter(adapt);
             ViewGroup.LayoutParams params = grid.getLayoutParams();
-            params.height = (movies.size() / 2 + movies.size() & 1) * 1200;
+            params.height = (movies.size() / 2 + (movies.size() & 1)) * 1200;
             grid.setLayoutParams(params);
             grid.setOnItemClickListener((parent, _view, position, id) -> {
                 Log.d("film",adapt.getMovies().get(position).getId());
