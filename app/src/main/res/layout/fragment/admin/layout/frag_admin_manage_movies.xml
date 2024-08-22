@@ -72,54 +72,23 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Role:"
+                    android:text="Danh mục:"
                     android:textSize="16sp"
                     tools:ignore="HardcodedText" />
 
                 <Spinner
-                    android:id="@+id/spn_role"
+                    android:id="@+id/spn_movie_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     />
 
             </LinearLayout>
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Status:"
-                    android:textSize="16sp"
-                    tools:ignore="HardcodedText" />
-
-                <RadioButton
-                    android:id="@+id/rd_status_active"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Active"
-                    android:checked="true"
-                    android:layout_marginStart="15dp"
-                    tools:ignore="HardcodedText" />
-
-                <RadioButton
-                    android:id="@+id/rd_status_inactive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Inactive"
-                    android:layout_marginStart="15dp"
-                    tools:ignore="HardcodedText" />
-
-            </RadioGroup>
 
         </LinearLayout>
 
@@ -127,16 +96,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="Danh sách Người dùng"
+            android:text="Danh sách Phim"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
-        <ListView
-            android:id="@+id/list_users"
+        <GridView
+            android:id="@+id/grid_movies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp" />
+            android:layout_marginVertical="5dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="20dp"
+            android:padding="10dp" />
 
     </LinearLayout>
     <!--  END SECTION  -->
