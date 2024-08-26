@@ -2,6 +2,7 @@ package com.example.movie_ticket_booking.Models;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -13,12 +14,18 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cinema extends BaseModel{
+public class Cinema extends BaseModel {
     private String name;
     private Address address;
-    private List<String> nowPresenting; //Movie
+    private List<String> nowPresenting;
     private List<String> showtimes;
 
+    public Cinema(String name, Address address) {
+        this.name = name;
+        this.address = address;
+        nowPresenting = new ArrayList<>();
+        showtimes = new ArrayList<>();
+    }
 
     @NonNull
     @Override
