@@ -1,17 +1,12 @@
 package com.example.movie_ticket_booking.Models;
 
-import com.example.movie_ticket_booking.Common;
+import com.example.movie_ticket_booking.Common.Constant;
 
-import java.net.PasswordAuthentication;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -62,7 +57,7 @@ public class User extends BaseModel {
                     this.phone = i.getValue();
                     break;
                 case "birthdate":
-                    this.birthdate = Common.dateFormatter.parse(i.getValue());
+                    this.birthdate = Constant.DATE_FORMATTER.parse(i.getValue());
                     break;
                 case "gender":
                     this.gender = i.getValue().equalsIgnoreCase("Nam");

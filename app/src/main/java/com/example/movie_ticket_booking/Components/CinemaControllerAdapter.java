@@ -44,37 +44,31 @@ public class CinemaControllerAdapter extends RecyclerView.Adapter<CinemaControll
     public void onBindViewHolder(@NonNull CCViewHolder holder, int position) {
         Map.Entry<String, List<Cinema>> c = null;
         int i = 0;
-        for(Map.Entry<String, List<Cinema>> m : cinemas.entrySet()){
-            if(i==position){
+        for (Map.Entry<String, List<Cinema>> m : cinemas.entrySet()) {
+            if (i == position)
                 c = m;
-            }
             i += 1;
         }
-        if(c != null) {
-            holder.address.setText(c.getKey() != "closest" ? c.getKey() : "Gần bạn nhất");
+        if (c != null) {
+            holder.address.setText(!c.getKey().equals("closest") ? c.getKey() : "Gần bạn nhất");
             holder.amount.setText(String.format("%d",c.getValue().size()));
 
             List<Cinema> l = c.getValue();
-            holder.trigger.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!holder.isCliked) {
-                        holder.main.setBackgroundColor(Color.argb(255, 92, 12, 18));
-                        holder.adapter.setCinemas(l);
-                        holder.detail.setAdapter(holder.adapter);
-                        holder.detail.setVisibility(View.VISIBLE);
-                        holder.isCliked = true;
-                    }
-                    else {
-                        holder.main.setBackgroundColor(Color.argb(255, 176, 0, 32));
-                        holder.detail.setVisibility(View.GONE);
-                        holder.isCliked = false;
-                    }
+            holder.trigger.setOnClickListener(v -> {
+                if(!holder.isCliked) {
+                    holder.main.setBackgroundColor(Color.argb(255, 92, 12, 18));
+                    holder.adapter.setCinemas(l);
+                    holder.detail.setAdapter(holder.adapter);
+                    holder.detail.setVisibility(View.VISIBLE);
+                    holder.isCliked = true;
+                }
+                else {
+                    holder.main.setBackgroundColor(Color.argb(255, 176, 0, 32));
+                    holder.detail.setVisibility(View.GONE);
+                    holder.isCliked = false;
                 }
             });
         }
-
-
     }
 
     @Override

@@ -1,49 +1,33 @@
 package com.example.movie_ticket_booking.Components;
 
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.movie_ticket_booking.Common.GenericAdapter;
 import com.example.movie_ticket_booking.Models.Movie;
 import com.example.movie_ticket_booking.R;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class MovieAdapter extends BaseAdapter {
-    private Context context;
-    private List<Movie> movies;
+public class MovieAdapter extends GenericAdapter<Movie> {
 
-    @Override
-    public int getCount() {
-        return movies.size();
+    public MovieAdapter(List<Movie> list) {
+        super(list, R.layout.grid_movie_item_home);
     }
 
     @Override
-    public Object getItem(int position) {
-        return movies.get(position);
-    }
+    public View getView(int position, View view, ViewGroup parent) {
+        view = super.getView(position, view, parent);
+        Movie m = this.getItem(position);
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_movie_item_home, parent, false);
-        Movie m = movies.get(position);
         ImageView img = view.findViewById(R.id.imageItem);
         TextView title = view.findViewById(R.id.titleItem);
         TextView rating = view.findViewById(R.id.ratingItem);

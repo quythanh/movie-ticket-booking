@@ -23,9 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
-import com.cloudinary.android.callback.ErrorInfo;
-import com.cloudinary.android.callback.UploadCallback;
-import com.example.movie_ticket_booking.Common;
+import com.example.movie_ticket_booking.Common.CloudinaryUploadCallback;
+import com.example.movie_ticket_booking.Common.Constant;
 import com.example.movie_ticket_booking.Components.HorizontalStringAdapter;
 import com.example.movie_ticket_booking.Controllers.MovieController;
 import com.example.movie_ticket_booking.Models.Movie;
@@ -58,6 +57,8 @@ public class EditMovie extends Fragment {
     private Uri imgLandscapeUri, imgPosterUri;
     // === END REGION ===
 
+
+    // === REGION: METHODS ===
     private EditMovie() {
         super(R.layout.frag_admin_edit_movie);
     }
@@ -147,7 +148,7 @@ public class EditMovie extends Fragment {
             movie.setTrailer(inpTrailer.getText().toString());
             movie.setType(MovieType.valueOf(spnMovieType.getSelectedItem().toString()));
             try {
-                movie.setPremiere(Common.dateFormatter.parse(inpPremiere.getText().toString()));
+                movie.setPremiere(Constant.DATE_FORMATTER.parse(inpPremiere.getText().toString()));
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -155,7 +156,7 @@ public class EditMovie extends Fragment {
             if (imgLandscapeUri != null) {
                 MediaManager.get()
                         .upload(imgLandscapeUri)
-                        .callback(new Common.CloudinaryUploadCallback() {
+                        .callback(new CloudinaryUploadCallback() {
                             @Override
                             public void onSuccess(String requestId, Map resultData) {
                                 String imgCloudinaryUrl = resultData.get("secure_url").toString();
@@ -172,7 +173,7 @@ public class EditMovie extends Fragment {
             if (imgPosterUri != null) {
                 MediaManager.get()
                         .upload(imgPosterUri)
-                        .callback(new Common.CloudinaryUploadCallback() {
+                        .callback(new CloudinaryUploadCallback() {
                             @Override
                             public void onSuccess(String requestId, Map resultData) {
                                 String imgCloudinaryUrl = resultData.get("secure_url").toString();
@@ -249,7 +250,7 @@ public class EditMovie extends Fragment {
         listDirectorsAdapter.notifyDataSetChanged();
         inpIntro.setText(movie.getIntro());
         inpMinute.setText(String.format("%d", movie.getMinute()));
-        inpPremiere.setText(Common.dateFormatter.format(movie.getPremiere()));
+        inpPremiere.setText(Constant.DATE_FORMATTER.format(movie.getPremiere()));
         inpTitle.setText(movie.getTitle());
         inpTrailer.setText(movie.getTrailer());
 

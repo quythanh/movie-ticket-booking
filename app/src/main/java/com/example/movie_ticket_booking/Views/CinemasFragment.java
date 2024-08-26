@@ -50,9 +50,16 @@ public class CinemasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        initData();
         bindingViews(view);
         setupViews(view);
         return view;
+    }
+
+    private void initData() {
+        controller = CinemaController.getInstance();
+        data = new MutableLiveData<>();
+        cinemas = controller.getAll();
     }
 
     private void bindingViews(View view) {
@@ -69,45 +76,39 @@ public class CinemasFragment extends Fragment {
 
         final boolean[] initial = {false};
         final int[] counter = {0};
-        controller = CinemaController.getInstance();
-        data = new MutableLiveData<>();
-        cinemas = controller.getAll();
 
         CinemaAdapter closestCinemaAdapter = new CinemaAdapter(new ArrayList<>());
-        CinemaControllerAdapter cinemaControllerAdapter = new CinemaControllerAdapter(new HashMap<String, List<Cinema>>());
+        CinemaControllerAdapter cinemaControllerAdapter = new CinemaControllerAdapter(new HashMap<>());
 
         //OBSERVER
-        cinemas.observe(getViewLifecycleOwner(), cinemas1 -> {
-            if (cinemas1 == null) return;
-            AuthUserController.getInstance().getLatitudeLocation().observe(getViewLifecycleOwner(),latitude -> {
+        cinemas.observe(getViewLifecycleOwner(), _cinema -> {
+            if (_cinema == null) return;
+            AuthUserController.getInstance().getLatitudeLocation().observe(getViewLifecycleOwner(), latitude -> {
                 Toast.makeText(view.getContext(), "Lat: " + latitude, Toast.LENGTH_SHORT).show();
                 counter[0] += 1;
 
                 initial[0] = true;
-                data.setValue(controller.reorderedMap(cinemas1));
-
+                data.setValue(controller.reorderedMap(_cinema));
             });
             AuthUserController.getInstance().getLongtitudeLocation().observe(getViewLifecycleOwner(),latitude -> {
                 Toast.makeText(view.getContext(), "Long: " + latitude, Toast.LENGTH_SHORT).show();
                 counter[0] += 1;
-                if(!initial[0])
-                {
+                if (!initial[0]) {
                     initial[0] = true;
-                    data.setValue(controller.reorderedMap(cinemas1));
+                    data.setValue(controller.reorderedMap(_cinema));
                 }
             });
         });
         
         data.observe(getViewLifecycleOwner(), map -> {
-            if(map == null)
-                return;
-            Log.d("cinemas", map.get("tp HCM").get(0).toString());
+            if (map == null) return;
+
+            Log.d("cinemas", map.get("TP. HCM").get(0).toString());
             List<Cinema> closestList = map.remove("closest");
             closestCinemaAdapter.setCinemas(closestList);
-            closest.setAdapter(closestCinemaAdapter);
-
-
             cinemaControllerAdapter.setCinemas(map);
+
+            closest.setAdapter(closestCinemaAdapter);
             filter.setAdapter(cinemaControllerAdapter);
         });
     }

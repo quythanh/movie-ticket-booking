@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,20 +13,17 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.movie_ticket_booking.Common;
+import com.example.movie_ticket_booking.Common.Constant;
+import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.FragmentEnum;
-import com.example.movie_ticket_booking.MainActivity;
-import com.example.movie_ticket_booking.Models.BaseModel;
 import com.example.movie_ticket_booking.Models.Movie;
 import com.example.movie_ticket_booking.R;
 import com.example.movie_ticket_booking.Views.BookingViews.ShowtimeCinemaBooking;
 
 import lombok.Getter;
-import lombok.Setter;
 
 public class MovieInfoFragment extends Fragment {
     private static MovieInfoFragment _instance = null;
@@ -74,10 +69,10 @@ public class MovieInfoFragment extends Fragment {
     }
 
     private void setupViews(View view) {
-        backButton.setOnClickListener(_v -> Common.changeFragment(getParentFragmentManager(), FilmFragment.getInstance()));
+        backButton.setOnClickListener(_v -> UIManager.changeFragment(getParentFragmentManager(), FilmFragment.getInstance()));
 
         if (selectedMovie == null)
-            Common.changeFragment(getParentFragmentManager(), FilmFragment.getInstance());
+            UIManager.changeFragment(getParentFragmentManager(), FilmFragment.getInstance());
         else
             MovieInfoFragment.selectedMovie.observe(getViewLifecycleOwner(), movie -> {
                 Glide.with(view).load(movie.getLandscapeImage()).into(landscape);
@@ -87,7 +82,7 @@ public class MovieInfoFragment extends Fragment {
                 actors.setText(movie.getActorsToString());
                 minute.setText(movie.getMinute() + " phút");
                 intro.setText(movie.getIntro());
-                premiere.setText(Common.dateFormatter.format(movie.getPremiere()));
+                premiere.setText(Constant.DATE_FORMATTER.format(movie.getPremiere()));
 
 
                 trailer.loadData(movie.getTrailer(), "text/html", "utf-8");

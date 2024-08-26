@@ -1,5 +1,6 @@
 package com.example.movie_ticket_booking.Controllers;
 
+import com.example.movie_ticket_booking.Common.GenericController;
 import com.example.movie_ticket_booking.Models.Product;
 
 public class ProductController extends GenericController<Product> {

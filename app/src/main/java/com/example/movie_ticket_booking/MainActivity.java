@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.cloudinary.android.MediaManager;
+import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.Views.Admin.AddMovie;
 import com.example.movie_ticket_booking.Views.Admin.EditMovie;
 import com.example.movie_ticket_booking.Views.Admin.EditUser;
@@ -106,7 +107,8 @@ public class MainActivity extends AppCompatActivity {
         binder = ActivityMainBinding.inflate(getLayoutInflater());
 
         setContentView(binder.getRoot());
-        Common.changeFragment(fragmentManager, film);
+        // NOTE: use fragment `film` for user, `fragAdminHome` for admin
+        UIManager.changeFragment(fragmentManager, film);
 
         navbar = findViewById(R.id.bottomNavigationView);
         authController.getUserlogin().observe(this, _u -> {
@@ -122,24 +124,24 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 // User
                 case R.id.film:
-                    Common.changeFragment(fragmentManager, film);
+                    UIManager.changeFragment(fragmentManager, film);
                     break;
                 case R.id.cinemas:
-                    Common.changeFragment(fragmentManager, cinemas);
+                    UIManager.changeFragment(fragmentManager, cinemas);
                     break;
                 case R.id.notification:
-                    Common.changeFragment(fragmentManager, notification);
+                    UIManager.changeFragment(fragmentManager, notification);
                     break;
                 case R.id.other:
-                    Common.changeFragment(fragmentManager, other);
+                    UIManager.changeFragment(fragmentManager, other);
                     break;
 
                 // Admin
                 case R.id.page_admin_home:
-                    Common.changeFragment(fragmentManager, fragAdminHome);
+                    UIManager.changeFragment(fragmentManager, fragAdminHome);
                     break;
                 case R.id.page_admin_statistic:
-                    Common.changeFragment(fragmentManager, fragAdminStat);
+                    UIManager.changeFragment(fragmentManager, fragAdminStat);
             }
             return true;
         });

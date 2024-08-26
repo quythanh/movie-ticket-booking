@@ -1,4 +1,4 @@
-package com.example.movie_ticket_booking.Components;
+package com.example.movie_ticket_booking.Common;
 
 import android.view.View;
 

@@ -1,4 +1,6 @@
-package com.example.movie_ticket_booking.Models;
+package com.example.movie_ticket_booking.Common;
+
+import com.example.movie_ticket_booking.Models.FilterType;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

@@ -4,21 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.movie_ticket_booking.Common;
+import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.R;
 
 import java.util.Map;
@@ -32,7 +25,7 @@ public class Home extends Fragment {
         "Người dùng", ManageUsers.getInstance(),
         "Sản phẩm", ManageProducts.getInstance(),
         "Phim", ManageMovies.getInstance(),
-        "Chi nhánh", ManageBranches.getInstance()
+        "Chi nhánh", ManageCinemas.getInstance()
     );
 
     private Home() {
@@ -63,7 +56,7 @@ public class Home extends Fragment {
             Button btn = new Button(view.getContext());
             btn.setText(String.format("Quản lý %s", k));
             btn.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            btn.setOnClickListener(_v -> Common.addFragment(getParentFragmentManager(), v));
+            btn.setOnClickListener(_v -> UIManager.addFragment(getParentFragmentManager(), v));
             layoutManagementCategories.addView(btn);
         });
     }

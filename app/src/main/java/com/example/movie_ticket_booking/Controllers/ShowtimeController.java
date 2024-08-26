@@ -3,20 +3,16 @@ package com.example.movie_ticket_booking.Controllers;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import com.example.movie_ticket_booking.Common;
+import com.example.movie_ticket_booking.Common.Constant;
+import com.example.movie_ticket_booking.Common.GenericController;
+import com.example.movie_ticket_booking.Common.GenericFilter;
 import com.example.movie_ticket_booking.Models.Cinema;
-import com.example.movie_ticket_booking.Models.Movie;
-import com.example.movie_ticket_booking.Models.Room;
+import com.example.movie_ticket_booking.Models.FilterType;
 import com.example.movie_ticket_booking.Models.Showtime;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.Filter;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -47,32 +43,22 @@ public class ShowtimeController extends GenericController<Showtime> {
                 })
                 .addOnFailureListener(e -> Log.e(collectionPath, "Error adding document", e));
     }
-    public MutableLiveData<List<Showtime>> getShowtime(String movieId, Cinema cinema, Date date) throws ParseException {
-        MutableLiveData<List<Showtime>> liveData = new MutableLiveData<>();
-        Date startDate = Common.dateTimeFormatter.parse(Common.dateFormatter.format(date) + " 00:00");
+
+    public LiveData<List<Showtime>> getShowtime(String movieId, Cinema cinema, Date date) throws ParseException {
+        GenericFilter<Showtime> filters = new GenericFilter<>(Showtime.class);
+
+        Date startDate = Constant.DATETIME_FORMATTER.parse(Constant.DATE_FORMATTER.format(date) + " 00:00");
         Date endDate = (Date) startDate.clone();
         endDate.setTime(startDate.getTime() + 1000*60*60*24);
 
         Timestamp start = new Timestamp(startDate);
         Timestamp end = new Timestamp(endDate);
 
-        this.db.collection(this.collectionPath)
-                .whereEqualTo("movie",movieId)
-                .whereIn("id", cinema.getShowtimes())
+        filters.set(FilterType.EQUAL, "movie", movieId);
+        filters.set(FilterType.IN, "id", cinema.getShowtimes());
+        filters.set(FilterType.GREATER_OR_EQUAL, "date", start);
+        filters.set(FilterType.LESS, "date", end);
 
-                .whereGreaterThanOrEqualTo("date", start)
-                .whereLessThan("date", end)
-//                .whereGreaterThanOrEqualTo("date", new Timestamp(new Date()))
-                .get().addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Showtime> l = new ArrayList<>();
-                    queryDocumentSnapshots.forEach(doc -> {
-                        Showtime m = doc.toObject(Showtime.class);
-                        m.setId(doc.getId());
-                        l.add(m);
-                    });
-                   liveData.setValue(l);
-                })
-                .addOnFailureListener(e -> Log.d("qqz", "getShowtime: failed"));
-        return  liveData;
+        return this.filter(filters.get());
     }
 }

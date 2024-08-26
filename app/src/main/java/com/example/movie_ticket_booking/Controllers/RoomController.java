@@ -1,9 +1,7 @@
 package com.example.movie_ticket_booking.Controllers;
 
-import android.util.Log;
-
+import com.example.movie_ticket_booking.Common.GenericController;
 import com.example.movie_ticket_booking.Models.Cinema;
-import com.example.movie_ticket_booking.Models.Product;
 import com.example.movie_ticket_booking.Models.Room;
 
 public class RoomController extends GenericController<Room> {

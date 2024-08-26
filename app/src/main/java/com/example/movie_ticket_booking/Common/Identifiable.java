@@ -1,4 +1,4 @@
-package com.example.movie_ticket_booking;
+package com.example.movie_ticket_booking.Common;
 
 public interface Identifiable {
     String getId();

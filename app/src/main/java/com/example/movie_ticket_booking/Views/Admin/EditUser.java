@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -24,9 +22,8 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
-import com.cloudinary.android.callback.ErrorInfo;
-import com.cloudinary.android.callback.UploadCallback;
-import com.example.movie_ticket_booking.Common;
+import com.example.movie_ticket_booking.Common.CloudinaryUploadCallback;
+import com.example.movie_ticket_booking.Common.Constant;
 import com.example.movie_ticket_booking.Controllers.UserController;
 import com.example.movie_ticket_booking.Models.User;
 import com.example.movie_ticket_booking.Models.UserRole;
@@ -35,10 +32,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Map;
 
 public class EditUser extends Fragment {
@@ -122,7 +116,7 @@ public class EditUser extends Fragment {
         txtPhone.setText(user.getPhone());
 
         if (user.getBirthdate() != null)
-            txtBirthday.setText(Common.dateFormatter.format(user.getBirthdate()));
+            txtBirthday.setText(Constant.DATE_FORMATTER.format(user.getBirthdate()));
 
         txtBirthday.setInputType(InputType.TYPE_NULL);
         txtBirthday.setOnClickListener(v -> {
@@ -150,7 +144,7 @@ public class EditUser extends Fragment {
             user.setActive(swActive.isChecked());
             user.setPhone(txtPhone.getText().toString());
             try {
-                user.setBirthdate(Common.dateFormatter.parse(txtBirthday.getText().toString()));
+                user.setBirthdate(Constant.DATE_FORMATTER.parse(txtBirthday.getText().toString()));
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -158,7 +152,7 @@ public class EditUser extends Fragment {
             if (imgUri != null) {
                 MediaManager.get()
                         .upload(imgUri)
-                        .callback(new Common.CloudinaryUploadCallback() {
+                        .callback(new CloudinaryUploadCallback() {
                             @Override
                             public void onSuccess(String requestId, Map resultData) {
                                 String imgCloudinaryUrl = resultData.get("secure_url").toString();

@@ -20,17 +20,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.movie_ticket_booking.Common;
+import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.Components.MovieAdapter;
 import com.example.movie_ticket_booking.Controllers.MovieController;
 import com.example.movie_ticket_booking.Models.FilterType;
-import com.example.movie_ticket_booking.Models.GenericFilter;
+import com.example.movie_ticket_booking.Common.GenericFilter;
 import com.example.movie_ticket_booking.Models.Movie;
 import com.example.movie_ticket_booking.Models.MovieType;
-import com.example.movie_ticket_booking.Models.UserRole;
 import com.example.movie_ticket_booking.R;
-
-import java.util.List;
 
 import lombok.Getter;
 
@@ -91,7 +88,7 @@ public class ManageMovies extends Fragment {
     }
 
     private void setupViews() {
-        btnAdd.setOnClickListener(_v -> Common.addFragment(fragmentManager, AddMovie.getInstance()));
+        btnAdd.setOnClickListener(_v -> UIManager.addFragment(fragmentManager, AddMovie.getInstance()));
         btnBack.setOnClickListener(_v -> fragmentManager.popBackStack());
 
         inpName.addTextChangedListener(new TextWatcher() {
@@ -128,11 +125,11 @@ public class ManageMovies extends Fragment {
         _controller
                 .filter(filters.get())
                 .observe(getViewLifecycleOwner(), _movies -> {
-                    ListAdapter adapter = new MovieAdapter(getActivity(), _movies);
+                    ListAdapter adapter = new MovieAdapter(_movies);
                     gridMovies.setAdapter(adapter);
                     gridMovies.setOnItemClickListener((_adapterView, _v, i, l) -> {
                         selectedMovie.setValue(_movies.get(i));
-                        Common.addFragment(fragmentManager, EditMovie.getInstance());
+                        UIManager.addFragment(fragmentManager, EditMovie.getInstance());
                     });
                 });
     }

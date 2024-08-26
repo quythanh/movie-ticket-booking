@@ -1,11 +1,10 @@
-package com.example.movie_ticket_booking.Controllers;
+package com.example.movie_ticket_booking.Common;
 
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.movie_ticket_booking.Identifiable;
 import com.example.movie_ticket_booking.Models.FilterType;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,7 +37,7 @@ public abstract class GenericController<T extends Identifiable> {
                 .addOnFailureListener(e -> Log.e(collectionPath, "Error adding document", e));
     }
 
-    public LiveData<T> getLiveData(String id) {
+    public LiveData<T> get(String id) {
         MutableLiveData<T> liveData = new MutableLiveData<>();
         TryGet(id)
                 .get()
@@ -82,48 +81,44 @@ public abstract class GenericController<T extends Identifiable> {
         final Query[] query = { this.db.collection(this.collectionPath) };
 
         filters.forEach((_type, list_criteria) -> {
-            if (list_criteria == null)
-                return;
+            if (list_criteria == null) return;
 
-            switch (_type) {
-                case EQUAL:
-                    list_criteria.forEach((k, v) -> {
-                        if (v != null)
-                            query[0] = query[0].whereEqualTo(k, v);
-                    });
-                    break;
+            list_criteria.forEach((k, v) -> {
+                if (v == null) return;
 
-                case GREATER:
-                    list_criteria.forEach((k, v) -> {
-                        if (v != null)
-                            query[0] = query[0].whereGreaterThan(k, v);
-                    });
-                    break;
+                switch (_type) {
+                    case EQUAL:
+                        query[0] = query[0].whereEqualTo(k, v);
+                        break;
 
-                case GREATER_OR_EQUAL:
-                    list_criteria.forEach((k, v) -> {
-                        if (v != null)
-                            query[0] = query[0].whereGreaterThanOrEqualTo(k, v);
-                    });
-                    break;
+                    case GREATER:
+                        query[0] = query[0].whereGreaterThan(k, v);
+                        break;
 
-                case LESS:
-                    list_criteria.forEach((k, v) -> {
-                        if (v != null)
-                            query[0] = query[0].whereLessThan(k, v);
-                    });
-                    break;
+                    case GREATER_OR_EQUAL:
+                        query[0] = query[0].whereGreaterThanOrEqualTo(k, v);
+                        break;
 
-                case LESS_OR_EQUAL:
-                    list_criteria.forEach((k, v) -> {
-                        if (v != null)
-                            query[0] = query[0].whereLessThanOrEqualTo(k, v);
-                    });
-                    break;
+                    case LESS:
+                        query[0] = query[0].whereLessThan(k, v);
+                        break;
 
-                case STRING_CONTAINS:
-                    break;
-            }
+                    case LESS_OR_EQUAL:
+                        query[0] = query[0].whereLessThanOrEqualTo(k, v);
+                        break;
+
+                    case ARRAY_CONTAINS:
+                        query[0] = query[0].whereArrayContains(k, v);
+                        break;
+
+                    case IN:
+                        query[0] = query[0].whereIn(k, (List<? extends Object>) v);
+                        break;
+
+                    case STRING_CONTAINS:
+                        break;
+                }
+            });
         });
 
         query[0].get()
@@ -146,15 +141,26 @@ public abstract class GenericController<T extends Identifiable> {
                                 }
 
                                 try {
-                                    Field objField = m.getClass().getDeclaredField(f);
-                                    objField.setAccessible(true);
+                                    String[] field_keys = f.split("\\.");
 
-                                    String objString = (String) objField.get(m);
-                                    assert objString != null;
+                                    Field currentField = m.getClass().getDeclaredField(field_keys[0]);
+                                    currentField.setAccessible(true);
+                                    Object currentObject = currentField.get(m);
 
-                                    String searchStr = v.toString().toLowerCase();
-                                    if (objString.toLowerCase().contains(searchStr))
-                                        l.add(m);
+                                    for (int i = 1; i < field_keys.length; i++) {
+                                        if (currentObject == null) break;
+
+                                        currentField = currentObject.getClass().getDeclaredField(field_keys[i]);
+                                        currentField.setAccessible(true);
+                                        currentObject = currentField.get(currentObject);
+                                    }
+
+                                    if (currentObject != null && currentObject instanceof String) {
+                                        String objString = (String) currentObject;
+                                        String searchStr = v.toString().toLowerCase();
+                                        if (objString.toLowerCase().contains(searchStr))
+                                            l.add(m);
+                                    }
                                 } catch (Exception e) {
                                     Log.e("Generic", e.toString());
                                 }

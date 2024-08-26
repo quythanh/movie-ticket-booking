@@ -1,11 +1,9 @@
 package com.example.movie_ticket_booking.Views;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
@@ -16,28 +14,16 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.example.movie_ticket_booking.Common;
+import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.Components.MovieAdapter;
 import com.example.movie_ticket_booking.Components.ViewPagerAdapter;
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
-import com.example.movie_ticket_booking.Controllers.CinemaController;
 import com.example.movie_ticket_booking.Controllers.MovieController;
-import com.example.movie_ticket_booking.Controllers.RoomController;
-import com.example.movie_ticket_booking.Controllers.ShowtimeController;
-import com.example.movie_ticket_booking.FragmentEnum;
-import com.example.movie_ticket_booking.MainActivity;
-import com.example.movie_ticket_booking.Models.BaseModel;
-import com.example.movie_ticket_booking.Models.Cinema;
 import com.example.movie_ticket_booking.Models.Movie;
 import com.example.movie_ticket_booking.Models.MovieType;
-import com.example.movie_ticket_booking.Models.Showtime;
-import com.example.movie_ticket_booking.Models.User;
 import com.example.movie_ticket_booking.R;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 public class FilmFragment extends Fragment {
@@ -70,15 +56,15 @@ public class FilmFragment extends Fragment {
         currentType = type;
 
         this._controller.getByType(type).observe(getViewLifecycleOwner(), movies -> {
-            adapt.setMovies(movies);
+            adapt.setList(movies);
             grid.setAdapter(adapt);
             ViewGroup.LayoutParams params = grid.getLayoutParams();
             params.height = (movies.size() / 2 + (movies.size() & 1)) * 1200;
             grid.setLayoutParams(params);
             grid.setOnItemClickListener((parent, _view, position, id) -> {
-                Log.d("film",adapt.getMovies().get(position).getId());
-                MovieInfoFragment.getSelectedMovie().setValue(adapt.getMovies().get(position));
-                Common.changeFragment(getParentFragmentManager(), MovieInfoFragment.getInstance());
+                Log.d("film",adapt.getList().get(position).getId());
+                MovieInfoFragment.getSelectedMovie().setValue(adapt.getList().get(position));
+                UIManager.changeFragment(getParentFragmentManager(), MovieInfoFragment.getInstance());
             });
         });
 
@@ -106,7 +92,7 @@ public class FilmFragment extends Fragment {
 
     private void setupViews(View view) {
         viewPagerAdapter = new ViewPagerAdapter(view.getContext(), new ArrayList<>());
-        adapt = new MovieAdapter(view.getContext(), new ArrayList<>());
+        adapt = new MovieAdapter(new ArrayList<>());
 
         filter = Map.of(
                 MovieType.PRESENTING, view.findViewById(R.id.txt_presenting),
@@ -116,7 +102,7 @@ public class FilmFragment extends Fragment {
         filter.forEach((key, value) -> value.setOnClickListener(_view -> updateViewByType(key, false)));
 
         //
-        loginBtn.setOnClickListener(_v -> Common.changeFragment(getParentFragmentManager(), LoginFragment.getInstance()));
+        loginBtn.setOnClickListener(_v -> UIManager.changeFragment(getParentFragmentManager(), LoginFragment.getInstance()));
 
         authUserController.getUserlogin().observe(getViewLifecycleOwner(), user -> {
             if (user.getId() == null) {

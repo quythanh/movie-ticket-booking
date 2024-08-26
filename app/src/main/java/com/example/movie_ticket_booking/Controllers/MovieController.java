@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.movie_ticket_booking.Common.GenericController;
 import com.example.movie_ticket_booking.Models.Movie;
 import com.example.movie_ticket_booking.Models.MovieType;
 

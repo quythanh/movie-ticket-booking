@@ -3,13 +3,11 @@ package com.example.movie_ticket_booking.Views.Admin;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -22,17 +20,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.movie_ticket_booking.Common;
+import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.Components.UserAdapter;
 import com.example.movie_ticket_booking.Controllers.UserController;
 import com.example.movie_ticket_booking.Models.FilterType;
-import com.example.movie_ticket_booking.Models.GenericFilter;
+import com.example.movie_ticket_booking.Common.GenericFilter;
 import com.example.movie_ticket_booking.Models.User;
 import com.example.movie_ticket_booking.Models.UserRole;
 import com.example.movie_ticket_booking.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import lombok.Getter;
 
@@ -49,6 +44,7 @@ public class ManageUsers extends Fragment {
 
     private GenericFilter<User> filters;
     private UserController _controller;
+    private ArrayAdapter<UserRole> roleAdapter;
     // === END REGION ===
 
 
@@ -75,6 +71,7 @@ public class ManageUsers extends Fragment {
     private void initData() {
         _controller = UserController.getInstance();
         filters = new GenericFilter<>(User.class);
+        roleAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, UserRole.values());
     }
 
     private void bindingViews(@Nullable View view) {
@@ -91,19 +88,17 @@ public class ManageUsers extends Fragment {
                 .observe(
                         getViewLifecycleOwner(),
                         _users -> {
-                            ListAdapter adapter = new UserAdapter(getActivity(), _users);
+                            ListAdapter adapter = new UserAdapter(_users);
                             listViewUsers.setAdapter(adapter);
                             listViewUsers.setOnItemClickListener((_adapterView, _v, pos, _l) -> {
                                 selectedUser.setValue(_users.get(pos));
-                                Common.addFragment(getParentFragmentManager(), EditUser.getInstance());
+                                UIManager.addFragment(getParentFragmentManager(), EditUser.getInstance());
                             });
                         }
                 );
     }
 
     private void setupViews() {
-        ArrayAdapter roleAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, UserRole.values());
-
         filters.set(FilterType.EQUAL, "active", true);
 
         btnBack.setOnClickListener(_v -> getParentFragmentManager().popBackStack());
@@ -118,7 +113,7 @@ public class ManageUsers extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 String searchText = inpName.getText().toString().trim().toLowerCase();
-                filters.set(FilterType.STRING_CONTAINS, "username", searchText.length() >= 3 ? searchText.trim() : null);
+                filters.set(FilterType.STRING_CONTAINS, "username", searchText.length() >= 3 ? searchText : null);
                 loadViews();
             }
         });

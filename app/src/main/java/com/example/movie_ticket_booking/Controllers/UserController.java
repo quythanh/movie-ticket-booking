@@ -5,15 +5,9 @@ import android.util.Log;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.movie_ticket_booking.Common;
-import com.example.movie_ticket_booking.FragmentEnum;
-import com.example.movie_ticket_booking.MainActivity;
+import com.example.movie_ticket_booking.Common.GenericController;
+import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.Models.User;
-
-import java.net.PasswordAuthentication;
-import java.util.Base64;
-import java.util.Map;
-import java.util.Objects;
 
 public class UserController extends GenericController<User> {
     private static UserController _instance = null;
@@ -34,7 +28,7 @@ public class UserController extends GenericController<User> {
                 .set(o)
                 .addOnSuccessListener(documentReference -> {
                     Log.d(collectionPath, "Add successfully ID: " + documentReference);
-                    Common.changeFragment(fragmentManager, redirect);
+                    UIManager.changeFragment(fragmentManager, redirect);
                 })
                 .addOnFailureListener(e -> Log.e(collectionPath, "Error adding document", e));
     }

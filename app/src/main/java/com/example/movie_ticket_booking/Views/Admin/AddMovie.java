@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cloudinary.android.MediaManager;
-import com.cloudinary.android.callback.ErrorInfo;
-import com.cloudinary.android.callback.UploadCallback;
-import com.example.movie_ticket_booking.Common;
+import com.example.movie_ticket_booking.Common.CloudinaryUploadCallback;
+import com.example.movie_ticket_booking.Common.Constant;
 import com.example.movie_ticket_booking.Components.HorizontalStringAdapter;
 import com.example.movie_ticket_booking.Controllers.MovieController;
 import com.example.movie_ticket_booking.Models.Movie;
@@ -33,7 +31,6 @@ import com.example.movie_ticket_booking.Models.MovieType;
 import com.example.movie_ticket_booking.R;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -147,12 +144,12 @@ public class AddMovie extends Fragment {
                 _m.setMinute(Integer.parseInt(inpMinute.getText().toString()));
                 _m.setTitle(inpTitle.getText().toString());
                 _m.setTrailer(inpTrailer.getText().toString());
-                _m.setPremiere(Common.dateFormatter.parse(inpPremiere.getText().toString()));
+                _m.setPremiere(Constant.DATE_FORMATTER.parse(inpPremiere.getText().toString()));
 
                 if (imgLandscapeUri != null) {
                     MediaManager.get()
                             .upload(imgLandscapeUri)
-                            .callback(new Common.CloudinaryUploadCallback() {
+                            .callback(new CloudinaryUploadCallback() {
                                 @Override
                                 public void onSuccess(String requestId, Map resultData) {
                                     String imgCloudinaryUrl = resultData.get("secure_url").toString();
@@ -166,7 +163,7 @@ public class AddMovie extends Fragment {
                 if (imgPosterUri != null) {
                     MediaManager.get()
                             .upload(imgPosterUri)
-                            .callback(new Common.CloudinaryUploadCallback() {
+                            .callback(new CloudinaryUploadCallback() {
                                 @Override
                                 public void onSuccess(String requestId, Map resultData) {
                                     String imgCloudinaryUrl = resultData.get("secure_url").toString();

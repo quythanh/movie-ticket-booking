@@ -1,7 +1,6 @@
 package com.example.movie_ticket_booking.Controllers;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -9,10 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.movie_ticket_booking.Common;
-import com.example.movie_ticket_booking.FragmentEnum;
+import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.MainActivity;
-import com.example.movie_ticket_booking.Models.Address;
 import com.example.movie_ticket_booking.Models.User;
 import com.example.movie_ticket_booking.Models.UserRole;
 import com.example.movie_ticket_booking.Views.Admin.Home;
@@ -37,7 +34,7 @@ public class AuthUserController {
     private MutableLiveData<Double> latitudeLocation;
     private MutableLiveData<Double> longtitudeLocation;
 
-    private  AuthUserController() {
+    private AuthUserController() {
         userlogin = new MutableLiveData<>(new User());
         Log.d("user_authen", "AuthUserController: " + userlogin.getValue().toString());
         mAuth = FirebaseAuth.getInstance();
@@ -91,11 +88,9 @@ public class AuthUserController {
                     userlogin.setValue(document.toObject(User.class));
                     Toast.makeText(context, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     if (userlogin.getValue().getRole() == UserRole.CLIENT)
-                        Common.changeFragment(fragmentManager, redirect);
+                        UIManager.changeFragment(fragmentManager, redirect);
                     else {
-                        Common.changeFragment(fragmentManager, Home.getInstance());
-//                        MainActivity m = MainActivity.getInstance();
-//                        m.startActivity(new Intent(context, MainActivity.class));
+                        UIManager.changeFragment(fragmentManager, Home.getInstance());
                     }
                 });
             }

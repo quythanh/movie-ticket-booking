@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.movie_ticket_booking.Common;
+import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
-import com.example.movie_ticket_booking.FragmentEnum;
-import com.example.movie_ticket_booking.MainActivity;
 import com.example.movie_ticket_booking.R;
 
 public class LoginFragment extends Fragment {
@@ -68,6 +65,6 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(view.getContext(), "EMPTY", Toast.LENGTH_SHORT).show();
         });
 
-        registerBtn.setOnClickListener(_v -> Common.changeFragment(getParentFragmentManager(), RegisterFragment.getInstance()));
+        registerBtn.setOnClickListener(_v -> UIManager.changeFragment(getParentFragmentManager(), RegisterFragment.getInstance()));
     }
 }

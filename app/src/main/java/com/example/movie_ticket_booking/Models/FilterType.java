@@ -6,5 +6,7 @@ public enum FilterType {
     GREATER_OR_EQUAL,
     LESS,
     LESS_OR_EQUAL,
+    ARRAY_CONTAINS,
+    IN,
     STRING_CONTAINS
 }
