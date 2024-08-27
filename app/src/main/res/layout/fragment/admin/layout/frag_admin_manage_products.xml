@@ -29,14 +29,71 @@
             android:layout_gravity="center"
             tools:ignore="HardcodedText" />
 
+        <ImageView
+            android:id="@+id/btn_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_add" />
+
     </FrameLayout>
     <!--  END SECTION  -->
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- BODY SECTION -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Quản lý Sản phẩm"
-        android:layout_gravity="center"
-        tools:ignore="HardcodedText" />
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_marginVertical="5dp"
+            android:background="@drawable/round_border">
+
+            <EditText
+                android:id="@+id/inp_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên sản phẩm..."
+                android:drawableStart="@drawable/ic_search"
+                android:inputType="text"
+                android:textSize="20sp"
+                tools:ignore="Autofill,HardcodedText" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Danh sách Sản phẩm"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+        <GridView
+            android:id="@+id/grid_products"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="5dp"
+            android:gravity="center"
+            android:numColumns="auto_fit"
+            android:horizontalSpacing="10dp"
+            android:verticalSpacing="15dp"
+            android:stretchMode="columnWidth"
+            android:clipToPadding="true"
+            android:fitsSystemWindows="true"
+            android:scrollbars="none"
+            android:padding="10dp" />
+
+    </LinearLayout>
+    <!--  END SECTION  -->
 
 </LinearLayout>

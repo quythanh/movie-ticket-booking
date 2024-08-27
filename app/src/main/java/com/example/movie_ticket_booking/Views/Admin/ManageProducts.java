@@ -4,19 +4,33 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 
+import com.example.movie_ticket_booking.Common.IReloadOnDestroy;
+import com.example.movie_ticket_booking.Components.ProductAdapter;
+import com.example.movie_ticket_booking.Controllers.ProductController;
+import com.example.movie_ticket_booking.Models.Product;
 import com.example.movie_ticket_booking.R;
 
-public class ManageProducts extends Fragment {
-    private static ManageProducts _instance = null;
+import java.util.ArrayList;
 
-    private ImageView btnBack;
+import lombok.Getter;
+
+public class ManageProducts extends Fragment implements IReloadOnDestroy {
+    private static ManageProducts _instance = null;
+    @Getter private static final MutableLiveData<Product> selectedProduct = new MutableLiveData<>();
+
+    private ImageView mBtnAdd, mBtnBack;
+    private GridView mGridProducts;
+
+    private ProductController _controller;
+    private ProductAdapter productAdapter;
 
     private ManageProducts() {
         super(R.layout.frag_admin_manage_products);
@@ -33,15 +47,41 @@ public class ManageProducts extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         bindingViews(view);
+        initData();
+        reload(); // Load view data
         setupViews();
         return view;
     }
 
+    private void initData() {
+        _controller = ProductController.getInstance();
+        productAdapter = new ProductAdapter(new ArrayList<>());
+    }
+
     private void bindingViews(View view) {
-        btnBack = view.findViewById(R.id.btn_back);
+        mBtnAdd = view.findViewById(R.id.btn_add);
+        mBtnBack = view.findViewById(R.id.btn_back);
+        mGridProducts = view.findViewById(R.id.grid_products);
     }
 
     private void setupViews() {
-        btnBack.setOnClickListener(_view -> getParentFragmentManager().popBackStack());
+        mGridProducts.setAdapter(productAdapter);
+        mBtnAdd.setOnClickListener(_v -> {
+            AddProduct dialog = new AddProduct();
+            dialog.show(getChildFragmentManager(), "Dialog");
+        });
+        mBtnBack.setOnClickListener(_view -> getParentFragmentManager().popBackStack());
+        mGridProducts.setOnItemClickListener((adapterView, view, i, l) -> {
+            selectedProduct.setValue(productAdapter.getItem(i));
+            EditProduct dialog = new EditProduct();
+            dialog.show(getChildFragmentManager(), "Dialog");
+        });
+    }
+
+    @Override
+    public void reload() {
+        _controller.getAll().observe(getViewLifecycleOwner(), _prods -> {
+            productAdapter.setList(_prods);
+        });
     }
 }
