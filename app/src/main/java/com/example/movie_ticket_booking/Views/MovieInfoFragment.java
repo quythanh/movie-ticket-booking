@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.movie_ticket_booking.Common.Constant;
 import com.example.movie_ticket_booking.Common.UIManager;
-import com.example.movie_ticket_booking.FragmentEnum;
 import com.example.movie_ticket_booking.Models.Movie;
 import com.example.movie_ticket_booking.R;
 import com.example.movie_ticket_booking.Views.BookingViews.ShowtimeCinemaBooking;
@@ -94,7 +93,6 @@ public class MovieInfoFragment extends Fragment {
                 bookingBtn.setOnClickListener(_v -> {
                     Intent intent = new Intent(view.getContext(), ShowtimeCinemaBooking.class);
                     intent.putExtra("movie_id", movie.getId());
-                    intent.putExtra("history", FragmentEnum.MOVIE_INFO);
                     startActivity(intent);
                 });
             });

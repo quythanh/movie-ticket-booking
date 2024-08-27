@@ -13,7 +13,6 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
-import com.example.movie_ticket_booking.FragmentEnum;
 import com.example.movie_ticket_booking.R;
 
 import java.util.HashMap;
