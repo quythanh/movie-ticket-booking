@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
 import com.example.movie_ticket_booking.Common.CloudinaryUploadCallback;
 import com.example.movie_ticket_booking.Common.Constant;
+import com.example.movie_ticket_booking.Common.EditContext;
 import com.example.movie_ticket_booking.Components.HorizontalStringAdapter;
 import com.example.movie_ticket_booking.Controllers.MovieController;
 import com.example.movie_ticket_booking.Models.Movie;
@@ -228,7 +229,7 @@ public class EditMovie extends Fragment {
 
         spnMovieType.setAdapter(movieTypeAdapter);
 
-        ManageMovies.getSelectedMovie().observe(getViewLifecycleOwner(), _selectedMovie -> {
+        EditContext.movie.observe(getViewLifecycleOwner(), _selectedMovie -> {
             imgLandscapeUri = null;
             imgPosterUri = null;
             movie = _selectedMovie;

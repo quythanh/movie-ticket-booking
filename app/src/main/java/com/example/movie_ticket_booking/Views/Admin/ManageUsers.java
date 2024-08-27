@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.movie_ticket_booking.Common.EditContext;
 import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.Components.UserAdapter;
 import com.example.movie_ticket_booking.Controllers.UserController;
@@ -34,7 +35,6 @@ import lombok.Getter;
 public class ManageUsers extends Fragment {
     // === REGION: FIELDS ===
     private static ManageUsers _instance = null;
-    @Getter private static MutableLiveData<User> selectedUser = new MutableLiveData<>();
 
     private EditText inpName;
     private ImageView btnBack;
@@ -91,7 +91,7 @@ public class ManageUsers extends Fragment {
                             ListAdapter adapter = new UserAdapter(_users);
                             listViewUsers.setAdapter(adapter);
                             listViewUsers.setOnItemClickListener((_adapterView, _v, pos, _l) -> {
-                                selectedUser.setValue(_users.get(pos));
+                                EditContext.user.setValue(_users.get(pos));
                                 UIManager.addFragment(getParentFragmentManager(), EditUser.getInstance());
                             });
                         }

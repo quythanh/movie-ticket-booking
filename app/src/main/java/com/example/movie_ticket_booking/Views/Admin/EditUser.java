@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
 import com.example.movie_ticket_booking.Common.CloudinaryUploadCallback;
 import com.example.movie_ticket_booking.Common.Constant;
+import com.example.movie_ticket_booking.Common.EditContext;
 import com.example.movie_ticket_booking.Controllers.UserController;
 import com.example.movie_ticket_booking.Models.User;
 import com.example.movie_ticket_booking.Models.UserRole;
@@ -185,7 +186,7 @@ public class EditUser extends Fragment {
                     .start(101);
         });
 
-        ManageUsers.getSelectedUser().observe(getViewLifecycleOwner(), selectedUser -> {
+        EditContext.user.observe(getViewLifecycleOwner(), selectedUser -> {
             imgUri = null;
             user = selectedUser;
             loadViews(view);

@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.movie_ticket_booking.Common.EditContext;
 import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.Components.MovieAdapter;
 import com.example.movie_ticket_booking.Controllers.MovieController;
@@ -34,7 +35,6 @@ import lombok.Getter;
 public class ManageMovies extends Fragment {
     // === REGION: FIELDS ===
     private static ManageMovies _instance = null;
-    @Getter private static MutableLiveData<Movie> selectedMovie = new MutableLiveData<>();
 
     private EditText inpName;
     private GridView gridMovies;
@@ -128,7 +128,7 @@ public class ManageMovies extends Fragment {
                     ListAdapter adapter = new MovieAdapter(_movies);
                     gridMovies.setAdapter(adapter);
                     gridMovies.setOnItemClickListener((_adapterView, _v, i, l) -> {
-                        selectedMovie.setValue(_movies.get(i));
+                        EditContext.movie.setValue(_movies.get(i));
                         UIManager.addFragment(fragmentManager, EditMovie.getInstance());
                     });
                 });

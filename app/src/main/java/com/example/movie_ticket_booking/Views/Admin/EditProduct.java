@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.movie_ticket_booking.Common.EditContext;
 import com.example.movie_ticket_booking.Common.IReloadOnDestroy;
 import com.example.movie_ticket_booking.Controllers.CinemaController;
 import com.example.movie_ticket_booking.Controllers.ProductController;
@@ -65,7 +66,7 @@ public class EditProduct extends DialogFragment {
     }
 
     private void loadViewsData() {
-        ManageProducts.getSelectedProduct().observe(getParentFragment().getViewLifecycleOwner(), _prod -> {
+        EditContext.product.observe(getParentFragment().getViewLifecycleOwner(), _prod -> {
             prod = _prod;
 
             mInpName.setText(prod.getName());

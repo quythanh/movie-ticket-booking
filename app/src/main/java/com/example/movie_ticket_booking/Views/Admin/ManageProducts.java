@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.movie_ticket_booking.Common.EditContext;
 import com.example.movie_ticket_booking.Common.IReloadOnDestroy;
 import com.example.movie_ticket_booking.Components.ProductAdapter;
 import com.example.movie_ticket_booking.Controllers.ProductController;
@@ -24,7 +25,6 @@ import lombok.Getter;
 
 public class ManageProducts extends Fragment implements IReloadOnDestroy {
     private static ManageProducts _instance = null;
-    @Getter private static final MutableLiveData<Product> selectedProduct = new MutableLiveData<>();
 
     private ImageView mBtnAdd, mBtnBack;
     private GridView mGridProducts;
@@ -72,7 +72,7 @@ public class ManageProducts extends Fragment implements IReloadOnDestroy {
         });
         mBtnBack.setOnClickListener(_view -> getParentFragmentManager().popBackStack());
         mGridProducts.setOnItemClickListener((adapterView, view, i, l) -> {
-            selectedProduct.setValue(productAdapter.getItem(i));
+            EditContext.product.setValue(productAdapter.getItem(i));
             EditProduct dialog = new EditProduct();
             dialog.show(getChildFragmentManager(), "Dialog");
         });
