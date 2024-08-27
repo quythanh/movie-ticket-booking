@@ -38,6 +38,7 @@ public class EditCinemaDialog extends DialogFragment {
         builder.setPositiveButton("Thoát", null);
         builder.setNeutralButton("Xóa", (dialogInterface, i) -> {
             CinemaController.getInstance().delete(cinema.getId());
+            Toast.makeText(getContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
         });
         builder.setNegativeButton("Sửa", (dialogInterface, i) -> {
             Address addr = cinema.getAddress();
