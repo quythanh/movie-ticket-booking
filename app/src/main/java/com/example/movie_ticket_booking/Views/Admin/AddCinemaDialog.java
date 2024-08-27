@@ -31,7 +31,7 @@ public class AddCinemaDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setTitle("Chỉnh sửa Rạp");
+        builder.setTitle("Thêm Rạp");
         builder.setPositiveButton("Thoát", null);
         builder.setNegativeButton("Thêm", (dialogInterface, i) -> {
             Address addr = new Address(
