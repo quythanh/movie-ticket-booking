@@ -1,46 +1,137 @@
 package com.example.movie_ticket_booking.Views.Admin;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 
+import com.example.movie_ticket_booking.Common.EditContext;
+import com.example.movie_ticket_booking.Common.GenericFilter;
 import com.example.movie_ticket_booking.Common.IReloadOnDestroy;
 import com.example.movie_ticket_booking.Controllers.CinemaController;
+import com.example.movie_ticket_booking.Controllers.RoomController;
 import com.example.movie_ticket_booking.Models.Address;
 import com.example.movie_ticket_booking.Models.Cinema;
+import com.example.movie_ticket_booking.Models.FilterType;
+import com.example.movie_ticket_booking.Models.Room;
 import com.example.movie_ticket_booking.R;
 
-public class EditCinemaDialog extends DialogFragment {
+import java.util.ArrayList;
 
+import lombok.Getter;
+
+public class EditCinema extends Fragment implements IReloadOnDestroy {
+    private static EditCinema _instance = null;
+
+    private Button mBtnCreateRoom, mBtnSave;
     private EditText mInpName, mInpStreet, mInpDistrict, mInpWard, mInpLong, mInpLat;
+    private GridView mGridRooms;
+    private ImageView mBtnBack, mBtnDelete;
     private Spinner mSpnProvinces;
+    private TextView mTxtTitle;
 
-    private Cinema cinema;
     private ArrayAdapter<String> provinceAdapter;
+    private ArrayAdapter<Room> roomAdapter;
+    private Cinema cinema;
+    private GenericFilter<Room> filters;
 
-    @NonNull
+    private EditCinema() {
+        super(R.layout.frag_admin_info_cinema);
+    }
+
+    public static EditCinema getInstance() {
+        if (_instance == null)
+            _instance = new EditCinema();
+        return _instance;
+    }
+
+    @Nullable
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        initData();
+        bindingViews(view);
+        setupViews();
+        loadViewsData();
+        return view;
+    }
 
-        builder.setTitle("Chỉnh sửa Rạp");
-        builder.setPositiveButton("Thoát", null);
-        builder.setNeutralButton("Xóa", (dialogInterface, i) -> {
+    private void initData() {
+        provinceAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.provinces));
+        roomAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
+        filters = new GenericFilter<>(Room.class);
+    }
+
+    private void loadViewsData() {
+        EditContext.cinema.observe(getViewLifecycleOwner(), _cinema -> {
+            cinema = _cinema;
+
+            mInpName.setText(cinema.getName());
+            mInpStreet.setText(cinema.getAddress().getStreet());
+            mInpDistrict.setText(cinema.getAddress().getDistrict());
+            mInpWard.setText(cinema.getAddress().getWard());
+            mSpnProvinces.setSelection(provinceAdapter.getPosition(cinema.getAddress().getProvince()));
+            mInpLat.setText(Double.toString(cinema.getAddress().getLatitude()));
+            mInpLong.setText(Double.toString(cinema.getAddress().getLongitude()));
+
+            filters.set(FilterType.EQUAL, "cinema", cinema.getId());
+            RoomController.getInstance().filter(filters.get()).observe(getViewLifecycleOwner(), _rooms -> {
+                roomAdapter.clear();
+                roomAdapter.addAll(_rooms);
+                roomAdapter.notifyDataSetChanged();
+            });
+        });
+    }
+
+    private void bindingViews(View view) {
+        mBtnBack = view.findViewById(R.id.btn_back);
+        mBtnCreateRoom = view.findViewById(R.id.btn_create_room);
+        mBtnDelete = view.findViewById(R.id.btn_delete);
+        mBtnSave = view.findViewById(R.id.btn_save);
+
+        mGridRooms = view.findViewById(R.id.grid_rooms);
+
+        mInpDistrict = view.findViewById(R.id.inp_district);
+        mInpLat = view.findViewById(R.id.inp_lat);
+        mInpLong = view.findViewById(R.id.inp_long);
+        mInpName = view.findViewById(R.id.inp_name);
+        mInpStreet = view.findViewById(R.id.inp_street);
+        mInpWard = view.findViewById(R.id.inp_ward);
+
+        mSpnProvinces = view.findViewById(R.id.spn_provinces);
+
+        mTxtTitle = view.findViewById(R.id.txt_title);
+    }
+
+    private void setupViews() {
+        mBtnBack.setOnClickListener(_v -> getParentFragmentManager().popBackStack());
+        mBtnCreateRoom.setOnClickListener(_v -> {
+            AddRoom dialog = new AddRoom();
+            dialog.show(getChildFragmentManager(), "Dialog");
+        });
+        mBtnDelete.setImageResource(R.drawable.ic_delete);
+        mBtnDelete.setOnClickListener(_v -> {
             CinemaController.getInstance().delete(cinema.getId());
             Toast.makeText(getContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
         });
-        builder.setNegativeButton("Sửa", (dialogInterface, i) -> {
+        mBtnSave.setOnClickListener(_v -> {
             Address addr = cinema.getAddress();
             addr.setStreet(mInpStreet.getText().toString());
             addr.setWard(mInpWard.getText().toString());
@@ -60,52 +151,23 @@ public class EditCinemaDialog extends DialogFragment {
             }
         });
 
-        View view = getLayoutInflater().inflate(R.layout.frag_admin_edit_cinema, null);
-        builder.setView(view);
-        initData();
-        bindingViews(view);
-        setupViews();
-        loadViewsData();
+        mGridRooms.setAdapter(roomAdapter);
+        mGridRooms.setOnItemClickListener((adapterView, view, i, l) -> {
+            EditContext.room.setValue(roomAdapter.getItem(i));
+            EditRoom dialog = new EditRoom();
+            dialog.show(getChildFragmentManager(), "Dialog");
+        });
+        mSpnProvinces.setAdapter(provinceAdapter);
 
-        return builder.create();
+        mTxtTitle.setText("CHỈNH SỬA RẠP");
     }
 
-    private void initData() {
-        provinceAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.provinces));
-    }
-
-    private void loadViewsData() {
-        ManageCinemas.getSelectedCinema().observe(getParentFragment().getViewLifecycleOwner(), _cinema -> {
-            cinema = _cinema;
-
-            mInpName.setText(cinema.getName());
-            mInpStreet.setText(cinema.getAddress().getStreet());
-            mInpDistrict.setText(cinema.getAddress().getDistrict());
-            mInpWard.setText(cinema.getAddress().getWard());
-            mSpnProvinces.setSelection(provinceAdapter.getPosition(cinema.getAddress().getProvince()));
-            mInpLat.setText(Double.toString(cinema.getAddress().getLatitude()));
-            mInpLong.setText(Double.toString(cinema.getAddress().getLongitude()));
+    @Override
+    public void reload() {
+        RoomController.getInstance().filter(filters.get()).observe(getViewLifecycleOwner(), _rooms -> {
+            roomAdapter.clear();
+            roomAdapter.addAll(_rooms);
+            roomAdapter.notifyDataSetChanged();
         });
     }
-
-    private void bindingViews(View view) {
-        mInpName = view.findViewById(R.id.inp_name);
-        mInpStreet = view.findViewById(R.id.inp_street);
-        mInpDistrict = view.findViewById(R.id.inp_district);
-        mInpWard = view.findViewById(R.id.inp_ward);
-        mSpnProvinces = view.findViewById(R.id.spn_provinces);
-        mInpLong = view.findViewById(R.id.inp_long);
-        mInpLat = view.findViewById(R.id.inp_lat);
-    }
-
-    private void setupViews() {
-        mSpnProvinces.setAdapter(provinceAdapter);
-    }
-
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        IReloadOnDestroy f = (ManageCinemas) getParentFragment();
-//        f.reload();
-//    }
 }

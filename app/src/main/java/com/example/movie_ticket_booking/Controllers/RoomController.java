@@ -16,9 +16,4 @@ public class RoomController extends GenericController<Room> {
             _instance = new RoomController();
         return _instance;
     }
-
-    public void initial(Cinema c){
-        Room r1 = new Room(3,c);
-        add(r1);
-    }
 }

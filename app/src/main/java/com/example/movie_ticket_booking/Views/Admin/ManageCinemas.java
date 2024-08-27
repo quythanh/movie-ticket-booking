@@ -13,15 +13,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.movie_ticket_booking.Common.EditContext;
 import com.example.movie_ticket_booking.Common.GenericFilter;
-import com.example.movie_ticket_booking.Common.IReloadOnDestroy;
+import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.Components.GridCinemaAdapter;
 import com.example.movie_ticket_booking.Controllers.CinemaController;
 import com.example.movie_ticket_booking.Models.Cinema;
@@ -35,9 +35,8 @@ import java.util.stream.Collectors;
 
 import lombok.Getter;
 
-public class ManageCinemas extends Fragment implements IReloadOnDestroy {
+public class ManageCinemas extends Fragment {
     private static ManageCinemas _instance = null;
-    @Getter private static MutableLiveData<Cinema> selectedCinema = new MutableLiveData<>();
 
     private EditText mInpAddress;
     private ImageView mBtnAdd, mBtnBack;
@@ -107,11 +106,9 @@ public class ManageCinemas extends Fragment implements IReloadOnDestroy {
     }
 
     private void setupViews() {
-        mBtnAdd.setOnClickListener(_v -> {
-            AddCinemaDialog dialog = new AddCinemaDialog();
-            dialog.show(getChildFragmentManager(), "Dialog");
-        });
+        mBtnAdd.setOnClickListener(_v -> UIManager.addFragment(getParentFragmentManager(), AddCinema.getInstance()));
         mBtnBack.setOnClickListener(_v -> getParentFragmentManager().popBackStack());
+
         mListCinemas.setAdapter(adapter);
         mSpnProvince.setAdapter(provinceAdapter);
 
@@ -133,9 +130,8 @@ public class ManageCinemas extends Fragment implements IReloadOnDestroy {
             }
         });
         mListCinemas.setOnItemClickListener((adapterView, view, i, l) -> {
-            selectedCinema.setValue(adapter.getItem(i));
-            EditCinemaDialog dialog = new EditCinemaDialog();
-            dialog.show(getChildFragmentManager(), "Dialog");
+            EditContext.cinema.setValue(adapter.getItem(i));
+            UIManager.addFragment(getParentFragmentManager(), EditCinema.getInstance());
         });
 
         mSpnProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -150,10 +146,5 @@ public class ManageCinemas extends Fragment implements IReloadOnDestroy {
 
             }
         });
-    }
-
-    @Override
-    public void reload() {
-        loadViewsData();
     }
 }

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Views.Admin.AddCinemaDialog">
+    tools:context=".Views.Admin.AddCinema">
 
     <!--  HEADER SECTION  -->
     <FrameLayout
@@ -23,6 +24,7 @@
             tools:ignore="HardcodedText" />
 
         <TextView
+            android:id="@+id/txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="THÊM RẠP MỚI"
@@ -32,24 +34,20 @@
             tools:ignore="HardcodedText" />
 
         <ImageView
-            android:id="@+id/btn_create"
+            android:id="@+id/btn_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:contentDescription="Button save"
             android:layout_gravity="end"
-            android:src="@drawable/ic_save"
+            app:tint="#ff0000"
             tools:ignore="HardcodedText" />
 
     </FrameLayout>
     <!--  END SECTION  -->
 
     <!--  BODY SECTION  -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="10dp"
@@ -211,6 +209,20 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Lưu"
+                tools:ignore="HardcodedText" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginVertical="10dp"
+                android:background="#c0c0c0"/>
+
             <!-- FIELD ROOMS -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -227,6 +239,7 @@
                     tools:ignore="HardcodedText" />
 
                 <Button
+                    android:id="@+id/btn_create_room"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -238,12 +251,12 @@
             <GridView
                 android:id="@+id/grid_rooms"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:numColumns="auto_fit"
                 android:horizontalSpacing="10dp"
                 android:verticalSpacing="15dp" />
 
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 </LinearLayout>
