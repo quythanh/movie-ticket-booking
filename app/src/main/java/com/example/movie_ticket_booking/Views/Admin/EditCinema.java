@@ -102,10 +102,10 @@ public class EditCinemaDialog extends DialogFragment {
         mSpnProvinces.setAdapter(provinceAdapter);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        IReloadOnDestroy f = (ManageCinemas) getParentFragment();
-        f.reload();
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        IReloadOnDestroy f = (ManageCinemas) getParentFragment();
+//        f.reload();
+//    }
 }
