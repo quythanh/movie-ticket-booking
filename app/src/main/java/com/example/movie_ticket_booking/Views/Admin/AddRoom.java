@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.movie_ticket_booking.Common.EditContext;
 import com.example.movie_ticket_booking.Common.IReloadOnDestroy;
+import com.example.movie_ticket_booking.Controllers.CinemaController;
 import com.example.movie_ticket_booking.Controllers.RoomController;
 import com.example.movie_ticket_booking.Models.FilterType;
 import com.example.movie_ticket_booking.Models.Room;
@@ -45,8 +47,13 @@ public class AddRoom extends DialogFragment {
 
             EditContext.cinema.observe(getParentFragment().getViewLifecycleOwner(), _cinema -> {
                 Room room = new Room(roomNum, seats);
-                RoomController.getInstance().add(room);
-                Toast.makeText(getContext(), "Thêm phòng thành công!", Toast.LENGTH_SHORT).show();
+                CinemaController.getInstance()
+                        .TryGet(_cinema.getId())
+                        .collection("rooms")
+                        .add(room)
+                        .addOnSuccessListener(documentReference -> {
+                            Toast.makeText(getContext(), "Thêm phòng thành công!", Toast.LENGTH_SHORT).show();
+                        });
             });
         });
         builder.setNegativeButton("Thoát", null);
