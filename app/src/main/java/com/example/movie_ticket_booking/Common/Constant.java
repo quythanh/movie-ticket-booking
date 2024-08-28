@@ -7,8 +7,8 @@ import java.util.Locale;
 
 public class Constant {
     public static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd/MM/yyyy");
-    public static final SimpleDateFormat DATETIME_FORMATTER = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-    public static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("hh:mm");
+    public static final SimpleDateFormat DATETIME_FORMATTER = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    public static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("HH:mm");
     public static final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vn", "VN"));
 
     static {
