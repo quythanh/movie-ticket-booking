@@ -6,7 +6,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.movie_ticket_booking.Models.FilterType;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -50,14 +52,54 @@ public abstract class GenericController<T extends Identifiable> {
         return liveData;
     }
 
+    public LiveData<T> get(DocumentReference docRef) {
+        MutableLiveData<T> liveData = new MutableLiveData<>();
+        docRef
+                .get()
+                .addOnSuccessListener(document -> {
+                    T d = document.toObject(this.type);
+                    d.setId(document.getId());
+                    liveData.setValue(d);
+                })
+                .addOnFailureListener(e -> Log.d("qq", "error"));
+        return liveData;
+    }
+
+    public LiveData<List<T>> get(List<String> ids) {
+        MutableLiveData<List<T>> liveData = new MutableLiveData<>();
+
+        this.db.collection(this.collectionPath)
+                .whereIn(FieldPath.documentId(), ids)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<T> l = new ArrayList<>();
+                    queryDocumentSnapshots.forEach(doc -> {
+                        T m = doc.toObject(this.type);
+                        m.setId(doc.getId());
+                        l.add(m);
+                    });
+                    liveData.setValue(l);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(collectionPath, "Error fetching document", e);
+                    liveData.setValue(Collections.emptyList());
+                });
+
+        return liveData;
+    }
+
     public DocumentReference TryGet(String id){
         return this.db.collection(this.collectionPath).document(id);
     }
 
     public LiveData<List<T>> getAll() {
+        return this.getAll(this.db.collection(this.collectionPath));
+    }
+
+    public LiveData<List<T>> getAll(CollectionReference colRef) {
         MutableLiveData<List<T>> liveData = new MutableLiveData<>();
 
-        this.db.collection(this.collectionPath)
+        colRef
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<T> l = new ArrayList<>();

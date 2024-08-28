@@ -32,8 +32,15 @@ import com.example.movie_ticket_booking.Models.Cinema;
 import com.example.movie_ticket_booking.Models.FilterType;
 import com.example.movie_ticket_booking.Models.Room;
 import com.example.movie_ticket_booking.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.Getter;
 
@@ -91,12 +98,20 @@ public class EditCinema extends Fragment implements IReloadOnDestroy {
             mInpLat.setText(Double.toString(cinema.getAddress().getLatitude()));
             mInpLong.setText(Double.toString(cinema.getAddress().getLongitude()));
 
-            filters.set(FilterType.EQUAL, "cinema", cinema.getId());
-            RoomController.getInstance().filter(filters.get()).observe(getViewLifecycleOwner(), _rooms -> {
-                roomAdapter.clear();
-                roomAdapter.addAll(_rooms);
-                roomAdapter.notifyDataSetChanged();
-            });
+            CinemaController
+                    .getInstance()
+                    .TryGet(cinema.getId())
+                    .collection("rooms")
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        roomAdapter.clear();
+                        queryDocumentSnapshots.forEach(doc -> {
+                            Room m = doc.toObject(Room.class);
+                            m.setId(doc.getId());
+                            roomAdapter.add(m);
+                            roomAdapter.notifyDataSetChanged();
+                        });
+                    });
         });
     }
 
@@ -164,10 +179,19 @@ public class EditCinema extends Fragment implements IReloadOnDestroy {
 
     @Override
     public void reload() {
-        RoomController.getInstance().filter(filters.get()).observe(getViewLifecycleOwner(), _rooms -> {
-            roomAdapter.clear();
-            roomAdapter.addAll(_rooms);
-            roomAdapter.notifyDataSetChanged();
-        });
+        CinemaController
+                .getInstance()
+                .TryGet(cinema.getId())
+                .collection("rooms")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    roomAdapter.clear();
+                    queryDocumentSnapshots.forEach(doc -> {
+                        Room m = doc.toObject(Room.class);
+                        m.setId(doc.getId());
+                        roomAdapter.add(m);
+                        roomAdapter.notifyDataSetChanged();
+                    });
+                });
     }
 }
