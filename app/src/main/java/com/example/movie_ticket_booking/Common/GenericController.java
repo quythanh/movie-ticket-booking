@@ -88,7 +88,7 @@ public abstract class GenericController<T extends Identifiable> {
         return liveData;
     }
 
-    public DocumentReference TryGet(String id){
+    public DocumentReference TryGet(String id) {
         return this.db.collection(this.collectionPath).document(id);
     }
 
