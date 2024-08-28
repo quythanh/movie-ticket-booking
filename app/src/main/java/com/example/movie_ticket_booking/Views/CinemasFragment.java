@@ -77,8 +77,8 @@ public class CinemasFragment extends Fragment {
         final boolean[] initial = {false};
         final int[] counter = {0};
 
-        CinemaAdapter closestCinemaAdapter = new CinemaAdapter(new ArrayList<>());
-        CinemaControllerAdapter cinemaControllerAdapter = new CinemaControllerAdapter(new HashMap<>());
+        CinemaAdapter closestCinemaAdapter = new CinemaAdapter(new ArrayList<>(), CinemaAdapter.EventType.ON_INTENT);
+        CinemaControllerAdapter cinemaControllerAdapter = new CinemaControllerAdapter(new HashMap<String, List<Cinema>>());
 
         //OBSERVER
         cinemas.observe(getViewLifecycleOwner(), _cinema -> {
@@ -99,11 +99,10 @@ public class CinemasFragment extends Fragment {
                 }
             });
         });
-        
+
         data.observe(getViewLifecycleOwner(), map -> {
             if (map == null) return;
 
-            Log.d("cinemas", map.get("TP. HCM").get(0).toString());
             List<Cinema> closestList = map.remove("closest");
             closestCinemaAdapter.setCinemas(closestList);
             cinemaControllerAdapter.setCinemas(map);

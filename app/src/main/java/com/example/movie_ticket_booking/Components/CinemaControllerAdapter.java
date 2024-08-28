@@ -92,7 +92,7 @@ public class CinemaControllerAdapter extends RecyclerView.Adapter<CinemaControll
             detail = itemView.findViewById(R.id.movieHorizontal);
             detail.setHasFixedSize(true);
             detail.setLayoutManager(new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
-            adapter = new CinemaAdapter(new ArrayList<>());
+            adapter = new CinemaAdapter(new ArrayList<>(), CinemaAdapter.EventType.ON_INTENT);
             isCliked = false;
         }
     }

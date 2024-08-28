@@ -2,7 +2,6 @@ package com.example.movie_ticket_booking.Models;
 
 import androidx.annotation.NonNull;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +43,7 @@ public class Movie extends BaseModel{
         return this.title;
     }
 
-    public Movie() {}
-
+    public Movie() {};
     public String getDirectorsToString(){
         final String[] res = {""};
         directors.forEach(x -> {
@@ -57,7 +55,6 @@ public class Movie extends BaseModel{
         });
         return res[0];
     }
-
     public String getActorsToString(){
         final String[] res = {""};
         actors.forEach(x -> {

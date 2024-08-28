@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Ticket extends BaseModel{
     private User user;
     private Showtime showtime;
-    private Rating rating;
+//    private Rating rating;
     private List<Integer> details;
     private Integer total;
 

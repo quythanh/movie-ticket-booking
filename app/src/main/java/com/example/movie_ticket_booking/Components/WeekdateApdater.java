@@ -2,14 +2,18 @@ package com.example.movie_ticket_booking.Components;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.movie_ticket_booking.Common.ItemClickListener;
 import com.example.movie_ticket_booking.R;
 
 import java.util.ArrayList;
@@ -19,6 +23,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @NoArgsConstructor
@@ -26,9 +31,12 @@ public class WeekdateApdater extends  RecyclerView.Adapter<WeekdateApdater.Weekd
 
     private Context context;
     private List<Date> weekdates;
+    @Getter
+    private MutableLiveData<Date> date_data;
 
     public WeekdateApdater(Context context){
         this.context = context;
+        date_data = new MutableLiveData<>();
         Date date = new Date();
         long day_time = 1000 * 60 * 60 * 24;
         weekdates = new ArrayList<>();
@@ -52,6 +60,13 @@ public class WeekdateApdater extends  RecyclerView.Adapter<WeekdateApdater.Weekd
         Date d = this.weekdates.get(position);
         holder.date.setText(String.format("%d", d.getDate()));
         holder.month.setText(String.format("Tháng %d", d.getMonth() + 1));
+
+        holder.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void OnClick(View view, int position, boolean isLongClick) {
+                date_data.setValue(weekdates.get(position));
+            }
+        });
     }
 
     @Override
@@ -59,12 +74,29 @@ public class WeekdateApdater extends  RecyclerView.Adapter<WeekdateApdater.Weekd
         return this.weekdates.size();
     }
 
-    public static class WeekdateViewHolder extends RecyclerView.ViewHolder{
+    public static class WeekdateViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
         private TextView date, month;
+        @Setter
+        private ItemClickListener itemClickListener;
+
         public WeekdateViewHolder(@NonNull View itemView) {
             super(itemView);
             date = itemView.findViewById(R.id.weekdate_date);
             month = itemView.findViewById(R.id.weekdate_month);
+
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            itemClickListener.OnClick(v, getBindingAdapterPosition(), false);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            itemClickListener.OnClick(v, getBindingAdapterPosition(), true);
+            return true;
         }
     }
 }

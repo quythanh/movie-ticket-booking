@@ -16,6 +16,7 @@ import com.example.movie_ticket_booking.Views.Admin.Home;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +35,9 @@ public class AuthUserController {
     private MutableLiveData<Double> latitudeLocation;
     private MutableLiveData<Double> longtitudeLocation;
 
+    //BOOKING SESSION
+    private MutableLiveData<Map<Character, List<Integer>>> bookingSeat;
+
     private AuthUserController() {
         userlogin = new MutableLiveData<>(new User());
         Log.d("user_authen", "AuthUserController: " + userlogin.getValue().toString());
@@ -41,6 +45,7 @@ public class AuthUserController {
         userController = UserController.getInstance();
         latitudeLocation = new MutableLiveData<>(null);
         longtitudeLocation = new MutableLiveData<>(null);
+        bookingSeat = new MutableLiveData<>(null);
     }
 
     public static AuthUserController getInstance() {

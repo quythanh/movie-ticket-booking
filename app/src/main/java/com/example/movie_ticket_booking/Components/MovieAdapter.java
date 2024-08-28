@@ -36,7 +36,6 @@ public class MovieAdapter extends GenericAdapter<Movie> {
         title.setText(m.getTitle());
         rating.setText(m.getId());
 
-        img.setBackground(view.getResources().getDrawable(R.drawable.radius10dp, null));
         return view;
     }
 }

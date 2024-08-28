@@ -92,6 +92,19 @@ public abstract class GenericController<T extends Identifiable> {
         return this.db.collection(this.collectionPath).document(id);
     }
 
+    public LiveData<T> getLiveData(String id) {
+        MutableLiveData<T> liveData = new MutableLiveData<>();
+        TryGet(id)
+                .get()
+                .addOnSuccessListener(document -> {
+                    T d = document.toObject(this.type);
+                    d.setId(document.getId());
+                    liveData.setValue(d);
+                })
+                .addOnFailureListener(e -> Log.d("qq", "error"));
+        return liveData;
+    }
+
     public LiveData<List<T>> getAll() {
         return this.getAll(this.db.collection(this.collectionPath));
     }

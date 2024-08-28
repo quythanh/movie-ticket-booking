@@ -123,13 +123,13 @@
                 <GridView
                     android:id="@+id/gridMovie"
                     android:layout_width="match_parent"
-                    android:layout_height="452dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:horizontalSpacing="10dp"
                     android:numColumns="auto_fit"
+                    android:padding="10dp"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="20dp"
-                    android:padding="10dp" />
+                    android:verticalSpacing="20dp" />
 
             </LinearLayout>
         </LinearLayout>

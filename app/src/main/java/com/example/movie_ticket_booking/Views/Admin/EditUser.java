@@ -180,16 +180,51 @@ public class EditUser extends Fragment {
 
         imgAvatar.setOnClickListener(_v -> {
             ImagePicker.with(getActivity())
-                    .cropSquare()
-                    .compress(1024)
-                    .maxResultSize(1080, 1080)
-                    .start(101);
+                    .cropSquare()	    			//Crop image(Optional), Check Customization for more option
+                    .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                    .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                    .start();
         });
 
         EditContext.user.observe(getViewLifecycleOwner(), selectedUser -> {
             imgUri = null;
             user = selectedUser;
             loadViews(view);
+
+            btnDelete.setOnClickListener(_v -> this._controller.delete(user.getId()));
+            btnSave.setOnClickListener(_v -> {
+                user.setUsername(txtUsername.getText().toString());
+                user.setFirstName(txtFirstName.getText().toString());
+                user.setLastName(txtLastName.getText().toString());
+                user.setEmail(txtEmail.getText().toString());
+                user.setGender(rdGenderMale.isChecked());
+                user.setRole(UserRole.valueOf(spnRole.getSelectedItem().toString()));
+                user.setActive(swActive.isChecked());
+                user.setPhone(txtPhone.getText().toString());
+                try {
+                    user.setBirthdate(Constant.DATE_FORMATTER.parse(txtBirthday.getText().toString()));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+
+                if (imgUri != null) {
+                    MediaManager.get().upload(imgUri).callback(new CloudinaryUploadCallback() {
+                        @Override
+                        public void onSuccess(String requestId, Map resultData) {
+                            String imgCloudinaryUrl = resultData.get("secure_url").toString();
+                            user.setAvatarPath(imgCloudinaryUrl);
+                        }
+                    })
+                    .dispatch();
+                }
+
+                try {
+                    this._controller.update(user.getId(), user);
+                    Toast.makeText(getContext(), "Update successfully", Toast.LENGTH_SHORT).show();
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         });
     }
 

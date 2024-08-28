@@ -21,7 +21,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Room extends BaseModel {
     private int roomNumber;
-    private String cinema;
     private List<Integer> seats;
 
     @NonNull

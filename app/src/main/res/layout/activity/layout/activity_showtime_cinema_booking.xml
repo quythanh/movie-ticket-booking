@@ -17,13 +17,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp">
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ĐẶT VÉ XEM PHIM CÙNG TP CINE"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="#FF0000"
+                android:textIsSelectable="false"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                android:layout_marginTop="20dp"/>
 
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:text="HÃY CHỌN NGÀY"
                 android:textColor="@color/design_default_color_error"
                 android:textSize="18sp" />
@@ -40,7 +54,7 @@
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginVertical="20dp"
                 android:text="HÃY CHỌN RẠP"
                 android:textColor="@color/design_default_color_error"
                 android:textSize="18sp" />
@@ -48,14 +62,76 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/booking_cinema_choosing"
                 android:layout_width="match_parent"
-                android:layout_height="300dp" />
+                android:layout_height="wrap_content"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:text="BẠN ĐÃ CHỌN"
+                    android:textColor="@color/design_default_color_error"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Ngày"
+                        android:textAlignment="center"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/selectedDate"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+
+                        android:textColor="#FF8F00" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView18"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Rạp"
+                        android:textAlignment="center"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/selectedCinema"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="#FF8F00" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="HÃY SUẤT CHIẾU"
+                android:layout_marginVertical="20dp"
+                android:text="HÃY CHỌN SUẤT CHIẾU"
                 android:textColor="@color/design_default_color_error"
                 android:textSize="18sp" />
 
@@ -64,7 +140,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:numColumns="auto_fit" />
-
         </LinearLayout>
     </ScrollView>
 
@@ -74,24 +149,17 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingHorizontal="10dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/black">
 
         <Button
             android:id="@+id/BackToInfo"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:backgroundTint="#0080ff"
             android:text="Quay lại" />
-
-        <Button
-            android:id="@+id/NextToSeat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/design_default_color_error"
-            android:text="Tiếp Tục" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

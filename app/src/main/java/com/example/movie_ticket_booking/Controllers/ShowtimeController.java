@@ -51,13 +51,15 @@ public class ShowtimeController extends GenericController<Showtime> {
         Date endDate = (Date) startDate.clone();
         endDate.setTime(startDate.getTime() + 1000*60*60*24);
 
-        Timestamp start = new Timestamp(startDate);
+        // Timestamp start = new Timestamp(startDate);
         Timestamp end = new Timestamp(endDate);
 
         filters.set(FilterType.EQUAL, "movie", movieId);
         filters.set(FilterType.IN, "id", cinema.getShowtimes());
-        filters.set(FilterType.GREATER_OR_EQUAL, "date", start);
+        filters.set(FilterType.GREATER_OR_EQUAL, "date", new Timestamp(new Date()));
         filters.set(FilterType.LESS, "date", end);
+
+        // .orderBy("date")
 
         return this.filter(filters.get());
     }

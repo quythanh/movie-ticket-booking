@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.example.movie_ticket_booking.Controllers.CinemaController;
 import com.example.movie_ticket_booking.Controllers.ShowtimeController;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,16 +21,17 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Showtime extends BaseModel {
     private String movie;
-    private String room;
+    private DocumentReference room;
     private Date date;
     private List<String> tickets;
 
-    public Showtime(Movie movie, Room room, Date date) throws IllegalAccessException, InstantiationException {
-        this.movie = movie.getId();
-        this.room = room.getId();
-        this.date = date;
-        this.tickets = new ArrayList<>();
-    }
+//    public Showtime(Movie movie, Room room, Date date) throws IllegalAccessException, InstantiationException {
+//        this.movie = movie.getId();
+//        this.room = room.getId();
+//        this.date = date;
+//        this.tickets = new ArrayList<>();
+//    }
+
     @NonNull
     @Override
     public String toString() {
