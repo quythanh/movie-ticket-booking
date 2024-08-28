@@ -47,13 +47,8 @@ public class AddRoom extends DialogFragment {
 
             EditContext.cinema.observe(getParentFragment().getViewLifecycleOwner(), _cinema -> {
                 Room room = new Room(roomNum, seats);
-                CinemaController.getInstance()
-                        .TryGet(_cinema.getId())
-                        .collection("rooms")
-                        .add(room)
-                        .addOnSuccessListener(documentReference -> {
-                            Toast.makeText(getContext(), "Thêm phòng thành công!", Toast.LENGTH_SHORT).show();
-                        });
+                RoomController.getInstance(_cinema).add(room);
+                Toast.makeText(getContext(), "Thêm phòng thành công!", Toast.LENGTH_SHORT).show();
             });
         });
         builder.setNegativeButton("Thoát", null);

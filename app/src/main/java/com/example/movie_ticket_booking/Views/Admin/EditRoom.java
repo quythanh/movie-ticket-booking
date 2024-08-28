@@ -53,16 +53,20 @@ public class EditRoom extends DialogFragment {
                             .map(Integer::parseInt)
                             .collect(Collectors.toList()));
 
-            try {
-                RoomController.getInstance().update(room.getId(), room);
-                Toast.makeText(getContext(), "Sửa phòng thành công!", Toast.LENGTH_SHORT).show();
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
+            EditContext.cinema.observe(getParentFragment().getViewLifecycleOwner(), _cinema -> {
+                try {
+                    RoomController.getInstance(_cinema).update(room.getId(), room);
+                    Toast.makeText(getContext(), "Sửa phòng thành công!", Toast.LENGTH_SHORT).show();
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         });
         builder.setNeutralButton("Xóa", (dialogInterface, i) -> {
-            RoomController.getInstance().delete(room.getId());
-            Toast.makeText(getContext(), "Xóa phòng thành công!", Toast.LENGTH_SHORT).show();
+            EditContext.cinema.observe(getParentFragment().getViewLifecycleOwner(), _cinema -> {
+                RoomController.getInstance(_cinema).delete(room.getId());
+                Toast.makeText(getContext(), "Xóa phòng thành công!", Toast.LENGTH_SHORT).show();
+            });
         });
         builder.setNegativeButton("Thoát", null);
 

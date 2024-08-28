@@ -10,10 +10,12 @@ public class RoomController extends GenericController<Room> {
     private RoomController() {
         super("rooms", Room.class);
     }
-
-    public static synchronized RoomController getInstance() {
+    
+    public static synchronized RoomController getInstance(Cinema c) {
         if (_instance == null)
             _instance = new RoomController();
+
+        _instance.collectionPath = String.format("cinemas/%s/rooms", c.getId());
         return _instance;
     }
 }
