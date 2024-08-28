@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -14,19 +13,10 @@ import androidx.fragment.app.Fragment;
 import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.R;
 
-import java.util.Map;
-
 public class Home extends Fragment {
     private static Home _instance = null;
 
-    private LinearLayout layoutManagementCategories;
-
-    Map<String, Fragment> managementCategories = Map.of(
-        "Người dùng", ManageUsers.getInstance(),
-        "Sản phẩm", ManageProducts.getInstance(),
-        "Phim", ManageMovies.getInstance(),
-        "Chi nhánh", ManageCinemas.getInstance()
-    );
+    private LinearLayout mBtnCinema, mBtnMovie, mBtnUser, mBtnProduct, mBtnShowtime, mBtnTicket;
 
     private Home() {
         super(R.layout.frag_admin_home);
@@ -48,16 +38,20 @@ public class Home extends Fragment {
     }
 
     private void bindingViews(@Nullable View view) {
-        layoutManagementCategories = view.findViewById(R.id.layout_management_categories);
+        mBtnCinema = view.findViewById(R.id.btn_cinema);
+        mBtnMovie = view.findViewById(R.id.btn_movie);
+        mBtnUser = view.findViewById(R.id.btn_user);
+        mBtnProduct = view.findViewById(R.id.btn_product);
+        mBtnShowtime = view.findViewById(R.id.btn_showtime);
+        mBtnTicket = view.findViewById(R.id.btn_ticket);
     }
 
     private void setupViews(@Nullable View view) {
-        managementCategories.forEach((k, v) -> {
-            Button btn = new Button(view.getContext());
-            btn.setText(String.format("Quản lý %s", k));
-            btn.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            btn.setOnClickListener(_v -> UIManager.addFragment(getParentFragmentManager(), v));
-            layoutManagementCategories.addView(btn);
-        });
+        mBtnCinema.setOnClickListener(_v -> UIManager.addFragment(getParentFragmentManager(), ManageCinemas.getInstance()));
+        mBtnMovie.setOnClickListener(_v -> UIManager.addFragment(getParentFragmentManager(), ManageMovies.getInstance()));
+        mBtnUser.setOnClickListener(_v -> UIManager.addFragment(getParentFragmentManager(), ManageUsers.getInstance()));
+        mBtnProduct.setOnClickListener(_v -> UIManager.addFragment(getParentFragmentManager(), ManageProducts.getInstance()));
+        mBtnShowtime.setOnClickListener(_v -> UIManager.addFragment(getParentFragmentManager(), ManageShowtimes.getInstance()));
+        mBtnTicket.setOnClickListener(_v -> UIManager.addFragment(getParentFragmentManager(), ManageTickets.getInstance()));
     }
 }
