@@ -25,11 +25,13 @@ public class SeatRowAdapter extends RecyclerView.Adapter<SeatRowAdapter.SeatRowV
 
     private List<Integer> seatMap;
     private Context c;
+    private List<String> solds;
 
 
-    public SeatRowAdapter(Context c, List<Integer> seatMap){
+    public SeatRowAdapter(Context c, List<Integer> seatMap, List<String> s){
         this.c = c;
         this.seatMap = seatMap;
+        this.solds = s;
         Map<Character, List<Integer>> temp = new HashMap<>();
         for(int i = 0; i<seatMap.size(); i++)
         {
@@ -48,7 +50,7 @@ public class SeatRowAdapter extends RecyclerView.Adapter<SeatRowAdapter.SeatRowV
 
     @Override
     public void onBindViewHolder(@NonNull SeatRowViewHolder holder, int position) {
-        holder.seatRow.setAdapter(new SeatAdapter(c, (char)(position+65),seatMap.get(position), seatMap.size()));
+        holder.seatRow.setAdapter(new SeatAdapter(c, (char)(position+65),seatMap.get(position), seatMap.size(), solds));
     }
 
     @Override

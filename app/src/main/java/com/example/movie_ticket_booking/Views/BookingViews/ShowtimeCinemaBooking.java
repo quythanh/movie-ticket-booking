@@ -98,7 +98,7 @@ public class ShowtimeCinemaBooking extends AppCompatActivity {
             Cinema c = (Cinema) map.get("cinema");
             Date d = (Date) map.get("date");
             try {
-                ShowtimeController.getInstance().getShowtime(intent.getStringExtra("movie_id"), c, d).observe(this, showtimes -> {
+                ShowtimeController.getInstance(c).getShowtime(intent.getStringExtra("movie_id"), d).observe(this, showtimes -> {
                     Log.d("qqz", "hello " + showtimes.toString());
                     if(showtimes.isEmpty() || showtimes==null)
                         grid.setAdapter(null);
@@ -111,6 +111,7 @@ public class ShowtimeCinemaBooking extends AppCompatActivity {
                                 Intent ToChoseSeat = new Intent(getApplicationContext(), SeatBooking.class);
                                 Showtime s = (Showtime) gridAdapter.getItem(position);
                                 ToChoseSeat.putExtra("showtime", s.getId());
+                                ToChoseSeat.putExtra("cinema", c.getId());
                                 startActivity(ToChoseSeat);
                             }
                         });

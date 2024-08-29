@@ -24,11 +24,9 @@ public class UIManager {
 
 
     public static String getVideoFrame(String url){
-        if(url == null)
-            return "404 not found";
-        if(!url.contains("youtube.com"))
-            return url;
-        return String.format("<iframe width=\"100%\" height=\"100%\" src=\"%s\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>", url);
+        if(url == null || !url.contains("youtube.com"))
+            return "<h1>404 not found</h1>";
+        return "<iframe width='100%' height='100%' src='"+ url + "' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerpolicy='strict-origin-when-cross-origin' allowfullscreen></iframe>";
     }
 
     public static SeatType getSeatType(char x, int totalLine){

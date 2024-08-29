@@ -36,13 +36,15 @@ public class SeatAdapter extends RecyclerView.Adapter<SeatAdapter.SeatViewHolder
     private char row;
     private int maxSeat;
     private int totalLine;
-    SeatType type;
+    private List<String> solds;
+    private SeatType type;
 
-    public SeatAdapter(Context c, char r, int m, int t){
+    public SeatAdapter(Context c, char r, int m, int t, List<String> s){
         this.context = c;
         this.row = r;
         this.totalLine = t;
         this.maxSeat = m;
+        this.solds = s;
 
         type = UIManager.getSeatType(row, totalLine);
     }
@@ -55,8 +57,27 @@ public class SeatAdapter extends RecyclerView.Adapter<SeatAdapter.SeatViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull SeatViewHolder holder, int position) {
+        boolean isSold = false;
         holder.seatNumber.setText(String.format("%c%d",row, position+1));
-        if(!CheckExist(position)){
+        if(solds.indexOf(String.format("%s%d", row, position+1)) != -1){
+            isSold = true;
+            switch (type){
+                case VIP:
+                    holder.seatBackground.setBackgroundResource(R.drawable.vip_sold_seat);
+                    break;
+                case STANDARD:
+                    holder.seatBackground.setBackgroundResource(R.drawable.normal_sold_seat);
+                    break;
+                case COUPLE:
+                    if(position%2==0)
+                        holder.seatBackground.setBackgroundResource(R.drawable.couple_sold_left_seat);
+                    else
+                        holder.seatBackground.setBackgroundResource(R.drawable.couple_sold_right_seat);
+
+                    break;
+            }
+        }
+        else if(!CheckExist(position)){
             switch (type){
                 case VIP:
                     holder.seatBackground.setBackgroundResource(R.drawable.vip_seat);
@@ -91,9 +112,11 @@ public class SeatAdapter extends RecyclerView.Adapter<SeatAdapter.SeatViewHolder
             }
         }
 
+        boolean finalIsSold = isSold;
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void OnClick(View view, int position, boolean isLongClick) {
+                if(finalIsSold) return;
                 Map<Character, List<Integer>> temp = AuthUserController.getInstance().getBookingSeat().getValue();
                 if(!CheckExist(position))
                 {

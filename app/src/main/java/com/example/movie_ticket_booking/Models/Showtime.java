@@ -23,7 +23,6 @@ public class Showtime extends BaseModel {
     private String movie;
     private DocumentReference room;
     private Date date;
-    private List<String> tickets;
 
 //    public Showtime(Movie movie, Room room, Date date) throws IllegalAccessException, InstantiationException {
 //        this.movie = movie.getId();

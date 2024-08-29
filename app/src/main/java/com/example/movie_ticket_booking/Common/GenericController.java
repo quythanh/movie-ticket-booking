@@ -24,7 +24,7 @@ import lombok.Getter;
 @Getter
 public abstract class GenericController<T extends Identifiable> {
     protected final FirebaseFirestore db;
-    protected final String collectionPath;
+    protected String collectionPath;
     protected final Class<T> type;
 
     public GenericController(String collection, Class<T> type) {
