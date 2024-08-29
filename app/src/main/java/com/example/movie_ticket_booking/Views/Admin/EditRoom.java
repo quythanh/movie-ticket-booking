@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.movie_ticket_booking.Common.EditContext;
 import com.example.movie_ticket_booking.Common.IReloadOnDestroy;
+import com.example.movie_ticket_booking.Common.SelectContext;
 import com.example.movie_ticket_booking.Controllers.RoomController;
 import com.example.movie_ticket_booking.Models.Room;
 import com.example.movie_ticket_booking.R;
@@ -37,11 +38,9 @@ public class EditRoom extends DialogFragment {
         mInpNum = view.findViewById(R.id.inp_num);
         mInpSeats = view.findViewById(R.id.inp_seats);
 
-        EditContext.room.observe(getParentFragment().getViewLifecycleOwner(), _room -> {
-            room = _room;
-            mInpNum.setText(Integer.toString(room.getRoomNumber()));
-            mInpSeats.setText(String.join(",", room.getSeats().stream().map(Object::toString).collect(Collectors.toList())));
-        });
+        room = SelectContext.room;
+        mInpNum.setText(Integer.toString(room.getRoomNumber()));
+        mInpSeats.setText(String.join(",", room.getSeats().stream().map(Object::toString).collect(Collectors.toList())));
 
         builder.setPositiveButton("Sửa", (dialogInterface, i) -> {
             room.setRoomNumber(Integer.parseInt(mInpNum.getText().toString()));
@@ -53,20 +52,16 @@ public class EditRoom extends DialogFragment {
                             .map(Integer::parseInt)
                             .collect(Collectors.toList()));
 
-            EditContext.cinema.observe(getParentFragment().getViewLifecycleOwner(), _cinema -> {
-                try {
-                    RoomController.getInstance(_cinema).update(room.getId(), room);
-                    Toast.makeText(getContext(), "Sửa phòng thành công!", Toast.LENGTH_SHORT).show();
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+            try {
+                RoomController.getInstance(SelectContext.cinema).update(room.getId(), room);
+                Toast.makeText(getContext(), "Sửa phòng thành công!", Toast.LENGTH_SHORT).show();
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         });
         builder.setNeutralButton("Xóa", (dialogInterface, i) -> {
-            EditContext.cinema.observe(getParentFragment().getViewLifecycleOwner(), _cinema -> {
-                RoomController.getInstance(_cinema).delete(room.getId());
-                Toast.makeText(getContext(), "Xóa phòng thành công!", Toast.LENGTH_SHORT).show();
-            });
+            RoomController.getInstance(SelectContext.cinema).delete(room.getId());
+            Toast.makeText(getContext(), "Xóa phòng thành công!", Toast.LENGTH_SHORT).show();
         });
         builder.setNegativeButton("Thoát", null);
 

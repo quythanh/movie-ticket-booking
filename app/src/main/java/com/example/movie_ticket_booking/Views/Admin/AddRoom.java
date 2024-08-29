@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.movie_ticket_booking.Common.EditContext;
 import com.example.movie_ticket_booking.Common.IReloadOnDestroy;
+import com.example.movie_ticket_booking.Common.SelectContext;
 import com.example.movie_ticket_booking.Controllers.CinemaController;
 import com.example.movie_ticket_booking.Controllers.RoomController;
 import com.example.movie_ticket_booking.Models.FilterType;
@@ -45,11 +46,9 @@ public class AddRoom extends DialogFragment {
             int roomNum = Integer.parseInt(mInpNum.getText().toString());
             List<Integer> seats = Arrays.stream(mInpSeats.getText().toString().split("\\,")).map(Integer::parseInt).collect(Collectors.toList());
 
-            EditContext.cinema.observe(getParentFragment().getViewLifecycleOwner(), _cinema -> {
-                Room room = new Room(roomNum, seats);
-                RoomController.getInstance(_cinema).add(room);
-                Toast.makeText(getContext(), "Thêm phòng thành công!", Toast.LENGTH_SHORT).show();
-            });
+            Room room = new Room(roomNum, seats);
+            RoomController.getInstance(SelectContext.cinema).add(room);
+            Toast.makeText(getContext(), "Thêm phòng thành công!", Toast.LENGTH_SHORT).show();
         });
         builder.setNegativeButton("Thoát", null);
 
