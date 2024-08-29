@@ -8,13 +8,29 @@
     android:orientation="vertical"
     tools:context=".Views.Admin.Home">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="15dp"
-        android:text="Chào bạn, "
-        android:textSize="16sp"
-        tools:ignore="HardcodedText" />
+        android:paddingHorizontal="15dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_weight="1"
+            android:text="Chào bạn"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Đăng xuất"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
