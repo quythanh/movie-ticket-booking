@@ -100,7 +100,7 @@ public class EditCinema extends Fragment implements IReloadOnDestroy {
 
             CinemaController
                     .getInstance()
-                    .TryGet(cinema.getId())
+                    .getRef(cinema.getId())
                     .collection("rooms")
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -181,7 +181,7 @@ public class EditCinema extends Fragment implements IReloadOnDestroy {
     public void reload() {
         CinemaController
                 .getInstance()
-                .TryGet(cinema.getId())
+                .getRef(cinema.getId())
                 .collection("rooms")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {

@@ -89,7 +89,7 @@ public class AuthUserController {
             if (task.isSuccessful()) {
                 FirebaseUser u = mAuth.getCurrentUser();
 
-                userController.TryGet(u.getUid()).get().addOnSuccessListener(document -> {
+                userController.getRef(u.getUid()).get().addOnSuccessListener(document -> {
                     userlogin.setValue(document.toObject(User.class));
                     Toast.makeText(context, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     if (userlogin.getValue().getRole() == UserRole.CLIENT)

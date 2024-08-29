@@ -62,12 +62,12 @@ public class ConfirmBooking extends AppCompatActivity {
     }
 
     private void getData(){
-        ShowtimeController.getInstance().getLiveData(bundle.getString("showtime")).observe(this, showtime1 -> {
+        ShowtimeController.getInstance().get(bundle.getString("showtime")).observe(this, showtime1 -> {
             if(showtime1 == null ){
                 return;
             }
             showtime.setText(Constant.DATETIME_FORMATTER.format(showtime1.getDate()));
-            MovieController.getInstance().getLiveData(showtime1.getMovie()).observe(this, movie1 -> {
+            MovieController.getInstance().get(showtime1.getMovie()).observe(this, movie1 -> {
                 if(movie1 == null){
                     return;
                 }

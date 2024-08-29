@@ -51,13 +51,13 @@ public class SeatBooking extends AppCompatActivity {
         isBooked = false;
     }
     private void getData(){
-        ShowtimeController.getInstance().getLiveData(showtime_id).observe(this, showtime -> {
+        ShowtimeController.getInstance().get(showtime_id).observe(this, showtime -> {
             if(showtime == null) {
                 loading.setText("Không thể tìm thấy suất chiếu");
                 return;
             }
             sname.setText(Constant.DATETIME_FORMATTER.format(showtime.getDate()));
-            MovieController.getInstance().getLiveData(showtime.getMovie()).observe(this, movie -> {
+            MovieController.getInstance().get(showtime.getMovie()).observe(this, movie -> {
                 mname.setText(movie.getTitle());
             });
 
