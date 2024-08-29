@@ -18,6 +18,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="XÁC NHẬN ĐẶT VÉ VỚI TP CINE"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:layout_marginTop="50dp"
+                android:textStyle="bold"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -31,7 +42,7 @@
 
                 <LinearLayout
                     android:layout_width="320dp"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="10dp"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView4"
@@ -45,7 +56,7 @@
                         android:layout_height="wrap_content"
                         android:text="INSIDE OUT 2"
                         android:textAllCaps="true"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -83,7 +94,8 @@
                                     android:layout_width="100dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="TP CINE Trần Quang Khải" />
+                                    android:text="TP CINE Trần Quang Khải"
+                                    android:textSize="12sp" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -103,7 +115,8 @@
                                     android:id="@+id/finalRoomNumber"
                                     android:layout_width="100dp"
                                     android:layout_height="wrap_content"
-                                    android:text="P1" />
+                                    android:text="P1"
+                                    android:textSize="12sp" />
                             </LinearLayout>
 
                             <TextView
@@ -113,8 +126,9 @@
                                 android:gravity="center"
                                 android:text="1.000.000 VND"
                                 android:textColor="#0D6EFD"
-                                android:textSize="18dp"
-                                android:textStyle="bold" />
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:background="@drawable/round_border_red_border"/>
 
                         </LinearLayout>
 
@@ -127,7 +141,7 @@
                                 android:id="@+id/textView28"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Loại vé"
+                                android:text="Loại vé - Số ghế"
                                 android:textStyle="bold" />
 
                             <LinearLayout
@@ -218,7 +232,7 @@
             <ListView
                 android:id="@+id/products"
                 android:layout_width="match_parent"
-                android:layout_height="130dp" />
+                android:layout_height="150dp" />
 
             <Button
                 android:id="@+id/confirmBtn"
@@ -230,6 +244,7 @@
 
             <Button
                 android:id="@+id/payBtn"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -243,6 +258,14 @@
                 android:layout_weight="1"
                 android:backgroundTint="#818181"
                 android:text="Quay lại" />
+            <Button
+                android:id="@+id/homeBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/design_default_color_error"
+                android:text="Trang chủ"
+                android:visibility="gone"/>
 
         </LinearLayout>
     </ScrollView>

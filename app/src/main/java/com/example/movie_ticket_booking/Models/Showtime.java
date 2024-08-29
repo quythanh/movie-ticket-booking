@@ -19,13 +19,11 @@ public class Showtime extends BaseModel {
     private String movie;
     private DocumentReference room;
     private Date date;
-    private List<String> tickets;
 
     public Showtime(Movie movie, DocumentReference room, Date date) {
         this.movie = movie.getId();
         this.room = room;
         this.date = date;
-        this.tickets = new ArrayList<>();
     }
 
     @NonNull
