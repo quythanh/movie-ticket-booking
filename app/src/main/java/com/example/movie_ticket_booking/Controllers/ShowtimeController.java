@@ -26,22 +26,15 @@ public class ShowtimeController extends GenericController<Showtime> {
     public static synchronized ShowtimeController getInstance() {
         if (_instance == null)
             _instance = new ShowtimeController();
+        _instance.collectionPath = "showtimes";
         return _instance;
     }
 
-    public void add(Showtime o, Cinema c) {
-        this.db.collection(this.collectionPath)
-                .add(o)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d(collectionPath, "Add successfully ID: " + documentReference.getId());
-                    c.getShowtimes().add(documentReference.getId());
-                    try {
-                        CinemaController.getInstance().update(c.getId(), c);
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .addOnFailureListener(e -> Log.e(collectionPath, "Error adding document", e));
+    public static synchronized ShowtimeController getInstance(Cinema c) {
+        if (_instance == null)
+            _instance = new ShowtimeController();
+        _instance.collectionPath = String.format("/cinemas/%s/showtimes", c.getId());
+        return _instance;
     }
 
     public LiveData<List<Showtime>> getShowtime(String movieId, Cinema cinema, Date date) throws ParseException {
@@ -67,5 +60,24 @@ public class ShowtimeController extends GenericController<Showtime> {
         return this.filter(filters.get());
     }
 
+    public LiveData<List<Showtime>> getShowtime(String movieId, Date date) throws ParseException {
+        GenericFilter<Showtime> filters = new GenericFilter<>(Showtime.class);
 
+        Date startDate = Constant.DATETIME_FORMATTER.parse(Constant.DATE_FORMATTER.format(date) + " 00:00");
+        Date endDate = (Date) startDate.clone();
+        Date now = new Date();
+
+        endDate.setTime(startDate.getTime() + 1000*60*60*24);
+
+        Timestamp start = new Timestamp(startDate.before(now) ? now : startDate);
+        Timestamp end = new Timestamp(endDate);
+
+        filters.set(FilterType.EQUAL, "movie", movieId);
+        filters.set(FilterType.GREATER_OR_EQUAL, "date", start);
+        filters.set(FilterType.LESS, "date", end);
+
+        // .orderBy("date")
+
+        return this.filter(filters.get());
+    }
 }

@@ -19,7 +19,6 @@ import com.example.movie_ticket_booking.Common.SelectContext;
 import com.example.movie_ticket_booking.Controllers.RoomController;
 import com.example.movie_ticket_booking.Controllers.ShowtimeController;
 import com.example.movie_ticket_booking.Models.Cinema;
-import com.example.movie_ticket_booking.Models.Movie;
 import com.example.movie_ticket_booking.Models.Room;
 import com.example.movie_ticket_booking.Models.Showtime;
 import com.example.movie_ticket_booking.R;
@@ -28,12 +27,14 @@ import com.google.firebase.firestore.DocumentReference;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class AddShowtimeDialog extends DialogFragment {
-
+public class EditShowtimeDialog extends DialogFragment {
     private EditText mInpTime;
     private Spinner mSpnRooms;
 
+    private Showtime showtime;
     private ArrayAdapter<Room> roomAdapter;
 
     @NonNull
@@ -43,9 +44,13 @@ public class AddShowtimeDialog extends DialogFragment {
 
         builder.setTitle("Thêm Suất chiếu");
         builder.setPositiveButton("Thoát", null);
-        builder.setNegativeButton("Thêm", (dialogInterface, i) -> {
+        builder.setNeutralButton("Xóa", (dialogInterface, i) -> {
+            Cinema _c = SelectContext.cinema;
+            ShowtimeController.getInstance(_c).delete(showtime.getId());
+            Toast.makeText(getContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
+        });
+        builder.setNegativeButton("Sửa", (dialogInterface, i) -> {
             // TODO: check time conflict
-            Movie _m = SelectContext.movie;
             Cinema _c = SelectContext.cinema;
             String _date = SelectContext.date;
             String _time = mInpTime.getText().toString();
@@ -61,9 +66,15 @@ public class AddShowtimeDialog extends DialogFragment {
             if (_datetime == null) return;
 
             DocumentReference _roomRef = RoomController.getInstance(_c).getRef(_room.getId());
-            Showtime _showtime = new Showtime(_m, _roomRef, _datetime);
-            ShowtimeController.getInstance(_c).add(_showtime);
-            Toast.makeText(getContext(), "Thêm thành công!", Toast.LENGTH_SHORT).show();
+            showtime.setDate(_datetime);
+            showtime.setRoom(_roomRef);
+
+            try {
+                ShowtimeController.getInstance(_c).update(showtime.getId(), showtime);
+                Toast.makeText(getContext(), "Sửa thành công!", Toast.LENGTH_SHORT).show();
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         View view = getLayoutInflater().inflate(R.layout.frag_admin_info_showtime, null);
@@ -77,6 +88,7 @@ public class AddShowtimeDialog extends DialogFragment {
     }
 
     private void initData() {
+        showtime = SelectContext.showtime;
         roomAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
     }
 
@@ -87,17 +99,26 @@ public class AddShowtimeDialog extends DialogFragment {
 
     private void setupViews() {
         mSpnRooms.setAdapter(roomAdapter);
+
+        mInpTime.setText(Constant.TIME_FORMATTER.format(showtime.getDate()));
     }
 
     private void loadViewsData() {
-        RoomController
-                .getInstance(SelectContext.cinema)
-                .getAll()
-                .observe(getParentFragment().getViewLifecycleOwner(), _rooms -> {
-                    roomAdapter.clear();
-                    roomAdapter.addAll(_rooms);
-                    roomAdapter.notifyDataSetChanged();
-                });
+        Cinema _cinema = SelectContext.cinema;
+        RoomController _controller = RoomController.getInstance(_cinema);
+
+        _controller.getAll().observe(getParentFragment().getViewLifecycleOwner(), _rooms -> {
+            roomAdapter.clear();
+            roomAdapter.addAll(_rooms);
+            roomAdapter.notifyDataSetChanged();
+
+            List<Room> __rooms = _rooms.stream()
+                    .filter(_r -> _controller.getRef(_r.getId()).equals(SelectContext.showtime.getRoom()))
+                    .collect(Collectors.toList());
+            Room _room = __rooms.get(0);
+            int _pos = roomAdapter.getPosition(_room);
+            mSpnRooms.setSelection(_pos);
+        });
     }
 
     @Override

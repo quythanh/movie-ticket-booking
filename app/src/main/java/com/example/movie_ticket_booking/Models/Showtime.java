@@ -1,11 +1,7 @@
 package com.example.movie_ticket_booking.Models;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
-import com.example.movie_ticket_booking.Controllers.CinemaController;
-import com.example.movie_ticket_booking.Controllers.ShowtimeController;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
@@ -25,12 +21,12 @@ public class Showtime extends BaseModel {
     private Date date;
     private List<String> tickets;
 
-//    public Showtime(Movie movie, Room room, Date date) throws IllegalAccessException, InstantiationException {
-//        this.movie = movie.getId();
-//        this.room = room.getId();
-//        this.date = date;
-//        this.tickets = new ArrayList<>();
-//    }
+    public Showtime(Movie movie, DocumentReference room, Date date) {
+        this.movie = movie.getId();
+        this.room = room;
+        this.date = date;
+        this.tickets = new ArrayList<>();
+    }
 
     @NonNull
     @Override

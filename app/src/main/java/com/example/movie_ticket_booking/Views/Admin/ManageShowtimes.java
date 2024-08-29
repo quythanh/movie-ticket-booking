@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,19 +20,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.movie_ticket_booking.Common.Constant;
-import com.example.movie_ticket_booking.Common.EditContext;
-import com.example.movie_ticket_booking.Common.GenericFilter;
+import com.example.movie_ticket_booking.Common.IReloadOnDestroy;
+import com.example.movie_ticket_booking.Common.SelectContext;
 import com.example.movie_ticket_booking.Components.ShowtimeGridAdapter;
 import com.example.movie_ticket_booking.Controllers.CinemaController;
 import com.example.movie_ticket_booking.Controllers.MovieController;
-import com.example.movie_ticket_booking.Controllers.RoomController;
 import com.example.movie_ticket_booking.Controllers.ShowtimeController;
 import com.example.movie_ticket_booking.Models.Cinema;
-import com.example.movie_ticket_booking.Models.FilterType;
 import com.example.movie_ticket_booking.Models.Movie;
-import com.example.movie_ticket_booking.Models.Showtime;
 import com.example.movie_ticket_booking.R;
-import com.google.firebase.firestore.FieldPath;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -43,7 +38,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ManageShowtimes extends Fragment {
+public class ManageShowtimes extends Fragment implements IReloadOnDestroy {
 
     private static ManageShowtimes _instance = null;
 
@@ -100,20 +95,21 @@ public class ManageShowtimes extends Fragment {
 
     private void setupViews() {
         mBtnAdd.setOnClickListener(_v -> {
-            Cinema _c = (Cinema) mSpnCinemas.getSelectedItem();
-            if (_c == null) return;
-
-            Movie _m = (Movie) mSpnMovies.getSelectedItem();
-            if (_m == null) return;
-
-            EditContext.cinema.setValue(_c);
-            EditContext.movie.setValue(_m);
+            setValueContext();
             AddShowtimeDialog dialog = new AddShowtimeDialog();
             dialog.show(getChildFragmentManager(), "Dialog");
         });
         mBtnBack.setOnClickListener(_v -> getParentFragmentManager().popBackStack());
 
         mGridShowtimes.setAdapter(showtimeAdapter);
+        mGridShowtimes.setOnItemClickListener((adapterView, view, i, l) -> {
+            setValueContext();
+
+            SelectContext.showtime = showtimeAdapter.getItem(i);
+
+            EditShowtimeDialog dialog = new EditShowtimeDialog();
+            dialog.show(getChildFragmentManager(), "Dialog");
+        });
 
         mInpDate.setText(Constant.DATE_FORMATTER.format(new Date()));
         mInpDate.setOnClickListener(_v -> {
@@ -217,12 +213,25 @@ public class ManageShowtimes extends Fragment {
 
             try {
                 ShowtimeController
-                        .getInstance()
-                        .getShowtime(_m, _c, _d)
-                        .observe(getViewLifecycleOwner(), _showtimes -> showtimeAdapter.setList(_showtimes));
+                        .getInstance(_c)
+                        .getShowtime(_m, _d)
+                        .observe(getViewLifecycleOwner(), _showtimes -> {
+                            showtimeAdapter.setList(_showtimes);
+                        });
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    @Override
+    public void reload() {
+        getShowtimesData();
+    }
+
+    private void setValueContext() {
+        SelectContext.cinema = (Cinema) mSpnCinemas.getSelectedItem();
+        SelectContext.movie = (Movie) mSpnMovies.getSelectedItem();
+        SelectContext.date = mInpDate.getText().toString();
     }
 }
