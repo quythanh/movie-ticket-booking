@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.movie_ticket_booking.Common.Constant;
 import com.example.movie_ticket_booking.Common.UIManager;
+import com.example.movie_ticket_booking.Controllers.AuthUserController;
 import com.example.movie_ticket_booking.Models.Movie;
 import com.example.movie_ticket_booking.R;
 import com.example.movie_ticket_booking.Views.BookingViews.ShowtimeCinemaBooking;
@@ -84,13 +85,17 @@ public class MovieInfoFragment extends Fragment {
                 premiere.setText(Constant.DATE_FORMATTER.format(movie.getPremiere()));
 
 
-                trailer.loadData(movie.getTrailer(), "text/html", "utf-8");
+                trailer.loadData(UIManager.getVideoFrame(movie.getTrailer()), "text/html", "utf-8");
                 trailer.getSettings().setJavaScriptEnabled(true);
                 trailer.getSettings().setLoadWithOverviewMode(true);
                 trailer.getSettings().setUseWideViewPort(true);
                 trailer.setWebChromeClient(new WebChromeClient());
 
                 bookingBtn.setOnClickListener(_v -> {
+                    if (AuthUserController.getInstance().getUserlogin().getValue().getId() == null){
+                        UIManager.changeFragment(getParentFragmentManager(), LoginFragment.getInstance());
+                        return;
+                    }
                     Intent intent = new Intent(view.getContext(), ShowtimeCinemaBooking.class);
                     intent.putExtra("movie_id", movie.getId());
                     startActivity(intent);

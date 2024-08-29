@@ -15,11 +15,15 @@ import com.example.movie_ticket_booking.Common.Constant;
 import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.Components.SeatRowAdapter;
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
+import com.example.movie_ticket_booking.Controllers.CinemaController;
 import com.example.movie_ticket_booking.Controllers.MovieController;
 import com.example.movie_ticket_booking.Controllers.ShowtimeController;
+import com.example.movie_ticket_booking.Controllers.TicketController;
+import com.example.movie_ticket_booking.Models.Cinema;
 import com.example.movie_ticket_booking.Models.Room;
 import com.example.movie_ticket_booking.Models.SeatType;
 import com.example.movie_ticket_booking.R;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +34,7 @@ public class SeatBooking extends AppCompatActivity {
 
     private RecyclerView seatMap;
     private TextView result, normal, vip, couple, mname, sname, loading;
-    private String showtime_id;
+    private String showtime_id, cinema_id;
     private Button back, next;
     private Bundle bundle;
     private boolean isBooked;
@@ -38,6 +42,7 @@ public class SeatBooking extends AppCompatActivity {
         Intent intent = getIntent();
         result = findViewById(R.id.result);
         showtime_id = intent.getStringExtra("showtime");
+        cinema_id = intent.getStringExtra("cinema");
         normal = findViewById(R.id.normalPrice);
         vip = findViewById(R.id.vipPrice);
         couple = findViewById(R.id.couplePrice);
@@ -46,89 +51,70 @@ public class SeatBooking extends AppCompatActivity {
         loading = findViewById(R.id.loading);
         back = findViewById(R.id.backBtn);
         next = findViewById(R.id.nextBtn);
+
         bundle = new Bundle();
         bundle.putString("showtime", showtime_id);
+        bundle.putString("cinema", cinema_id);
+
         isBooked = false;
     }
     private void getData(){
-        ShowtimeController.getInstance().get(showtime_id).observe(this, showtime -> {
-            if(showtime == null) {
-                loading.setText("Không thể tìm thấy suất chiếu");
-                return;
-            }
-            sname.setText(Constant.DATETIME_FORMATTER.format(showtime.getDate()));
-            MovieController.getInstance().get(showtime.getMovie()).observe(this, movie -> {
-                mname.setText(movie.getTitle());
-            });
+        CinemaController.getInstance().get(cinema_id).observe(this, cinema -> {
+            if(cinema == null) return;
+            ShowtimeController.getInstance(cinema).get(showtime_id).observe(this, showtime -> {
+                if(showtime == null) {
+                    loading.setText("Không thể tìm thấy suất chiếu");
+                    return;
+                }
+                sname.setText(Constant.DATETIME_FORMATTER.format(showtime.getDate()));
+                MovieController.getInstance().get(showtime.getMovie()).observe(this, movie -> {
+                    if(movie == null) return;
+                    mname.setText(movie.getTitle());
+                });
 
-            showtime.getRoom().get().addOnSuccessListener(documentSnapshot -> {
-                Room room = documentSnapshot.toObject(Room.class);
-                room.setId(documentSnapshot.getId());
+                DocumentReference c = ShowtimeController.getInstance(cinema).getRef(showtime_id);
+                TicketController.getInstance().getSoldSeat(c).observe(this, strings -> {
 
-                loading.setVisibility(View.GONE);
+                    List<String> finalStrings = strings == null || strings.isEmpty() ? new ArrayList<>() : strings;
 
-                seatMap = findViewById(R.id.seatMap);
-                seatMap.setHasFixedSize(true);
-                seatMap.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                    showtime.getRoom().get().addOnSuccessListener(documentSnapshot -> {
+                        Room room = documentSnapshot.toObject(Room.class);
+                        room.setId(documentSnapshot.getId());
 
-                SeatRowAdapter seatRowAdapter = new SeatRowAdapter(getApplicationContext(),room.getSeats());
-                seatMap.setAdapter(seatRowAdapter);
+                        loading.setVisibility(View.GONE);
 
-                AuthUserController.getInstance().getBookingSeat().observe(this, seatMap -> {
-                    AtomicReference<String> t = new AtomicReference<>("");
-                    isBooked = false;
-                    for(Map.Entry<Character, List<Integer>> e : seatMap.entrySet()){
+                        seatMap = findViewById(R.id.seatMap);
+                        seatMap.setHasFixedSize(true);
+                        seatMap.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
-                        if(!e.getValue().isEmpty()){
-                            String type = UIManager.getSeatType(e.getKey(), room.getSeats().size()).toString();
-                            ArrayList<String> str = bundle.getStringArrayList(type) == null ? new ArrayList<>() : bundle.getStringArrayList(type);
-                            isBooked = true;
-                            e.getValue().forEach(x -> {
-                                String value = String.format("%c%d", e.getKey(), x+1);
-                                t.set(String.format("%s  %s", t.get(), value));
-                                if(!str.contains(value))
-                                    str.add(value);
-                            });
-                            bundle.putStringArrayList(type,str);
-                        }
-                    }
-                    result.setText(t.get());
+                        SeatRowAdapter seatRowAdapter = new SeatRowAdapter(getApplicationContext(),room.getSeats(), finalStrings);
+                        seatMap.setAdapter(seatRowAdapter);
+
+                        AuthUserController.getInstance().getBookingSeat().observe(this, seatMap -> {
+                            AtomicReference<String> t = new AtomicReference<>("");
+                            isBooked = false;
+                            for(Map.Entry<Character, List<Integer>> e : seatMap.entrySet()){
+
+                                if(!e.getValue().isEmpty()){
+                                    String type = UIManager.getSeatType(e.getKey(), room.getSeats().size()).toString();
+                                    ArrayList<String> str = bundle.getStringArrayList(type) == null ? new ArrayList<>() : bundle.getStringArrayList(type);
+                                    isBooked = true;
+                                    e.getValue().forEach(x -> {
+                                        String value = String.format("%c%d", e.getKey(), x+1);
+                                        t.set(String.format("%s  %s", t.get(), value));
+                                        if(!str.contains(value))
+                                            str.add(value);
+                                    });
+                                    bundle.putStringArrayList(type,str);
+                                }
+                            }
+                            result.setText(t.get());
+                        });
+                    });
                 });
             });
-
-//            RoomController.getInstance().getLiveData(showtime.getRoom()).observe(this, room -> {
-//                if(room == null) return;
-//                loading.setVisibility(View.GONE);
-//
-//                seatMap = findViewById(R.id.seatMap);
-//                seatMap.setHasFixedSize(true);
-//                seatMap.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-//
-//                SeatRowAdapter seatRowAdapter = new SeatRowAdapter(getApplicationContext(),room.getSeats());
-//                seatMap.setAdapter(seatRowAdapter);
-//
-//                AuthUserController.getInstance().getBookingSeat().observe(this, seatMap -> {
-//                    AtomicReference<String> t = new AtomicReference<>("");
-//                    isBooked = false;
-//                    for(Map.Entry<Character, List<Integer>> e : seatMap.entrySet()){
-//
-//                        if(!e.getValue().isEmpty()){
-//                            String type =  Common.getSeatType(e.getKey(), room.getSeats().size()).toString();
-//                            ArrayList<String> str = bundle.getStringArrayList(type) == null ? new ArrayList<>() : bundle.getStringArrayList(type);
-//                            isBooked = true;
-//                            e.getValue().forEach(x -> {
-//                                String value = String.format("%c%d", e.getKey(), x+1);
-//                                t.set(String.format("%s  %s", t.get(), value));
-//                                if(!str.contains(value))
-//                                    str.add(value);
-//                            });
-//                            bundle.putStringArrayList(type,str);
-//                        }
-//                    }
-//                    result.setText(t.get());
-//                });
-//            });
         });
+
     }
 
     private void staticBinding(){
