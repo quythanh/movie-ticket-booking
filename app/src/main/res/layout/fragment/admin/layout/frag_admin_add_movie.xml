@@ -156,6 +156,8 @@
                     android:layout_width="125dp"
                     android:layout_height="wrap_content"
                     android:hint="DD/MM/YYYY"
+                    android:inputType="none"
+                    android:focusable="false"
                     tools:ignore="HardcodedText" />
 
             </LinearLayout>
