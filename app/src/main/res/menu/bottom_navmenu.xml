@@ -10,7 +10,7 @@
         android:id="@+id/cinemas"
         android:icon="@drawable/ic_location"
         tools:ignore="HardcodedText" />
-    <item android:title="Thông Báo"
+    <item android:title="Vé của tôi"
         android:id="@+id/notification"
         android:icon="@drawable/ic_event"
         tools:ignore="HardcodedText" />

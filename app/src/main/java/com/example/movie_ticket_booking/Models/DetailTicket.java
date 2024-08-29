@@ -12,8 +12,7 @@ import lombok.Setter;
 public abstract class DetailTicket {
     protected DetailType detailType;
 
-
-    public static enum DetailType{
+    public static enum DetailType {
         SEAT,
         PRODUCT
     }

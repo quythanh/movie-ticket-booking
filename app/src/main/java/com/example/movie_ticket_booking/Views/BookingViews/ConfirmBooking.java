@@ -14,7 +14,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.movie_ticket_booking.Common.Constant;
-import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.Components.ConfirmedProductAdapter;
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
 import com.example.movie_ticket_booking.Controllers.CinemaController;
@@ -24,7 +23,6 @@ import com.example.movie_ticket_booking.Controllers.ShowtimeController;
 import com.example.movie_ticket_booking.Controllers.TicketController;
 import com.example.movie_ticket_booking.Controllers.UserController;
 import com.example.movie_ticket_booking.MainActivity;
-import com.example.movie_ticket_booking.Models.Cinema;
 import com.example.movie_ticket_booking.Models.DetailTicket;
 import com.example.movie_ticket_booking.Models.Product;
 import com.example.movie_ticket_booking.Models.ProductInTicket;
@@ -33,7 +31,6 @@ import com.example.movie_ticket_booking.Models.Seat;
 import com.example.movie_ticket_booking.Models.SeatType;
 import com.example.movie_ticket_booking.Models.Ticket;
 import com.example.movie_ticket_booking.R;
-import com.example.movie_ticket_booking.Views.FilmFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;

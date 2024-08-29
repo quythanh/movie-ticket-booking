@@ -2,9 +2,7 @@ package com.example.movie_ticket_booking.Views.Admin;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,12 +15,9 @@ import com.example.movie_ticket_booking.Common.EditContext;
 import com.example.movie_ticket_booking.Common.IReloadOnDestroy;
 import com.example.movie_ticket_booking.Common.SelectContext;
 import com.example.movie_ticket_booking.Controllers.CinemaController;
-import com.example.movie_ticket_booking.Controllers.RoomController;
-import com.example.movie_ticket_booking.Models.FilterType;
 import com.example.movie_ticket_booking.Models.Room;
 import com.example.movie_ticket_booking.R;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,6 +41,16 @@ public class AddRoom extends DialogFragment {
             int roomNum = Integer.parseInt(mInpNum.getText().toString());
             List<Integer> seats = Arrays.stream(mInpSeats.getText().toString().split("\\,")).map(Integer::parseInt).collect(Collectors.toList());
 
+            // EditContext.cinema.observe(getParentFragment().getViewLifecycleOwner(), _cinema -> {
+            //     Room room = new Room(roomNum, seats);
+            //     CinemaController.getInstance()
+            //             .getRef(_cinema.getId())
+            //             .collection("rooms")
+            //             .add(room)
+            //             .addOnSuccessListener(documentReference -> {
+            //                 Toast.makeText(getContext(), "Thêm phòng thành công!", Toast.LENGTH_SHORT).show();
+            //             });
+            // });
             Room room = new Room(roomNum, seats);
             RoomController.getInstance(SelectContext.cinema).add(room);
             Toast.makeText(getContext(), "Thêm phòng thành công!", Toast.LENGTH_SHORT).show();
