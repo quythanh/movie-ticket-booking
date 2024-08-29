@@ -41,7 +41,7 @@ public abstract class GenericController<T extends Identifiable> {
 
     public LiveData<T> get(String id) {
         MutableLiveData<T> liveData = new MutableLiveData<>();
-        TryGet(id)
+        getRef(id)
                 .get()
                 .addOnSuccessListener(document -> {
                     T d = document.toObject(this.type);
@@ -88,13 +88,13 @@ public abstract class GenericController<T extends Identifiable> {
         return liveData;
     }
 
-    public DocumentReference TryGet(String id){
+    public DocumentReference getRef(String id){
         return this.db.collection(this.collectionPath).document(id);
     }
 
     public LiveData<T> getLiveData(String id) {
         MutableLiveData<T> liveData = new MutableLiveData<>();
-        TryGet(id)
+        getRef(id)
                 .get()
                 .addOnSuccessListener(document -> {
                     T d = document.toObject(this.type);

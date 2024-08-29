@@ -19,7 +19,6 @@ import com.example.movie_ticket_booking.Controllers.CinemaController;
 import com.example.movie_ticket_booking.Controllers.MovieController;
 import com.example.movie_ticket_booking.Controllers.ShowtimeController;
 import com.example.movie_ticket_booking.Controllers.TicketController;
-import com.example.movie_ticket_booking.Models.Cinema;
 import com.example.movie_ticket_booking.Models.Room;
 import com.example.movie_ticket_booking.Models.SeatType;
 import com.example.movie_ticket_booking.R;
@@ -72,7 +71,7 @@ public class SeatBooking extends AppCompatActivity {
                     mname.setText(movie.getTitle());
                 });
 
-                DocumentReference c = ShowtimeController.getInstance(cinema).TryGet(showtime_id);
+                DocumentReference c = ShowtimeController.getInstance(cinema).getRef(showtime_id);
                 TicketController.getInstance().getSoldSeat(c).observe(this, strings -> {
 
                     List<String> finalStrings = strings == null || strings.isEmpty() ? new ArrayList<>() : strings;

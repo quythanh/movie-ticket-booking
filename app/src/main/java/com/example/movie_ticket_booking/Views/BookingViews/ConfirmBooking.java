@@ -14,7 +14,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.movie_ticket_booking.Common.Constant;
-import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.Components.ConfirmedProductAdapter;
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
 import com.example.movie_ticket_booking.Controllers.CinemaController;
@@ -24,7 +23,6 @@ import com.example.movie_ticket_booking.Controllers.ShowtimeController;
 import com.example.movie_ticket_booking.Controllers.TicketController;
 import com.example.movie_ticket_booking.Controllers.UserController;
 import com.example.movie_ticket_booking.MainActivity;
-import com.example.movie_ticket_booking.Models.Cinema;
 import com.example.movie_ticket_booking.Models.DetailTicket;
 import com.example.movie_ticket_booking.Models.Product;
 import com.example.movie_ticket_booking.Models.ProductInTicket;
@@ -33,7 +31,6 @@ import com.example.movie_ticket_booking.Models.Seat;
 import com.example.movie_ticket_booking.Models.SeatType;
 import com.example.movie_ticket_booking.Models.Ticket;
 import com.example.movie_ticket_booking.R;
-import com.example.movie_ticket_booking.Views.FilmFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,8 +87,8 @@ public class ConfirmBooking extends AppCompatActivity {
             if(cinema1 == null) return;
             cinema.setText("TP CINE " + cinema1.getName());
 
-            ticket.setShowtime(ShowtimeController.getInstance(cinema1).TryGet(bundle.getString("showtime")));
-            ticket.setUser(UserController.getInstance().TryGet(AuthUserController.getInstance().getUserlogin().getValue().getId()));
+            ticket.setShowtime(ShowtimeController.getInstance(cinema1).getRef(bundle.getString("showtime")));
+            ticket.setUser(UserController.getInstance().getRef(AuthUserController.getInstance().getUserlogin().getValue().getId()));
 
             List<DetailTicket> temp = new ArrayList<>();
 
@@ -166,7 +163,7 @@ public class ConfirmBooking extends AppCompatActivity {
                                 int a = b.getInt(x.getId());
                                 map.put(x,a);
                                 totalInt += x.getUnitPrice() * a;
-                                DetailTicket t = new ProductInTicket(DetailTicket.DetailType.PRODUCT, ProductController.getInstance().TryGet(x.getId()), a);
+                                DetailTicket t = new ProductInTicket(DetailTicket.DetailType.PRODUCT, ProductController.getInstance().getRef(x.getId()), a);
                                 temp.add(t);
                             }
                         });
