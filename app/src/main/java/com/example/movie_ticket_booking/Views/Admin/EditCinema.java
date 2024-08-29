@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.example.movie_ticket_booking.Common.EditContext;
 import com.example.movie_ticket_booking.Common.GenericFilter;
 import com.example.movie_ticket_booking.Common.IReloadOnDestroy;
+import com.example.movie_ticket_booking.Common.SelectContext;
 import com.example.movie_ticket_booking.Controllers.CinemaController;
 import com.example.movie_ticket_booking.Models.Address;
 import com.example.movie_ticket_booking.Models.Cinema;
@@ -41,7 +42,6 @@ public class EditCinema extends Fragment implements IReloadOnDestroy {
     private ArrayAdapter<String> provinceAdapter;
     private ArrayAdapter<Room> roomAdapter;
     private Cinema cinema;
-    private GenericFilter<Room> filters;
 
     private EditCinema() {
         super(R.layout.frag_admin_info_cinema);
@@ -67,12 +67,12 @@ public class EditCinema extends Fragment implements IReloadOnDestroy {
     private void initData() {
         provinceAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.provinces));
         roomAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, new ArrayList<>());
-        filters = new GenericFilter<>(Room.class);
     }
 
     private void loadViewsData() {
         EditContext.cinema.observe(getViewLifecycleOwner(), _cinema -> {
             cinema = _cinema;
+            SelectContext.cinema = _cinema;
 
             mInpName.setText(cinema.getName());
             mInpStreet.setText(cinema.getAddress().getStreet());
@@ -152,7 +152,7 @@ public class EditCinema extends Fragment implements IReloadOnDestroy {
 
         mGridRooms.setAdapter(roomAdapter);
         mGridRooms.setOnItemClickListener((adapterView, view, i, l) -> {
-            EditContext.room.setValue(roomAdapter.getItem(i));
+            SelectContext.room = roomAdapter.getItem(i);
             EditRoom dialog = new EditRoom();
             dialog.show(getChildFragmentManager(), "Dialog");
         });

@@ -73,33 +73,35 @@ public class ManageTickets extends Fragment {
         mSpnCinemas.setAdapter(cinemaAdapter);
         mSpnMovies.setAdapter(movieAdapter);
 
-        mSpnCinemas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Cinema _c = (Cinema) mSpnCinemas.getSelectedItem();
-                MovieController.getInstance().get(_c.getNowPresenting()).observe(getViewLifecycleOwner(), _movies -> {
-                    movieAdapter.clear();
-                    movieAdapter.addAll(_movies);
-                    movieAdapter.notifyDataSetChanged();
-                });
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        mSpnMovies.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//        mSpnCinemas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                Cinema _c = (Cinema) mSpnCinemas.getSelectedItem();
+//                MovieController.getInstance()
+//                        .get(_c.getNowPresenting())
+//                        .observe(getViewLifecycleOwner(), _movies -> {
+//                            movieAdapter.clear();
+//                            movieAdapter.addAll(_movies);
+//                            movieAdapter.notifyDataSetChanged();
+//                        });
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
+//        mSpnMovies.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
     }
 
     private void loadViewsData() {
@@ -107,6 +109,11 @@ public class ManageTickets extends Fragment {
             cinemaAdapter.clear();
             cinemaAdapter.addAll(_cinemas);
             cinemaAdapter.notifyDataSetChanged();
+        });
+        MovieController.getInstance().getAll().observe(getViewLifecycleOwner(), _movies -> {
+            movieAdapter.clear();
+            movieAdapter.addAll(_movies);
+            movieAdapter.notifyDataSetChanged();
         });
     }
 }

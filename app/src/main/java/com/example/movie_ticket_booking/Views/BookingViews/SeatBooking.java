@@ -66,7 +66,7 @@ public class SeatBooking extends AppCompatActivity {
                     return;
                 }
                 sname.setText(Constant.DATETIME_FORMATTER.format(showtime.getDate()));
-                MovieController.getInstance().getLiveData(showtime.getMovie()).observe(this, movie -> {
+                MovieController.getInstance().get(showtime.getMovie()).observe(this, movie -> {
                     if(movie == null) return;
                     mname.setText(movie.getTitle());
                 });

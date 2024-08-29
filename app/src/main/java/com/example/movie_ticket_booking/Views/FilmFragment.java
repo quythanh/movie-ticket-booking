@@ -122,26 +122,6 @@ public class FilmFragment extends Fragment {
 
         // Landscape Images
         this._controller.getByType(MovieType.PRESENTING).observe(getViewLifecycleOwner(), movies -> {
-//            RoomController.getInstance().getAll().observe(getViewLifecycleOwner(),rooms -> {
-//                if(movies == null || rooms == null) return;
-//                try {
-//                    Showtime s1 = new Showtime(movies.get(0), rooms.get(1), BaseModel.dateTimeFormatter.parse("19/08/2024 12:20"));
-//                    Log.d("qq", rooms.get(1).getId());
-//                    CinemaController.getInstance().getLiveData(rooms.get(1).getCinema()).observe(getViewLifecycleOwner(), c -> {
-//                        if(c == null) return;
-//                        ShowtimeController.getInstance().add(s1, c);
-//                    });
-//
-//
-//                } catch (IllegalAccessException e) {
-//                    throw new RuntimeException(e);
-//                } catch (java.lang.InstantiationException e) {
-//                    throw new RuntimeException(e);
-//                } catch (ParseException e) {
-//                    throw new RuntimeException(e);
-//                }
-//
-//            });
             viewPagerAdapter.setPhotos(movies);
             viewPager.setAdapter(viewPagerAdapter);
             viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

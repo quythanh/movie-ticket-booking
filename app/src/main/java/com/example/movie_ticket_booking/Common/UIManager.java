@@ -23,17 +23,16 @@ public class UIManager {
     }
 
 
-    public static String getVideoFrame(String url){
-        if(url == null || !url.contains("youtube.com"))
+    public static String getVideoFrame(String url) {
+        if (url == null || !url.contains("youtube.com"))
             return "<h1>404 not found</h1>";
-        return "<iframe width='100%' height='100%' src='"+ url + "' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerpolicy='strict-origin-when-cross-origin' allowfullscreen></iframe>";
+        return "<iframe width='100%' height='100%' src='" + url + "' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerpolicy='strict-origin-when-cross-origin' allowfullscreen></iframe>";
     }
 
     public static SeatType getSeatType(char x, int totalLine){
-        if((int) x -65 >=  totalLine - Configuration.LastDoubleRow && (int) x -65 <= totalLine - 1){
+        if ((int) x - 65 >= totalLine - Configuration.LastDoubleRow && (int) x -65 <= totalLine - 1)
             return SeatType.COUPLE;
-        }
-        if((int) x - 65 >= 0 && (int) x - 65 <= Configuration.FirstNormalRow - 1)
+        if ((int) x - 65 >= 0 && (int) x - 65 <= Configuration.FirstNormalRow - 1)
             return SeatType.STANDARD;
         return SeatType.VIP;
     }

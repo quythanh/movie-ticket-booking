@@ -32,6 +32,7 @@ public abstract class GenericController<T extends Identifiable> {
         this.collectionPath = collection;
         this.type = type;
     }
+
     public void add(T o) {
         this.db.collection(this.collectionPath)
                 .add(o)
@@ -88,21 +89,8 @@ public abstract class GenericController<T extends Identifiable> {
         return liveData;
     }
 
-    public DocumentReference getRef(String id){
+    public DocumentReference getRef(String id) {
         return this.db.collection(this.collectionPath).document(id);
-    }
-
-    public LiveData<T> getLiveData(String id) {
-        MutableLiveData<T> liveData = new MutableLiveData<>();
-        getRef(id)
-                .get()
-                .addOnSuccessListener(document -> {
-                    T d = document.toObject(this.type);
-                    d.setId(document.getId());
-                    liveData.setValue(d);
-                })
-                .addOnFailureListener(e -> Log.d("qq", "error"));
-        return liveData;
     }
 
     public LiveData<List<T>> getAll() {
