@@ -21,56 +21,43 @@ public class TicketController extends GenericController<Ticket> {
     private TicketController() {
         super("tickets", Ticket.class);
     }
-
-
+    
     public static synchronized TicketController getInstance() {
         if (_instance == null)
             _instance = new TicketController();
         return _instance;
     }
-    public MutableLiveData<List<Ticket>> getMyTickets(){
-        User u = AuthUserController.getInstance().getUserlogin().getValue();
+
+    public MutableLiveData<List<Ticket>> getAll(User u) {
         MutableLiveData<List<Ticket>> result = new MutableLiveData<>();
-        List<Ticket> tickets =new ArrayList<>();
-        DocumentReference ur = UserController.getInstance().getRef(u.getId());
+        DocumentReference _userRef = UserController.getInstance().getRef(u.getId());
 
         this.db.collection(this.collectionPath)
-                .whereEqualTo("user", ur)
+                .whereEqualTo("user", _userRef)
                 .orderBy("createdDate")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    queryDocumentSnapshots.forEach(x -> {
-                        Ticket t = new Ticket();
-                        t.setId(x.getId());
-                        t.setUser(x.getDocumentReference("user"));
-                        t.setShowtime(x.getDocumentReference("showtime"));
-                        t.setTotal(Math.toIntExact(x.getLong("total")));
-                        t.setActive( x.getBoolean("active"));
-                        t.setCancelableTime(x.getTimestamp("cancelableTime").toDate());
-                        t.setCreatedDate(x.getTimestamp("createdDate").toDate());
-                        t.setDetails(new ArrayList<>());
-                        List<Map<String, Object>> GeneralDetails = (List<Map<String, Object>>) x.get("details");
+                    List<Ticket> tickets = new ArrayList<>();
 
-                        for(Map<String, Object> y : GeneralDetails)
-                        {
-                            if(y.get("detailType").equals("SEAT")){
-                                DetailTicket dt = new Seat(DetailTicket.DetailType.SEAT, (String) y.get("seatNumber"), SeatType.valueOf((String) y.get("type")));
-                                t.getDetails().add(dt);
-                            }
-                            else if (y.get("detailType").equals("PRODUCT")){
-                                DetailTicket dt = new ProductInTicket(DetailTicket.DetailType.PRODUCT, (DocumentReference) y.get("product") , Math.toIntExact((Long) y.get("amount")));
-                                t.getDetails().add(dt);
-                            }
-                        }
+                    queryDocumentSnapshots.forEach(x -> {
+                        Ticket t = Ticket.parse(x);
                         tickets.add(t);
                     });
+
                     result.setValue(tickets);
                 })
                 .addOnFailureListener(command -> {
                     System.out.println(command);
                 });
-        return  result;
+
+        return result;
     }
+
+    public MutableLiveData<List<Ticket>> getMyTickets() {
+        User u = AuthUserController.getInstance().getUserlogin().getValue();
+        return this.getAll(u);
+    }
+
     public  MutableLiveData<List<String>> getSoldSeat(DocumentReference showtime){
         MutableLiveData<List<String>> result = new MutableLiveData<>();
         List<String> res = new ArrayList<>();
