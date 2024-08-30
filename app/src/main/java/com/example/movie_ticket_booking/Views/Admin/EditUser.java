@@ -34,6 +34,8 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Map;
 
 public class EditUser extends Fragment {
@@ -126,8 +128,16 @@ public class EditUser extends Fragment {
             int month = cldr.get(Calendar.MONTH);
             int year = cldr.get(Calendar.YEAR);
 
-            DatePickerDialog picker = new DatePickerDialog(getContext(),
-                    (view1, year1, monthOfYear, dayOfMonth) -> txtBirthday.setText(String.format("%s/%s/%s", dayOfMonth, monthOfYear + 1, year1)), year, month, day);
+            DatePickerDialog picker = new DatePickerDialog(
+                    getContext(),
+                    (_view, _year, _month, _day) -> {
+                        Date date = new GregorianCalendar(_year, _month, _day).getTime();
+                        String strDate = Constant.DATE_FORMATTER.format(date);
+                        txtBirthday.setText(strDate);
+                    },
+                    year, month, day
+            );
+
             picker.show();
         });
     }

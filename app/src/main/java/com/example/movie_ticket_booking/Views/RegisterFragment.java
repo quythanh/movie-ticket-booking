@@ -1,5 +1,6 @@
 package com.example.movie_ticket_booking.Views;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,9 +13,13 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.movie_ticket_booking.Common.Constant;
 import com.example.movie_ticket_booking.Controllers.AuthUserController;
 import com.example.movie_ticket_booking.R;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +48,25 @@ public class RegisterFragment extends Fragment {
         Map<String, String> info = new HashMap<>();
         gender = true;
 
+        EditText mInpBirthday = view.findViewById(R.id.birthday);
+        mInpBirthday.setOnClickListener(_v -> {
+            Calendar cldr = Calendar.getInstance();
+            int day = cldr.get(Calendar.DAY_OF_MONTH);
+            int month = cldr.get(Calendar.MONTH);
+            int year = cldr.get(Calendar.YEAR);
+
+            DatePickerDialog picker = new DatePickerDialog(
+                    getContext(),
+                    (_view, _year, _month, _day) -> {
+                        Date date = new GregorianCalendar(_year, _month, _day).getTime();
+                        String strDate = Constant.DATE_FORMATTER.format(date);
+                        mInpBirthday.setText(strDate);
+                    },
+                    year, month, day
+            );
+            picker.show();
+        });
+
         Button confirm = view.findViewById(R.id.RegisterBtn);
         confirm.setOnClickListener(v -> {
 
@@ -68,8 +92,7 @@ public class RegisterFragment extends Fragment {
             editText = view.findViewById(R.id.Phone);
             phone = editText.getText().toString();
 
-            editText = view.findViewById(R.id.birthday);
-            birthday = editText.getText().toString();
+            birthday = mInpBirthday.getText().toString();
 
             radGroup = view.findViewById(R.id.genderRad);
             gender = radGroup.getCheckedRadioButtonId() == R.id.male;

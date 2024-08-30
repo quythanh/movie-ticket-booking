@@ -166,10 +166,12 @@
                             android:drawablePadding="10dp"
                             android:ems="10"
                             android:hint="Ngày sinh..."
-                            android:inputType="date"
+                            android:inputType="none"
+                            android:focusable="false"
                             android:textColor="@color/white"
                             android:textColorHint="@color/material_dynamic_neutral40"
-                            android:textSize="20sp" />
+                            android:textSize="20sp"
+                            tools:ignore="HardcodedText" />
 
                         <RadioGroup
                             android:id="@+id/genderRad"
