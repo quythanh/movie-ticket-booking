@@ -42,7 +42,7 @@ public class EditShowtimeDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setTitle("Thêm Suất chiếu");
+        builder.setTitle("Sửa Suất chiếu");
         builder.setPositiveButton("Thoát", null);
         builder.setNeutralButton("Xóa", (dialogInterface, i) -> {
             Cinema _c = SelectContext.cinema;
