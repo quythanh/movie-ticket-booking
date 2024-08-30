@@ -5,8 +5,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.movie_ticket_booking.Configuration;
+import com.example.movie_ticket_booking.Controllers.AuthUserController;
 import com.example.movie_ticket_booking.Models.SeatType;
 import com.example.movie_ticket_booking.R;
+import com.example.movie_ticket_booking.Views.LoginFragment;
 
 public class UIManager {
     public static void addFragment(FragmentManager fragmentManager, Fragment fragment) {
@@ -17,6 +19,16 @@ public class UIManager {
     }
 
     public static void changeFragment(FragmentManager fragmentManager, Fragment fragment) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame, fragment);
+        fragmentTransaction.commit();
+    }
+
+    public static void AuthChangeFragment(FragmentManager fragmentManager, Fragment fragment) {
+        if(AuthUserController.getInstance().getUserlogin().getValue().getId() == null){
+            changeFragment(fragmentManager, LoginFragment.getInstance());
+            return;
+        }
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame, fragment);
         fragmentTransaction.commit();
@@ -36,4 +48,5 @@ public class UIManager {
             return SeatType.STANDARD;
         return SeatType.VIP;
     }
+
 }

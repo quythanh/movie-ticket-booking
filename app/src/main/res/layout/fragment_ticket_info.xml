@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -22,7 +22,7 @@
                 android:id="@+id/textView25"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="XÁC NHẬN ĐẶT VÉ VỚI TP CINE"
+                android:text="THÔNG TIN VÉ XEM PHIM"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp"
@@ -51,7 +51,7 @@
                     app:layout_constraintTop_toTopOf="@+id/imageView4">
 
                     <TextView
-                        android:id="@+id/finalMovieTitle"
+                        android:id="@+id/ticketMovieTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="INSIDE OUT 2"
@@ -60,7 +60,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/finalShowtimeDate"
+                        android:id="@+id/ticketShowtimeDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="26/08/2024 18:13" />
@@ -90,7 +90,7 @@
                                     android:textStyle="bold" />
 
                                 <TextView
-                                    android:id="@+id/finalCinemaTitle"
+                                    android:id="@+id/ticketCinemaTitle"
                                     android:layout_width="100dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -112,7 +112,7 @@
                                     android:textStyle="bold" />
 
                                 <TextView
-                                    android:id="@+id/finalRoomNumber"
+                                    android:id="@+id/ticketRoomNumber"
                                     android:layout_width="100dp"
                                     android:layout_height="wrap_content"
                                     android:text="P1"
@@ -120,7 +120,7 @@
                             </LinearLayout>
 
                             <TextView
-                                android:id="@+id/finalTotalPrice"
+                                android:id="@+id/ticketTotalPrice"
                                 android:layout_width="match_parent"
                                 android:layout_height="70dp"
                                 android:gravity="center"
@@ -222,6 +222,38 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Trạng thái:"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/ticketStatusInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="50dp"
+                android:text="dd/mm/yyyy hh:mm"
+                android:textColor="@color/design_default_color_error" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Vé có thể được hủy trước:"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/ticketCanceledTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:paddingLeft="50dp"
+                android:text="dd/mm/yyyy hh:mm"
+                android:textColor="@color/design_default_color_error" />
+
+            <TextView
                 android:id="@+id/textView22"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -230,44 +262,31 @@
                 android:textColor="@color/white" />
 
             <ListView
-                android:id="@+id/products"
+                android:id="@+id/ticketProducts"
                 android:layout_width="match_parent"
-                android:layout_height="150dp" />
+                android:layout_height="150dp"
+                android:layout_marginBottom="30dp"/>
 
-            <Button
-                android:id="@+id/confirmBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="#68D01E"
-                android:text="Xác nhận đặt vé" />
 
             <Button
                 android:id="@+id/payBtn"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="#D51D1D"
-                android:text="Thanh toán" />
+                android:backgroundTint="#0277BD"
+                android:text="Thanh toán"
+                android:visibility="visible" />
 
             <Button
-                android:id="@+id/backBtn2"
+                android:id="@+id/CancelBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="#818181"
-                android:text="Quay lại" />
-            <Button
-                android:id="@+id/homeBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="@color/design_default_color_error"
-                android:text="Trang chủ"
-                android:visibility="gone"/>
+                android:backgroundTint="#FF0000"
+                android:text="Hủy"
+                android:visibility="visible" />
 
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -125,7 +125,7 @@ public class ManageMovies extends Fragment {
         _controller
                 .filter(filters.get())
                 .observe(getViewLifecycleOwner(), _movies -> {
-                    ListAdapter adapter = new MovieAdapter(_movies);
+                    ListAdapter adapter = new MovieAdapter(getViewLifecycleOwner(), _movies);
                     gridMovies.setAdapter(adapter);
                     gridMovies.setOnItemClickListener((_adapterView, _v, i, l) -> {
                         EditContext.movie.setValue(_movies.get(i));

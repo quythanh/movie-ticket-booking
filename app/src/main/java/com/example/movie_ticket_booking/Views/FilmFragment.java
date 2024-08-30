@@ -92,7 +92,7 @@ public class FilmFragment extends Fragment {
 
     private void setupViews(View view) {
         viewPagerAdapter = new ViewPagerAdapter(view.getContext(), new ArrayList<>());
-        adapt = new MovieAdapter(new ArrayList<>());
+        adapt = new MovieAdapter(getViewLifecycleOwner(), new ArrayList<>());
 
         filter = Map.of(
                 MovieType.PRESENTING, view.findViewById(R.id.txt_presenting),

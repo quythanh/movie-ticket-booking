@@ -18,11 +18,14 @@ public class Ticket extends BaseModel{
     private List<DetailTicket> details;
     private Integer total;
     private Date cancelableTime;
+    private boolean paid;
+    private Payment payment;
 
     public Ticket(){
         super();
         cancelableTime = new Date();
         cancelableTime.setTime(this.createdDate.getTime() + 1000*60*60);
+        paid = false;
     }
 
     @NonNull

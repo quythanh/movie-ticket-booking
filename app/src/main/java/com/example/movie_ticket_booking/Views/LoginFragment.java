@@ -59,12 +59,13 @@ public class LoginFragment extends Fragment {
         loginBtn.setOnClickListener(_v -> {
             String mail = email.getText().toString();
             String pass = password.getText().toString();
+            email.setText("");
+            password.setText("");
             if(!mail.isBlank() && !pass.isBlank())
                 authController.Login(view.getContext(), mail, pass, getParentFragmentManager(), FilmFragment.getInstance());
             else
                 Toast.makeText(view.getContext(), "EMPTY", Toast.LENGTH_SHORT).show();
         });
-
         registerBtn.setOnClickListener(_v -> UIManager.changeFragment(getParentFragmentManager(), RegisterFragment.getInstance()));
     }
 }
