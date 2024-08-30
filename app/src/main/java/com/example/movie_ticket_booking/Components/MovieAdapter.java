@@ -1,5 +1,6 @@
 package com.example.movie_ticket_booking.Components;
 
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -9,7 +10,9 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.bumptech.glide.Glide;
 import com.example.movie_ticket_booking.Common.GenericAdapter;
+import com.example.movie_ticket_booking.Controllers.AuthUserController;
 import com.example.movie_ticket_booking.Models.Movie;
+import com.example.movie_ticket_booking.Models.UserRole;
 import com.example.movie_ticket_booking.R;
 
 import java.util.List;
@@ -36,12 +39,18 @@ public class MovieAdapter extends GenericAdapter<Movie> {
         TextView title = view.findViewById(R.id.titleItem);
         TextView rating = view.findViewById(R.id.ratingItem);
 
+        if (AuthUserController.getInstance().getUserlogin().getValue().getRole() == UserRole.ADMIN) {
+            title.setTextColor(Color.BLACK);
+            rating.setTextColor(Color.BLACK);
+        }
+
         Glide.with(view).load(m.getPoster()).into(img);
         title.setText(m.getTitle());
 
         m.getAvgPoint(owner).observe(owner, aDouble -> {
             if (aDouble == null) return;
-            rating.setText(m.getRatingPoint() == 0  ? "Không có đánh giá" : String.format("%.1f / 5.0", m.getRatingPoint()));
+            double stars = m.getRatingPoint();
+            rating.setText(stars != stars  ? "Không có đánh giá" : String.format("%.1f / 5.0", stars));
         });
 
         return view;
