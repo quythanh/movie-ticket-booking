@@ -1,12 +1,9 @@
 package com.example.movie_ticket_booking.Controllers;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.movie_ticket_booking.Common.GenericController;
-import com.example.movie_ticket_booking.Models.DetailTicket;
-import com.example.movie_ticket_booking.Models.ProductInTicket;
-import com.example.movie_ticket_booking.Models.Seat;
-import com.example.movie_ticket_booking.Models.SeatType;
 import com.example.movie_ticket_booking.Models.Ticket;
 import com.example.movie_ticket_booking.Models.User;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,7 +25,31 @@ public class TicketController extends GenericController<Ticket> {
         return _instance;
     }
 
-    public MutableLiveData<List<Ticket>> getAll(User u) {
+    @Override
+    public LiveData<List<Ticket>> getAll() {
+        MutableLiveData<List<Ticket>> result = new MutableLiveData<>();
+
+        this.db.collection(this.collectionPath)
+                .orderBy("createdDate")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Ticket> tickets = new ArrayList<>();
+
+                    queryDocumentSnapshots.forEach(x -> {
+                        Ticket t = Ticket.parse(x);
+                        tickets.add(t);
+                    });
+
+                    result.setValue(tickets);
+                })
+                .addOnFailureListener(command -> {
+                    System.out.println(command);
+                });
+
+        return result;
+    }
+
+    public LiveData<List<Ticket>> getAll(User u) {
         MutableLiveData<List<Ticket>> result = new MutableLiveData<>();
         DocumentReference _userRef = UserController.getInstance().getRef(u.getId());
 
@@ -53,12 +74,12 @@ public class TicketController extends GenericController<Ticket> {
         return result;
     }
 
-    public MutableLiveData<List<Ticket>> getMyTickets() {
+    public LiveData<List<Ticket>> getMyTickets() {
         User u = AuthUserController.getInstance().getUserlogin().getValue();
         return this.getAll(u);
     }
 
-    public  MutableLiveData<List<String>> getSoldSeat(DocumentReference showtime){
+    public LiveData<List<String>> getSoldSeat(DocumentReference showtime) {
         MutableLiveData<List<String>> result = new MutableLiveData<>();
         List<String> res = new ArrayList<>();
         this.db.collection(this.collectionPath)

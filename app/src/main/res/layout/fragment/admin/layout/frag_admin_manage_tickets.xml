@@ -123,7 +123,7 @@
             tools:ignore="HardcodedText" />
 
         <ListView
-            android:id="@+id/grid_movies"
+            android:id="@+id/list_tickets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
