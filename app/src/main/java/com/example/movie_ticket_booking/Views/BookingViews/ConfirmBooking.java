@@ -218,7 +218,7 @@ public class ConfirmBooking extends AppCompatActivity {
                 if(ticket== null || ticket.getShowtime() == null) return;
                 AlertDialog.Builder builder = new AlertDialog.Builder(ConfirmBooking.this);
                 builder.setTitle("Xác nhận vé xem phim!")
-                                .setMessage("Bạn đang muốn gửi yêu cầu xác nhận vé cảu bạn?")
+                                .setMessage("Bạn đang muốn gửi yêu cầu xác nhận vé của bạn?")
                                 .setIcon(R.drawable.ic_movie)
                                 .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                                     @Override
