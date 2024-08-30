@@ -23,6 +23,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ConfirmedProductAdapter extends BaseAdapter {
 
+    @Getter
     private Map<Product, Integer> prods;
 
     @Override

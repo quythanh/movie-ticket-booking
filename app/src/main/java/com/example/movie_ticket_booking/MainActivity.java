@@ -131,10 +131,10 @@ public class MainActivity extends AppCompatActivity {
                     UIManager.changeFragment(fragmentManager, cinemas);
                     break;
                 case R.id.notification:
-                    UIManager.changeFragment(fragmentManager, notification);
+                    UIManager.AuthChangeFragment(fragmentManager, notification);
                     break;
                 case R.id.other:
-                    UIManager.changeFragment(fragmentManager, other);
+                    UIManager.AuthChangeFragment(fragmentManager, other);
                     break;
 
                 // Admin

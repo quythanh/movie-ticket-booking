@@ -1,6 +1,10 @@
 package com.example.movie_ticket_booking.Models;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.movie_ticket_booking.Controllers.RatingController;
 
 import java.util.Date;
 import java.util.List;
@@ -24,11 +28,11 @@ public class Movie extends BaseModel{
     private String landscapeImage;
     private String poster;
     private String trailer;
+    private double ratingPoint;
 
     //Foreign key
-    private List<Cinema> cinemas;
-    private List<Rating> ratings;
-    private List<Tag> tags;
+//    private List<Cinema> cinemas;
+//    private List<Tag> tags;
 
     @Override
     public void setActive(boolean active) {
@@ -65,5 +69,19 @@ public class Movie extends BaseModel{
                 res[0] += x;
         });
         return res[0];
+    }
+
+    public MutableLiveData<Double> getAvgPoint(LifecycleOwner owner){
+        MutableLiveData<Double> res = new MutableLiveData<>();
+        RatingController.getInstance(this).getAll().observe(owner, ratings -> {
+            this.ratingPoint = 0;
+            if(ratings == null) return;
+            for(Rating r : ratings){
+                this.ratingPoint += r.getStars();
+            }
+            this.ratingPoint /= ratings.size();
+            res.setValue(this.ratingPoint);
+        });
+        return res;
     }
 }

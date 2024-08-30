@@ -63,8 +63,15 @@ public class TicketListAdapter extends GenericAdapter<Ticket> {
 
         createdDate.setText(Constant.DATETIME_FORMATTER.format(t.getCreatedDate()));
         if (t.isActive()){
-            status.setText("ĐÃ ĐẶT");
-            status.setTextColor(Color.parseColor("#70BB44"));
+            if(t.isPaid()){
+                status.setText("ĐÃ THANH TOÁN");
+                status.setTextColor(Color.parseColor("#70BB44"));
+            }
+            else {
+                status.setText("ĐÃ ĐẶT");
+                status.setTextColor(Color.parseColor("#70BB44"));
+            }
+
         }
         else{
             status.setText("ĐÃ HỦY");

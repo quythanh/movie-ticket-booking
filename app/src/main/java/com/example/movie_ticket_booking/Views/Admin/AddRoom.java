@@ -40,16 +40,6 @@ public class AddRoom extends DialogFragment {
             int roomNum = Integer.parseInt(mInpNum.getText().toString());
             List<Integer> seats = Arrays.stream(mInpSeats.getText().toString().split("\\,")).map(Integer::parseInt).collect(Collectors.toList());
 
-            // EditContext.cinema.observe(getParentFragment().getViewLifecycleOwner(), _cinema -> {
-            //     Room room = new Room(roomNum, seats);
-            //     CinemaController.getInstance()
-            //             .getRef(_cinema.getId())
-            //             .collection("rooms")
-            //             .add(room)
-            //             .addOnSuccessListener(documentReference -> {
-            //                 Toast.makeText(getContext(), "Thêm phòng thành công!", Toast.LENGTH_SHORT).show();
-            //             });
-            // });
             Room room = new Room(roomNum, seats);
             RoomController.getInstance(SelectContext.cinema).add(room);
             Toast.makeText(getContext(), "Thêm phòng thành công!", Toast.LENGTH_SHORT).show();

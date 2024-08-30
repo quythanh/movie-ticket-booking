@@ -130,7 +130,6 @@ public class SeatAdapter extends RecyclerView.Adapter<SeatAdapter.SeatViewHolder
 
                 }else
                 {
-
                     temp.get(row).remove(temp.get(row).indexOf(position));
                     if(type == SeatType.COUPLE){
                         if(position%2 == 0){

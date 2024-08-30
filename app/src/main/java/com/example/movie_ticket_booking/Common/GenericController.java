@@ -36,7 +36,7 @@ public abstract class GenericController<T extends Identifiable> {
     public void add(T o) {
         this.db.collection(this.collectionPath)
                 .add(o)
-                .addOnSuccessListener(documentReference -> Log.d(collectionPath, "Add successfully ID: " + documentReference.getId()))
+                .addOnSuccessListener(documentReference -> o.setId(documentReference.getId()))
                 .addOnFailureListener(e -> Log.e(collectionPath, "Error adding document", e));
     }
 
