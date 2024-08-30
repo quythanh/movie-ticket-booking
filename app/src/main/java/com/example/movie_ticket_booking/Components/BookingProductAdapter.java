@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.movie_ticket_booking.Common.Constant;
+import com.example.movie_ticket_booking.Common.GenericAdapter;
 import com.example.movie_ticket_booking.Models.Product;
 import com.example.movie_ticket_booking.R;
 
@@ -21,31 +22,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class BookingProductAdapter extends BaseAdapter {
+public class BookingProductAdapter extends GenericAdapter<Product> {
 
-    private List<Product> products;
     private Bundle bundle;
 
-    @Override
-    public int getCount() {
-        return products.size();
+    public BookingProductAdapter(List<Product> products, Bundle bundle) {
+        super(products, R.layout.list_product_item);
+        this.bundle = bundle;
     }
 
     @Override
-    public Object getItem(int position) {
-        return products.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_product_item, parent, false);
+    public View getView(int position, View view, ViewGroup parent) {
+        view = super.getView(position, view, parent);
         TextView name, description, amount, price;
         Button minus, add;
         name = view.findViewById(R.id.productName);
@@ -54,7 +42,8 @@ public class BookingProductAdapter extends BaseAdapter {
         price = view.findViewById(R.id.pricePD);
         minus = view.findViewById(R.id.minusBtn);
         add = view.findViewById(R.id.addBtn);
-        Product p = products.get(position);
+
+        Product p = this.getItem(position);
 
         name.setText(p.getName());
         description.setText(p.getDescription());

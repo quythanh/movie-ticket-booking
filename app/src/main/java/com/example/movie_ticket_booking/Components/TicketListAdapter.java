@@ -12,6 +12,7 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.bumptech.glide.Glide;
 import com.example.movie_ticket_booking.Common.Constant;
+import com.example.movie_ticket_booking.Common.GenericAdapter;
 import com.example.movie_ticket_booking.Common.UIManager;
 import com.example.movie_ticket_booking.Controllers.MovieController;
 import com.example.movie_ticket_booking.Models.Showtime;
@@ -26,30 +27,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class TicketListAdapter extends BaseAdapter {
-
+public class TicketListAdapter extends GenericAdapter<Ticket> {
     private LifecycleOwner owner;
-    private List<Ticket> tickets;
 
-    @Override
-    public int getCount() {
-        return tickets.size();
+    public TicketListAdapter(LifecycleOwner owner, List<Ticket> tickets) {
+        super(tickets, R.layout.list_ticket_item);
+        this.owner = owner;
     }
 
     @Override
-    public Object getItem(int position) {
-        return tickets.get(position);
-    }
+    public View getView(int position, View v, ViewGroup parent) {
+        v = super.getView(position, v, parent);
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_ticket_item, parent, false);
         TextView title, time, date, createdDate, status;
         ImageView img;
         title = v.findViewById(R.id.ticketMovie);
@@ -59,7 +48,7 @@ public class TicketListAdapter extends BaseAdapter {
         status = v.findViewById(R.id.ticketStatus);
         img = v.findViewById(R.id.ticketMovieImage);
 
-        Ticket t = tickets.get(position);
+        Ticket t = this.getItem(position);
         t.getShowtime().get().addOnSuccessListener(documentSnapshot -> {
             Showtime s = documentSnapshot.toObject(Showtime.class);
             time.setText(Constant.TIME_FORMATTER.format(s.getDate()));
