@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.util.Collection;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -42,6 +43,21 @@ public abstract class GenericAdapter<T> extends BaseAdapter {
 
     public void setList(List<T> list) {
         this.list = list;
+        this.notifyDataSetChanged();
+    }
+
+    public void add(T o) {
+        this.list.add(o);
+        this.notifyDataSetChanged();
+    }
+
+    public void addAll(Collection<T> list) {
+        this.list.addAll(list);
+        this.notifyDataSetChanged();
+    }
+
+    public void clear() {
+        this.list.clear();
         this.notifyDataSetChanged();
     }
 }
