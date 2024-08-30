@@ -281,25 +281,25 @@ public class ConfirmBooking extends AppCompatActivity {
                         intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent1);
 
-//                        ZaloPaySDK.getInstance().payOrder(ConfirmBooking.this, token, "demozpdk://app", new PayOrderListener() {
-//                            @Override
-//                            public void onPaymentSucceeded(String s, String s1, String s2) {
-//                                Toast.makeText(v.getContext(), "Thanh toán thành công", Toast.LENGTH_SHORT).show();
-//                                Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
-//                                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//                                startActivity(intent1);
-//                            }
-//
-//                            @Override
-//                            public void onPaymentCanceled(String s, String s1) {
-//                                Toast.makeText(v.getContext(), "Thanh toán đã được hủy", Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                            @Override
-//                            public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
-//                                Toast.makeText(v.getContext(), "Thanh toán không thành công", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
+                        ZaloPaySDK.getInstance().payOrder(ConfirmBooking.this, token, "demozpdk://app", new PayOrderListener() {
+                            @Override
+                            public void onPaymentSucceeded(String s, String s1, String s2) {
+                                Toast.makeText(v.getContext(), "Thanh toán thành công", Toast.LENGTH_SHORT).show();
+                                Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
+                                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                startActivity(intent1);
+                            }
+
+                            @Override
+                            public void onPaymentCanceled(String s, String s1) {
+                                Toast.makeText(v.getContext(), "Thanh toán đã được hủy", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
+                                Toast.makeText(v.getContext(), "Thanh toán không thành công", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                 } catch (Exception e) {
