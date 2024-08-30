@@ -13,6 +13,7 @@ import com.example.movie_ticket_booking.MainActivity;
 import com.example.movie_ticket_booking.Models.User;
 import com.example.movie_ticket_booking.Models.UserRole;
 import com.example.movie_ticket_booking.Views.Admin.Home;
+import com.example.movie_ticket_booking.Views.FilmFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import java.text.ParseException;
@@ -102,5 +103,10 @@ public class AuthUserController {
             else
                 Toast.makeText(context, "Không đúng email hoặc mật khẩu", Toast.LENGTH_SHORT).show();
         });
+    }
+
+    public void Logout(FragmentManager fragmentManager) {
+        this.userlogin.setValue(new User());
+        UIManager.changeFragment(fragmentManager, FilmFragment.getInstance());
     }
 }
