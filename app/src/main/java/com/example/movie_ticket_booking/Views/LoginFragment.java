@@ -66,6 +66,6 @@ public class LoginFragment extends Fragment {
             else
                 Toast.makeText(view.getContext(), "EMPTY", Toast.LENGTH_SHORT).show();
         });
-        registerBtn.setOnClickListener(_v -> UIManager.changeFragment(getParentFragmentManager(), RegisterFragment.getInstance()));
+        registerBtn.setOnClickListener(_v -> UIManager.addFragment(getParentFragmentManager(), RegisterFragment.getInstance()));
     }
 }

@@ -67,6 +67,9 @@ public class RegisterFragment extends Fragment {
             picker.show();
         });
 
+        Button mBtnBack = view.findViewById(R.id.button);
+        mBtnBack.setOnClickListener(_v -> getParentFragmentManager().popBackStack());
+
         Button confirm = view.findViewById(R.id.RegisterBtn);
         confirm.setOnClickListener(v -> {
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -36,6 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ShowtimeCinemaBooking extends AppCompatActivity {
 
+    private Button mBtnBack;
     private RecyclerView rcv, cine;
     private CinemaController cc = CinemaController.getInstance();
     private GridView grid;
@@ -50,6 +52,9 @@ public class ShowtimeCinemaBooking extends AppCompatActivity {
         data = new MutableLiveData<>(new HashMap<>());
         GenericFilter<Cinema> filters = new GenericFilter<>(Cinema.class);
         AtomicReference<Map<String, Object>> tempMap = new AtomicReference<>(new HashMap<>());
+
+        mBtnBack = findViewById(R.id.BackToInfo);
+        mBtnBack.setOnClickListener(_v -> finish());
 
         rcv = findViewById(R.id.weekdate);
         rcv.setHasFixedSize(true);
