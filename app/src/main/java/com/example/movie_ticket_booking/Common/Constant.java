@@ -1,5 +1,7 @@
 package com.example.movie_ticket_booking.Common;
 
+import androidx.annotation.NonNull;
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Currency;
@@ -11,14 +13,28 @@ public class Constant {
     public static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("HH:mm");
     public static final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vn", "VN"));
 
-    public static final class Time {
-        public static final long SEC = 1000;
-        public static final long MINUTE = 60 * SEC;
-        public static final long HOUR = 60 * MINUTE;
-        public static final long DAY = 24 * HOUR;
-        public static final long WEEK = 7 * DAY;
-        public static final long MONTH = 30 * DAY;
-        public static final long QUARTER = 3 * MONTH;
+    public enum Time {
+        DAY(24 * 60 * 60 * 1000, "Ngày"),
+        DAY_3(3 * 24 * 60 * 60 * 1000, "3 Ngày"),
+        WEEK(7 * 24 * 60 * 60 * 1000, "Tuần"),
+        WEEK_2(14 * 24 * 60 * 60 * 1000, "2 Tuần"),
+        MONTH(30 * 24 * 60 * 60 * 1000, "Tháng"),
+        QUARTER(90 * 24 * 60 * 60 * 1000, "Quý"),
+        YEAR(365 * 24 * 60 * 60 * 1000, "Năm");
+
+        public final long value;
+        private final String label;
+
+        private Time(long length, String label) {
+            this.value = length;
+            this.label = label;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return this.label;
+        }
     }
 
     static {
