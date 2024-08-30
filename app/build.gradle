@@ -10,8 +10,6 @@ android {
     namespace 'com.example.movie_ticket_booking'
     compileSdk 34
 
-
-
     defaultConfig {
         applicationId "com.example.movie_ticket_booking"
         minSdk 24
@@ -85,6 +83,9 @@ dependencies {
 
     // Import GPS
     implementation libs.play.services.location
+    
+    // Chart
+    implementation libs.mpandroidchart
 
     // TODO: Add the dependencies for Firebase products you want to use
     implementation libs.firebase.firestore
