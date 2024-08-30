@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class Statistic extends Fragment {
     private static Statistic _instance = null;
 
     private BarChart mChart;
+    private Button mBtnLogout;
     private EditText mInpRange;
     private Spinner mSpnRangeUnit;
     private TextView mTxtName;
@@ -84,6 +86,7 @@ public class Statistic extends Fragment {
     }
 
     private void bindingViews(View view) {
+        mBtnLogout = view.findViewById(R.id.btn_logout);
         mChart = view.findViewById(R.id.chart_bar);
         mInpRange = view.findViewById(R.id.inp_range);
         mSpnRangeUnit = view.findViewById(R.id.spn_range_unit);
@@ -91,6 +94,7 @@ public class Statistic extends Fragment {
     }
 
     private void setupViews() {
+        mBtnLogout.setOnClickListener(_v -> AuthUserController.getInstance().Logout(getParentFragmentManager()));
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setValueTextSize(16f);

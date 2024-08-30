@@ -14,13 +14,21 @@
         android:paddingHorizontal="15dp">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:text="Chào bạn, "
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/txt_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
             android:layout_weight="1"
-            android:text="Chào bạn"
             android:textSize="16sp"
-            tools:ignore="HardcodedText" />
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btn_logout"
