@@ -11,10 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.movie_ticket_booking.Common.EditContext;
 import com.example.movie_ticket_booking.Common.IReloadOnDestroy;
 import com.example.movie_ticket_booking.Common.SelectContext;
-import com.example.movie_ticket_booking.Controllers.CinemaController;
+import com.example.movie_ticket_booking.Controllers.RoomController;
 import com.example.movie_ticket_booking.Models.Room;
 import com.example.movie_ticket_booking.R;
 
