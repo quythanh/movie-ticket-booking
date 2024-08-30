@@ -58,7 +58,7 @@ dependencies {
     implementation libs.gridlayout
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
-    implementation files('F:\\Sofware Engineering\\Mobile Programing\\movie-ticket-booking\\zpdk-release-v3.1.aar')
+    implementation rootProject.files("app/libs/zpdk-release-v3.1.aar")
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
