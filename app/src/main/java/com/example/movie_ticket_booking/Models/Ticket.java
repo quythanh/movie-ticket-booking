@@ -47,6 +47,15 @@ public class Ticket extends BaseModel {
         t.setCancelableTime(x.getTimestamp("cancelableTime").toDate());
         t.setCreatedDate(x.getTimestamp("createdDate").toDate());
         t.setDetails(new ArrayList<>());
+        t.setPaid(x.getBoolean("paid"));
+        if(!t.isPaid() && t.getCancelableTime().before(new Date())){
+            t.setActive(false);
+            try {
+                TicketController.getInstance().update(t.getId(), t);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         List<Map<String, Object>> generalDetails = (List<Map<String, Object>>) x.get("details");
         for (Map<String, Object> y : generalDetails) {

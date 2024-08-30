@@ -40,33 +40,8 @@ public class TicketController extends GenericController<Ticket> {
         DocumentReference _userRef = UserController.getInstance().getRef(u.getId());
 
         this.db.collection(this.collectionPath)
-                .whereEqualTo("user", ur)
-                // .orderBy("createdDate", Query.Direction.DESCENDING)
-                // .get()
-                // .addOnSuccessListener(queryDocumentSnapshots -> {
-                //     queryDocumentSnapshots.forEach(x -> {
-                //         Ticket t = new Ticket();
-                //         t.setId(x.getId());
-                //         t.setUser(x.getDocumentReference("user"));
-                //         t.setShowtime(x.getDocumentReference("showtime"));
-                //         t.setTotal(Math.toIntExact(x.getLong("total")));
-                //         t.setActive( x.getBoolean("active"));
-                //         t.setCancelableTime(x.getTimestamp("cancelableTime").toDate());
-                //         t.setCreatedDate(x.getTimestamp("createdDate").toDate());
-                //         t.setDetails(new ArrayList<>());
-                //         t.setPaid(x.getBoolean("paid"));
-                //         if(!t.isPaid() && t.getCancelableTime().before(new Date())){
-                //             t.setActive(false);
-                //             try {
-                //                 update(t.getId(), t);
-                //             } catch (IllegalAccessException e) {
-                //                 throw new RuntimeException(e);
-                //             }
-                //         }
-
-                //         List<Map<String, Object>> GeneralDetails = (List<Map<String, Object>>) x.get("details");
                 .whereEqualTo("user", _userRef)
-                .orderBy("createdDate")
+                .orderBy("createdDate", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Ticket> tickets = new ArrayList<>();
@@ -75,13 +50,11 @@ public class TicketController extends GenericController<Ticket> {
                         Ticket t = Ticket.parse(x);
                         tickets.add(t);
                     });
-
                     result.setValue(tickets);
                 })
                 .addOnFailureListener(command -> {
                     System.out.println(command);
                 });
-
         return result;
     }
 
