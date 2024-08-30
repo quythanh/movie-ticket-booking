@@ -36,7 +36,7 @@ public class ShowtimeController extends GenericController<Showtime> {
         Date startDate = Constant.DATETIME_FORMATTER.parse(Constant.DATE_FORMATTER.format(date) + " 00:00");
         Date endDate = (Date) startDate.clone();
         Date now = new Date();
-        endDate.setTime(startDate.getTime() + 1000*60*60*24);
+        endDate.setTime(startDate.getTime() + Constant.Time.DAY);
 
         Timestamp start = new Timestamp(startDate.before(now) ? now : startDate);
         Timestamp end = new Timestamp(endDate);
