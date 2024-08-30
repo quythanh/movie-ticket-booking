@@ -142,6 +142,9 @@ public class MovieInfoFragment extends Fragment {
                 RatingController.getInstance(movie).getAll().observe(getViewLifecycleOwner(), ratings1 -> {
                     ra = new RatingAdapter(ratings1);
                     ratingList.setAdapter(ra);
+                    ViewGroup.LayoutParams params = ratingList.getLayoutParams();
+                    params.height = ra.getCount() * 450;
+                    ratingList.setLayoutParams(params);
                 });
 
                 bookingBtn.setOnClickListener(_v -> {

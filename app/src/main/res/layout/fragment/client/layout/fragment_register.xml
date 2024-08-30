@@ -36,6 +36,7 @@
                             android:text="THÔNG TIN BẮT BUỘC"
                             android:textAllCaps="true"
                             android:textSize="20sp" />
+
                         <EditText
                             android:id="@+id/username"
                             android:layout_width="match_parent"
@@ -50,6 +51,7 @@
                             android:textColor="@color/white"
                             android:textColorHint="@color/material_dynamic_neutral40"
                             android:textSize="20sp" />
+
                         <EditText
                             android:id="@+id/Lastname"
                             android:layout_width="match_parent"
@@ -137,7 +139,8 @@
                             android:inputType="phone"
                             android:textColor="@color/white"
                             android:textColorHint="@color/material_dynamic_neutral40"
-                            android:textSize="20sp" />
+                            android:textSize="20sp"
+                            tools:ignore="HardcodedText" />
 
                     </LinearLayout>
 
@@ -153,8 +156,7 @@
                             android:text="THÔNG TIN BỔ SUNG"
                             android:textAllCaps="true"
                             android:textSize="20sp"
-
-                            />
+                            tools:ignore="HardcodedText" />
 
                         <EditText
                             android:id="@+id/birthday"

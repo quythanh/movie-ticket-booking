@@ -94,6 +94,7 @@
                 android:id="@+id/ratingSession"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
                 android:orientation="vertical"
                 android:paddingHorizontal="10dp"
                 android:gravity="center"
@@ -132,7 +133,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#F6AA30"
-                        android:text="đánh giá" />
+                        android:text="Đánh giá" />
                 </LinearLayout>
 
                 <TextView
@@ -153,7 +154,7 @@
                     android:layout_height="200dp"
                     android:layout_marginTop="10dp"
                     android:background="#404040"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
